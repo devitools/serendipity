@@ -9,9 +9,9 @@ use Serendipity\Infrastructure\Database\Document\Mongo\Condition\EqualCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\InCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\RegexCondition;
 
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
-use function Serendipity\Type\Util\extractString;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
+use function Constructo\Util\extractString;
 
 final class Search extends SearchEngine
 {
@@ -32,12 +32,11 @@ final class Search extends SearchEngine
     public function make(string $field, mixed $value): string
     {
         $value = stringify($value);
-        return implode(self::SEARCH_SEPARATOR,
-            [
-                $field,
-                sprintf('"%s"', $value),
-            ]
-        );
+        $array = [
+            $field,
+            sprintf('"%s"', $value),
+        ];
+        return implode(self::SEARCH_SEPARATOR, $array);
     }
 
     public function unmake(string $filter): array

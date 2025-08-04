@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\General;
+namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase;
 
@@ -61,8 +61,14 @@ final class FunctionsPolyfillTest extends TestCase
     public function testArrayShiftPluckInt(): void
     {
         $array = [
-            ['id' => 1, 'name' => 'test'],
-            ['id' => 2, 'name' => 'test2'],
+            [
+                'id' => 1,
+                'name' => 'test',
+            ],
+            [
+                'id' => 2,
+                'name' => 'test2',
+            ],
         ];
 
         $this->assertEquals(1, array_shift_pluck_int($array, 'id'));
@@ -81,7 +87,11 @@ final class FunctionsPolyfillTest extends TestCase
 
     public function testArrayFirst(): void
     {
-        $array = ['a', 'b', 'c'];
+        $array = [
+            'a',
+            'b',
+            'c',
+        ];
         $this->assertEquals('a', array_first($array));
     }
 
@@ -92,9 +102,23 @@ final class FunctionsPolyfillTest extends TestCase
 
     public function testArrayUnshiftKey(): void
     {
-        $array = ['a' => [1, 2]];
+        $array = [
+            'a' => [
+                1,
+                2,
+            ],
+        ];
         $result = array_unshift_key($array, 'a', 3);
-        $this->assertEquals(['a' => [1, 2, 3]], $result);
+        $this->assertEquals(
+            [
+                'a' => [
+                    1,
+                    2,
+                    3,
+                ],
+            ],
+            $result
+        );
 
         $array = [];
         $result = array_unshift_key($array, 'a', 1);

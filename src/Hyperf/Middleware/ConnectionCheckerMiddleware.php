@@ -14,7 +14,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionChecker;
 
-use function Serendipity\Type\Cast\integerify;
+use function Constructo\Cast\integerify;
 
 readonly class ConnectionCheckerMiddleware implements MiddlewareInterface
 {

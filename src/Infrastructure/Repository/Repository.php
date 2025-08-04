@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
+use Constructo\Support\Datum;
 use Constructo\Support\Entity;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
-use Serendipity\Domain\Support\Datum;
 use Throwable;
 
 use function array_shift;
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 
 abstract class Repository
 {

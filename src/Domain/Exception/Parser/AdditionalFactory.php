@@ -13,8 +13,8 @@ use Throwable;
 use function array_map;
 use function implode;
 use function is_array;
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
 
 class AdditionalFactory
 {
@@ -26,7 +26,8 @@ class AdditionalFactory
     {
         $thrown = $this->factory->make($throwable);
         $errors = match (true) {
-            $throwable instanceof ValidationException => $throwable->validator->errors()->getMessages(),
+            $throwable instanceof ValidationException => $throwable->validator->errors()
+                ->getMessages(),
             $throwable instanceof InvalidInputException => $throwable->getErrors(),
             default => [],
         };
@@ -56,7 +57,8 @@ class AdditionalFactory
     {
         return match (true) {
             $request instanceof RequestInterface => $request->post(),
-            $request instanceof ServerRequestInterface => $request->getBody()->getContents(),
+            $request instanceof ServerRequestInterface => $request->getBody()
+                ->getContents(),
         };
     }
 

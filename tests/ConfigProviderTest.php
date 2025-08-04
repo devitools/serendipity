@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\General;
+namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\ConfigProvider;

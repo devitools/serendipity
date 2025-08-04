@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Domain\Collection;
 
-use Serendipity\Domain\Collection\Collection;
+use Constructo\Type\Collection;
 use Serendipity\Example\Game\Domain\Entity\Game;
 
 /**
@@ -19,6 +19,8 @@ final class GameCollection extends Collection
 
     protected function validate(mixed $datum): Game
     {
-        return ($datum instanceof Game) ? $datum : throw $this->exception(Game::class, $datum);
+        return ($datum instanceof Game)
+            ? $datum
+            : throw $this->exception(Game::class, $datum);
     }
 }

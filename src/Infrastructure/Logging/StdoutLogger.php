@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use function array_export;
 use function in_array;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 class StdoutLogger extends AbstractLogger
 {

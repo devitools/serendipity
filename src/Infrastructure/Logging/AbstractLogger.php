@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Stringable;
 
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 abstract class AbstractLogger implements LoggerInterface
 {

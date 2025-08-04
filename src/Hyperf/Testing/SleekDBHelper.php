@@ -16,7 +16,7 @@ use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
 use SleekDB\Exceptions\JsonException as SleekDBJsonExceptionAlias;
 
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 
 final class SleekDBHelper extends AbstractHelper
 {

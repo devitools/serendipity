@@ -7,7 +7,7 @@ namespace Serendipity\Hyperf\Database\Relational\Support;
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Throwable;
 
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 trait HasPostgresUniqueConstraint
 {

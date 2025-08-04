@@ -12,7 +12,7 @@ use Serendipity\Domain\Contract\Adapter\Deserializer as Contract;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 
 use function is_object;
-use function Serendipity\Type\Cast\mapify;
+use function Constructo\Cast\mapify;
 
 /**
  * @template T of object

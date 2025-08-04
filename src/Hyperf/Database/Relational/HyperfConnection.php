@@ -11,14 +11,14 @@ use Serendipity\Infrastructure\Database\Relational\Connection;
 
 use function get_object_vars;
 use function is_object;
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\integerify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\integerify;
 
 class HyperfConnection implements Connection
 {
     public function __construct(
         public readonly string $connection,
-        private readonly Database $database
+        private readonly Database $database,
     ) {
     }
 

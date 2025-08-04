@@ -18,8 +18,8 @@ use Throwable;
 use function array_map;
 use function Hyperf\Collection\data_get;
 use function Serendipity\Notation\upperify;
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
 
 readonly class TaskMiddleware implements MiddlewareInterface
 {
@@ -39,7 +39,12 @@ readonly class TaskMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $operation = sprintf('%s:%s', upperify($request->getMethod()), $request->getUri()->getPath());
+        $operation = sprintf(
+            '%s:%s',
+            upperify($request->getMethod()),
+            $request->getUri()
+                ->getPath()
+        );
         $this->task
             ->setResource($operation)
             ->setCorrelationId($this->extractCorrelationId($request))
@@ -51,8 +56,16 @@ readonly class TaskMiddleware implements MiddlewareInterface
     private function extractCorrelationId(ServerRequestInterface $request): string
     {
         try {
-            $location = $this->location($request, 'correlation_id', ['X-Correlation-ID', 'header']);
-            return $this->extract($request, ...$location) ?: 'N/A';
+            $location = $this->location(
+                $request,
+                'correlation_id',
+                [
+                    'X-Correlation-ID',
+                    'header',
+                ]
+            );
+            return $this->extract($request, ...$location)
+                ?: 'N/A';
         } catch (Throwable) {
             return 'ERR';
         }
@@ -61,8 +74,16 @@ readonly class TaskMiddleware implements MiddlewareInterface
     private function extractPlatformId(ServerRequestInterface $request): string
     {
         try {
-            $location = $this->location($request, 'invoker_id', ['X-Invoker-ID', 'header']);
-            return $this->extract($request, ...$location) ?: 'N/A';
+            $location = $this->location(
+                $request,
+                'invoker_id',
+                [
+                    'X-Invoker-ID',
+                    'header',
+                ]
+            );
+            return $this->extract($request, ...$location)
+                ?: 'N/A';
         } catch (Throwable) {
             return 'ERR';
         }
@@ -76,7 +97,8 @@ readonly class TaskMiddleware implements MiddlewareInterface
         $path = sprintf(
             'task.%s:%s.%s',
             upperify($request->getMethod()),
-            $request->getUri()->getPath(),
+            $request->getUri()
+                ->getPath(),
             $key,
         );
         $location = arrayify($this->config->get($path, []));

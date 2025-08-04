@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\General;
+namespace Serendipity\Test;
 
 use Constructo\Support\Reflective\Notation;
 use Constructo\Support\Set;

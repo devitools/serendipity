@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace General;
+namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +17,7 @@ class FunctionsTest extends TestCase
             'src/runtime.php',
         ];
         foreach ($files as $file) {
-            $filename = __DIR__ . '/../../' . $file;
+            $filename = __DIR__ . '/../' . $file;
             $this->assertFileExists($filename, sprintf("File '%s' does not exist", $file));
             require $filename;
         }

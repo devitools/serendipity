@@ -7,7 +7,7 @@ namespace Serendipity\Hyperf\Support;
 use Hyperf\Contract\ConfigInterface;
 use Serendipity\Domain\Exception\Parser\ThrownFactory;
 
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 
 class HyperfThrownFactory
 {

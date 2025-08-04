@@ -14,9 +14,9 @@ use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
 use SleekDB\Store;
 
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Util\extractArray;
-use function Serendipity\Type\Util\extractString;
+use function Constructo\Cast\arrayify;
+use function Constructo\Util\extractArray;
+use function Constructo\Util\extractString;
 
 readonly class HyperfSleekDBFactory implements SleekDBFactory
 {

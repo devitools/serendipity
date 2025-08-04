@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 readonly class HyperfMongoFactory implements MongoFactory
 {

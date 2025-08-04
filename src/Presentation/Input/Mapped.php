@@ -8,7 +8,7 @@ use function Hyperf\Collection\data_get;
 use function Hyperf\Collection\data_set;
 use function is_callable;
 use function is_string;
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 
 final class Mapped extends Resolver
 {

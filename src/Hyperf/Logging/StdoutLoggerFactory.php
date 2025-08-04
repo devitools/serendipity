@@ -13,8 +13,8 @@ use Psr\Log\LogLevel;
 use Serendipity\Infrastructure\Logging\StdoutLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
 
 readonly class StdoutLoggerFactory
 {

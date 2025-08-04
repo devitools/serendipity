@@ -7,7 +7,7 @@ namespace Serendipity\Hyperf\Testing\Observability\Logger\InMemory;
 use Psr\Log\LoggerInterface;
 use Stringable;
 
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 final class InMemoryLogger implements LoggerInterface
 {

@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Database\Document\Mongo;
 
 use function array_unshift_key;
 use function preg_match_all;
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 use function sprintf;
 use function trim;
 

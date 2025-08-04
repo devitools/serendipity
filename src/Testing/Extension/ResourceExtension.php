@@ -11,7 +11,7 @@ use Serendipity\Domain\Contract\Testing\Helper;
 
 use function array_key_first;
 use function count;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 use function Serendipity\Type\Json\encode;
 use function sprintf;
 

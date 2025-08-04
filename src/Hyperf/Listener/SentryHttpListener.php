@@ -20,8 +20,8 @@ use Throwable;
 use function Sentry\captureException;
 use function Sentry\configureScope;
 use function Sentry\init;
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\boolify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\boolify;
 
 class SentryHttpListener implements ListenerInterface
 {

@@ -12,7 +12,7 @@ use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
 use Serendipity\Testing\Resource\AbstractHelper;
 
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 
 final class MongoHelper extends AbstractHelper
 {

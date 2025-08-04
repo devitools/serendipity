@@ -9,7 +9,7 @@ use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Domain\Exception\ThrowableType;
 use Throwable;
 
-use function Serendipity\Type\Cast\integerify;
+use function Constructo\Cast\integerify;
 use function Serendipity\Type\Json\decode;
 
 class ExceptionResponseNormalizer
@@ -21,7 +21,9 @@ class ExceptionResponseNormalizer
             $throwable instanceof InvalidInputException => 428,
             default => integerify($throwable->getCode()),
         };
-        return ($code < 400 || $code > 599) ? $fallback : $code;
+        return ($code < 400 || $code > 599)
+            ? $fallback
+            : $code;
     }
 
     public function detectType(ThrowableType $type): ResponseType

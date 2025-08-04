@@ -14,7 +14,7 @@ use Stringable;
 use Throwable;
 
 use function Serendipity\Runtime\coroutine;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 use function Serendipity\Type\Json\encode;
 
 class GoogleCloudLogger extends AbstractLogger

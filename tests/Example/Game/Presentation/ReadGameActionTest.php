@@ -11,8 +11,8 @@ use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Presentation\Output\Ok;
 use Serendipity\Test\Example\Game\PresentationCase;
 
+use function Constructo\Util\extractString;
 use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Util\extractString;
 use function var_dump;
 
 class ReadGameActionTest extends PresentationCase

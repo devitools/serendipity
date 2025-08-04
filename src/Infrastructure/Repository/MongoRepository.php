@@ -15,7 +15,7 @@ use Override;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Managed;
 
-use function Serendipity\Type\Cast\mapify;
+use function Constructo\Cast\mapify;
 
 abstract class MongoRepository extends Repository
 {

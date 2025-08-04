@@ -19,8 +19,8 @@ use Throwable;
 
 use function array_map;
 use function in_array;
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
 use function sprintf;
 
 class GeneralExceptionHandler extends ExceptionHandler

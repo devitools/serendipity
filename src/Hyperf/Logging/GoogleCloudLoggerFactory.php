@@ -9,8 +9,8 @@ use Hyperf\Contract\ConfigInterface;
 use Serendipity\Domain\Support\Task;
 use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 
-use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
 
 readonly class GoogleCloudLoggerFactory
 {
@@ -24,7 +24,7 @@ readonly class GoogleCloudLoggerFactory
 
     public function __construct(
         private Task $task,
-        ConfigInterface $config
+        ConfigInterface $config,
     ) {
         $this->projectId = stringify($config->get('logger.gcloud.project_id', 'unknown'));
         $this->serviceName = stringify($config->get('logger.gcloud.service_name', 'unknown'));

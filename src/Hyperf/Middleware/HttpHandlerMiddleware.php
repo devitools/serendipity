@@ -6,6 +6,7 @@ namespace Serendipity\Hyperf\Middleware;
 
 use Constructo\Contract\Exportable;
 use Constructo\Contract\Message;
+use Constructo\Type\Collection;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\HttpServer\CoreMiddleware as Hyperf;
@@ -16,7 +17,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionException;
-use Serendipity\Domain\Collection\Collection;
+use Serendipity\Domain\Collection\Collection as LegacyCollection;
 use Serendipity\Hyperf\Event\HttpHandleCompleted;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
@@ -26,8 +27,8 @@ use Serendipity\Infrastructure\Http\ResponseType;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
 
+use function Constructo\Cast\integerify;
 use function is_string;
-use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 
 /**
@@ -121,7 +122,8 @@ class HttpHandlerMiddleware extends Hyperf
     private function demolish(mixed $value): mixed
     {
         return match (true) {
-            $value instanceof Collection => $this->demolisher->demolishCollection($value),
+            $value instanceof LegacyCollection,
+                $value instanceof Collection => $this->demolisher->demolishCollection($value),
             is_object($value) => $this->demolisher->demolish($value),
             default => $value,
         };
@@ -138,7 +140,8 @@ class HttpHandlerMiddleware extends Hyperf
 
     private function configureHeaders(Message $message, ResponsePlusInterface $response): ResponsePlusInterface
     {
-        $properties = $message->properties()->toArray();
+        $properties = $message->properties()
+            ->toArray();
         foreach ($properties as $key => $value) {
             if (! is_string($value)) {
                 continue;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Input;
 
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 class Params extends Resolver
 {

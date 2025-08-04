@@ -13,7 +13,7 @@ use Serendipity\Infrastructure\Database\Managed;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
 
-use function Serendipity\Type\Cast\arrayify;
+use function Constructo\Cast\arrayify;
 
 class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQueryRepository
 {
@@ -31,7 +31,15 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
      */
     public function getGame(string $id): ?Game
     {
-        $data = arrayify($this->store->findBy(['id', '=', $id]));
+        $data = arrayify(
+            $this->store->findBy(
+                [
+                    'id',
+                    '=',
+                    $id,
+                ]
+            )
+        );
         $serializer = $this->serializerFactory->make(Game::class);
         return $this->entity($serializer, $data);
     }
@@ -49,7 +57,11 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
         }
         $criteria = [];
         foreach ($filters as $key => $value) {
-            $criteria[] = [$key, '=', $value];
+            $criteria[] = [
+                $key,
+                '=',
+                $value,
+            ];
         }
         $data = arrayify($this->store->findBy($criteria));
         return $this->collection($serializer, $data, GameCollection::class);

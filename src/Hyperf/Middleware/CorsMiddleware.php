@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Domain\Exception\Misconfiguration;
 
 use function assert;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 readonly class CorsMiddleware
 {
