@@ -78,7 +78,7 @@ if (! function_exists('array_export')) {
     /**
      * @SuppressWarnings(ExcessiveMethodLength)
      */
-    function array_export(array $array, int $level = 0, int $currentDepth = 0): string
+    function array_export(array $array, int $level = 0, int $depth = 0): string
     {
         $arrayExportKey = fn (int|string $key): string => match (true) {
             is_string($key) => sprintf("'%s' => ", $key),
@@ -88,7 +88,7 @@ if (! function_exists('array_export')) {
         $arrayExportValue = fn (mixed $value): string => match (true) {
             is_string($value) => sprintf("'%s'", $value),
             is_scalar($value) => (string) $value,
-            is_array($value) => array_export($value, $level, $currentDepth + 1),
+            is_array($value) => array_export($value, $level, $depth + 1),
             is_object($value) => sprintf("'%s'", json_encode($value)),
             default => 'null',
         };
@@ -98,14 +98,13 @@ if (! function_exists('array_export')) {
             $items[] = sprintf('%s%s', $arrayExportKey($key), $arrayExportValue($value));
         }
 
-        if ($level === 0 || $currentDepth >= $level) {
+        if ($level === 0 || $depth >= $level) {
             return sprintf('[%s]', implode(', ', $items));
         }
 
-        $indent = str_repeat('    ', $currentDepth + 1);
-        $closeIndent = str_repeat('    ', $currentDepth);
+        $indent = str_repeat('    ', $depth + 1);
+        $closeIndent = str_repeat('    ', $depth);
 
-        // Formata com quebras de linha e indentação
         $formattedItems = array_map(fn ($item) => $indent . $item, $items);
 
         return sprintf("[\n%s,\n%s]", implode(",\n", $formattedItems), $closeIndent);
