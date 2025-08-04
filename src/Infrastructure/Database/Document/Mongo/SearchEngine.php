@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Database\Document\Mongo;
 
 use function array_unshift_key;
-use function preg_match_all;
 use function Constructo\Cast\arrayify;
+use function preg_match_all;
 use function sprintf;
 use function trim;
 

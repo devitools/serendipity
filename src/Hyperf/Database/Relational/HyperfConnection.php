@@ -9,10 +9,10 @@ use Constructo\Support\Set;
 use Hyperf\DB\DB as Database;
 use Serendipity\Infrastructure\Database\Relational\Connection;
 
-use function get_object_vars;
-use function is_object;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\integerify;
+use function get_object_vars;
+use function is_object;
 
 class HyperfConnection implements Connection
 {

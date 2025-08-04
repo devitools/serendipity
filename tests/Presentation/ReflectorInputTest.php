@@ -7,7 +7,7 @@ namespace Serendipity\Test\Presentation;
 use Constructo\Testing\FakerExtension;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Test\Presentation\ReflectorInput\TestableReflectorInput;
+use Serendipity\Test\Testing\Stub\Input\StubReflectorInput;
 
 final class ReflectorInputTest extends TestCase
 {
@@ -16,7 +16,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithExistingField(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['existing_field' => 'value'];
         $result = $input->testFallback($data, 'existing_field');
 
@@ -25,7 +25,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithNonExistingField(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['other_field' => 'value'];
         $result = $input->testFallback($data, 'non_existing_field');
 
@@ -34,7 +34,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithEmptyData(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = [];
         $result = $input->testFallback($data, 'any_field');
 
@@ -43,7 +43,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithNullValue(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['field_with_null' => null];
         $result = $input->testFallback($data, 'field_with_null');
 
@@ -52,7 +52,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithZeroValue(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['field_with_zero' => 0];
         $result = $input->testFallback($data, 'field_with_zero');
 
@@ -61,7 +61,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithEmptyStringValue(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['field_with_empty_string' => ''];
         $result = $input->testFallback($data, 'field_with_empty_string');
 
@@ -70,7 +70,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithFalseValue(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['field_with_false' => false];
         $result = $input->testFallback($data, 'field_with_false');
 
@@ -79,7 +79,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithArrayValue(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = ['field_with_array' => ['nested' => 'value']];
         $result = $input->testFallback($data, 'field_with_array');
 
@@ -88,7 +88,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodWithNumericKeys(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = [
             0 => 'first',
             1 => 'second',
@@ -104,7 +104,7 @@ final class ReflectorInputTest extends TestCase
 
     public function testShouldTestFallbackMethodCaseSensitivity(): void
     {
-        $input = new TestableReflectorInput();
+        $input = $this->make(StubReflectorInput::class);
         $data = [
             'CamelCase' => 'value',
             'lowercase' => 'value2',

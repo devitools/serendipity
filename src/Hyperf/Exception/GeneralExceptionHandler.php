@@ -18,9 +18,9 @@ use Serendipity\Infrastructure\Http\JsonFormatter;
 use Throwable;
 
 use function array_map;
-use function in_array;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\stringify;
+use function in_array;
 use function sprintf;
 
 class GeneralExceptionHandler extends ExceptionHandler

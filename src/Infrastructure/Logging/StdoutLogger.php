@@ -8,8 +8,8 @@ use Stringable;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function array_export;
-use function in_array;
 use function Constructo\Cast\stringify;
+use function in_array;
 
 class StdoutLogger extends AbstractLogger
 {

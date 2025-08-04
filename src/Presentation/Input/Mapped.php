@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Input;
 
+use function Constructo\Cast\arrayify;
 use function Hyperf\Collection\data_get;
 use function Hyperf\Collection\data_set;
 use function is_callable;
 use function is_string;
-use function Constructo\Cast\arrayify;
 
 final class Mapped extends Resolver
 {

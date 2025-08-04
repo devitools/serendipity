@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 
+use Constructo\Type\Collection;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Collection\Collection;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalJsonToArray;
 use Serendipity\Test\Testing\Stub\Stub;

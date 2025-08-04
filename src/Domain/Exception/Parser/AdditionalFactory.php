@@ -11,10 +11,10 @@ use Serendipity\Domain\Exception\InvalidInputException;
 use Throwable;
 
 use function array_map;
-use function implode;
-use function is_array;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\stringify;
+use function implode;
+use function is_array;
 
 class AdditionalFactory
 {

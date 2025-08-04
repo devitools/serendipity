@@ -13,8 +13,8 @@ use Serendipity\Domain\Support\Task;
 use Stringable;
 use Throwable;
 
-use function Serendipity\Runtime\coroutine;
 use function Constructo\Cast\stringify;
+use function Serendipity\Runtime\coroutine;
 use function Serendipity\Type\Json\encode;
 
 class GoogleCloudLogger extends AbstractLogger

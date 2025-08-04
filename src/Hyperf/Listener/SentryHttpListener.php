@@ -17,11 +17,11 @@ use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
 use Throwable;
 
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\boolify;
 use function Sentry\captureException;
 use function Sentry\configureScope;
 use function Sentry\init;
-use function Constructo\Cast\arrayify;
-use function Constructo\Cast\boolify;
 
 class SentryHttpListener implements ListenerInterface
 {

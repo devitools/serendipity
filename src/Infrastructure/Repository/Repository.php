@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Repository;
 
 use Constructo\Support\Datum;
 use Constructo\Support\Entity;
-use Serendipity\Domain\Collection\Collection;
+use Constructo\Type\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Throwable;
 

@@ -11,8 +11,8 @@ use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\Deserializer as Contract;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 
-use function is_object;
 use function Constructo\Cast\mapify;
+use function is_object;
 
 /**
  * @template T of object
