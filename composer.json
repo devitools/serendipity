@@ -12,13 +12,9 @@
       "Serendipity\\": "src/"
     },
     "files": [
-      "src/@functions/cast.php",
-      "src/@functions/crypt.php",
-      "src/@functions/json.php",
-      "src/@functions/notation.php",
-      "src/@functions/polyfill.php",
-      "src/@functions/runtime.php",
-      "src/@functions/util.php"
+      "src/mirror.php",
+      "src/polyfill.php",
+      "src/runtime.php"
     ]
   },
   "autoload-dev": {

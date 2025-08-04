@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Runtime;
+namespace Serendipity\Test\General;
 
 use Hyperf\Coroutine\Coroutine;
 

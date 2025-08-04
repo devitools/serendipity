@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\General;
+namespace General;
 
 use PHPUnit\Framework\TestCase;
 
@@ -10,14 +10,11 @@ class FunctionsTest extends TestCase
 {
     public function testShouldRequireFunctions(): void
     {
+        // Require the function files first
         $files = [
-            'src/@functions/cast.php',
-            'src/@functions/crypt.php',
-            'src/@functions/json.php',
-            'src/@functions/notation.php',
-            'src/@functions/polyfill.php',
-            'src/@functions/runtime.php',
-            'src/@functions/util.php',
+            'src/mirror.php',
+            'src/polyfill.php',
+            'src/runtime.php',
         ];
         foreach ($files as $file) {
             $filename = __DIR__ . '/../../' . $file;
