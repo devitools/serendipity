@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\integerify;
-use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Util\extractInt;
 
 if (! function_exists('array_flatten')) {
@@ -46,7 +45,9 @@ if (! function_exists('array_shift_pluck_int')) {
         }
         $datum = arrayify($data[0]);
         $id = integerify(extractInt($datum, $property));
-        return $id === 0 ? null : $id;
+        return $id === 0
+            ? null
+            : $id;
     }
 }
 
@@ -71,24 +72,40 @@ if (! function_exists('array_unshift_key')) {
 }
 
 if (! function_exists('array_export')) {
-    function array_export(array $array): string
+    function array_export(array $array, int $level = 0, int $currentDepth = 0): string
     {
         $arrayExportKey = fn (int|string $key): string => match (true) {
             is_string($key) => sprintf("'%s' => ", $key),
             default => '',
         };
-        $arrayExportValue = fn (mixed $value): string => match (true) {
-            is_string($value) => sprintf("'%s'", $value),
-            is_scalar($value) => (string) $value,
-            is_array($value) => array_export($value),
-            is_object($value) => stringify(json_encode($value)),
-            default => 'null',
+
+        $arrayExportValue = function (mixed $value) use ($level, $currentDepth): string {
+            return match (true) {
+                is_string($value) => sprintf("'%s'", $value),
+                is_scalar($value) => (string) $value,
+                is_array($value) => array_export($value, $level, $currentDepth + 1),
+                is_object($value) => sprintf("'%s'", json_encode($value)),
+                default => 'null',
+            };
         };
 
         $items = [];
         foreach ($array as $key => $value) {
             $items[] = sprintf('%s%s', $arrayExportKey($key), $arrayExportValue($value));
         }
-        return sprintf('[%s]', implode(', ', $items));
+
+        // Se level for 0 ou se estamos além do nível desejado, usa formato inline
+        if ($level === 0 || $currentDepth >= $level) {
+            return sprintf('[%s]', implode(', ', $items));
+        }
+
+        // Calcula a indentação baseada na profundidade atual
+        $indent = str_repeat('    ', $currentDepth + 1);
+        $closeIndent = str_repeat('    ', $currentDepth);
+
+        // Formata com quebras de linha e indentação
+        $formattedItems = array_map(fn ($item) => $indent . $item, $items);
+
+        return sprintf("[\n%s,\n%s]", implode(",\n", $formattedItems), $closeIndent);
     }
 }

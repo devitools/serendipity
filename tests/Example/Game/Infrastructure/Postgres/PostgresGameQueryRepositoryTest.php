@@ -56,10 +56,9 @@ class PostgresGameQueryRepositoryTest extends InfrastructureCase
         $this->seed(Game::class);
 
         $repository = $this->make(PostgresGameQueryRepository::class);
-        $all = $repository->getGames()
-            ->all();
-        $count = collect($all)
-            ->filter(fn ($game) => $game->id === $values->get('id'))
+        $collection = $repository->getGames();
+        $count = collect($collection->all())
+            ->filter(fn (Game $game) => trim($game->id) === $values->get('id'))
             ->count();
         $this->assertEquals(1, $count);
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Test\Hyperf\Command;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Hyperf\Command\GenerateRules;
-use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,11 +15,34 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateRulesTest extends TestCase
 {
-    use MakeExtension;
+    private function createMockSchema(array $rules): object
+    {
+        return new class($rules) {
+            public function __construct(private array $rules) {}
+            public function rules(): array { return $this->rules; }
+        };
+    }
+
+    private function createMockReflectorFactory(array $rules = []): object
+    {
+        $schema = $this->createMockSchema($rules);
+        return new class($schema) {
+            public function __construct(private object $schema) {}
+            public function make(): object {
+                return new class($this->schema) {
+                    public function __construct(private object $schema) {}
+                    public function reflect(string $class): object {
+                        return $this->schema;
+                    }
+                };
+            }
+        };
+    }
 
     public function testConfigure(): void
     {
-        $command = $this->make(GenerateRules::class);
+        $container = $this->createMock(ContainerInterface::class);
+        $command = new GenerateRules($container);
         $this->assertSame('dev:rules {entity}', $command->getName());
         $this->assertSame('Export the rules to validate an entity', $command->getDescription());
     }
@@ -28,7 +51,8 @@ class GenerateRulesTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $command = $this->make(GenerateRules::class);
+        $container = $this->createMock(ContainerInterface::class);
+        $command = new GenerateRules($container);
         $input = new ArrayInput([]);
 
         $command->setInput($input);
@@ -38,7 +62,9 @@ class GenerateRulesTest extends TestCase
     public function testHandleEntityDoesNotExist(): void
     {
         // Arrange
-        $command = $this->make(GenerateRules::class);
+        $container = $this->createMock(ContainerInterface::class);
+        $command = new GenerateRules($container);
+
         $messages = [];
         $output = $this->createMock(SymfonyStyle::class);
         $output->method('title')
@@ -47,6 +73,12 @@ class GenerateRulesTest extends TestCase
             ->willReturnCallback(function (mixed $string) use (&$messages) {
                 $messages[] = $string;
             });
+        $output->method('error')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('newLine')
+            ->willReturnSelf();
         $command->setOutput($output);
 
         $input = $this->createMock(InputInterface::class);
@@ -68,7 +100,16 @@ class GenerateRulesTest extends TestCase
     public function testHandleGenerateRulesForValidEntity(): void
     {
         // Arrange
-        $command = $this->make(GenerateRules::class);
+        $reflectorFactory = $this->createMockReflectorFactory(['name' => 'required|string', 'level' => 'required|integer']);
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->once())
+            ->method('get')
+            ->with('Constructo\Factory\ReflectorFactory')
+            ->willReturn($reflectorFactory);
+
+        $command = new GenerateRules($container);
+
         $messages = [];
         $output = $this->createMock(SymfonyStyle::class);
         $output->method('title')
@@ -77,6 +118,12 @@ class GenerateRulesTest extends TestCase
             ->willReturnCallback(function (mixed $string) use (&$messages) {
                 $messages[] = $string;
             });
+        $output->method('info')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('newLine')
+            ->willReturnSelf();
         $command->setOutput($output);
 
         $input = $this->createMock(InputInterface::class);
@@ -95,7 +142,16 @@ class GenerateRulesTest extends TestCase
     public function testHandleGenerateRulesFromFile(): void
     {
         // Arrange
-        $command = $this->make(GenerateRules::class);
+        $reflectorFactory = $this->createMockReflectorFactory(['name' => 'required|string']);
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->once())
+            ->method('get')
+            ->with('Constructo\Factory\ReflectorFactory')
+            ->willReturn($reflectorFactory);
+
+        $command = new GenerateRules($container);
+
         $messages = [];
         $output = $this->createMock(SymfonyStyle::class);
         $output->method('title')
@@ -104,6 +160,12 @@ class GenerateRulesTest extends TestCase
             ->willReturnCallback(function (mixed $string) use (&$messages) {
                 $messages[] = $string;
             });
+        $output->method('info')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('newLine')
+            ->willReturnSelf();
         $command->setOutput($output);
 
         $input = $this->createMock(InputInterface::class);
@@ -122,7 +184,9 @@ class GenerateRulesTest extends TestCase
     public function testCantHandleNotMappedFile(): void
     {
         // Arrange
-        $command = $this->make(GenerateRules::class);
+        $container = $this->createMock(ContainerInterface::class);
+        $command = new GenerateRules($container);
+
         $messages = [];
         $output = $this->createMock(SymfonyStyle::class);
         $output->method('title')
@@ -131,6 +195,12 @@ class GenerateRulesTest extends TestCase
             ->willReturnCallback(function (mixed $string) use (&$messages) {
                 $messages[] = $string;
             });
+        $output->method('error')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('newLine')
+            ->willReturnSelf();
         $command->setOutput($output);
 
         $input = $this->createMock(InputInterface::class);

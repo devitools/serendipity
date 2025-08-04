@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Testing\Stub;
 
-use Serendipity\Domain\Entity\Entity;
+use Constructo\Support\Entity;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 
 class PatternMock extends Entity

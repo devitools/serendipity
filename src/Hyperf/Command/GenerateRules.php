@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Command;
 
+use Constructo\Core\Reflect\Reflector;
+use Constructo\Factory\ReflectorFactory;
 use Hyperf\Command\Command as HyperfCommand;
 use Override;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
-use Serendipity\Domain\Support\Reflective\Factory\Ruler;
 use Symfony\Component\Console\Input\InputArgument;
 
 use function array_export;
+use function assert;
 use function class_exists;
 use function defined;
 use function dirname;
@@ -51,7 +53,8 @@ class GenerateRules extends HyperfCommand
      */
     public function handle(): void
     {
-        $this->getOutput()?->title('Exporting rules');
+        $this->getOutput()
+            ?->title('Exporting rules');
         $entity = stringify($this->input?->getArgument('entity'));
         $this->line(sprintf("Generating rules for '%s'. Please wait...", $entity));
         $this->newLine();
@@ -78,7 +81,7 @@ class GenerateRules extends HyperfCommand
             [
                 'entity',
                 InputArgument::REQUIRED,
-                'The entity to generate rules for. It can be a full qualified name or a file path.'
+                'The entity to generate rules for. It can be a full qualified name or a file path.',
             ],
         ];
     }
@@ -91,10 +94,13 @@ class GenerateRules extends HyperfCommand
      */
     private function generateRules(string $entity): string
     {
-        $ruler = $this->container->get(Ruler::class);
-        $ruleset = $ruler->ruleset($entity);
-        $rules = $ruleset->all();
-        return array_export($rules);
+        $reflectorFactory = $this->container->get(ReflectorFactory::class);
+        assert($reflectorFactory instanceof ReflectorFactory);
+        $reflector = $reflectorFactory->make();
+        assert($reflector instanceof Reflector);
+        $schema = $reflector->reflect($entity);
+        $rules = $schema->rules();
+        return array_export($rules, 1);
     }
 
     /**
@@ -121,7 +127,11 @@ class GenerateRules extends HyperfCommand
 
     private function projectRoot(): string
     {
-        return stringify(defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__, 3));
+        return stringify(
+            defined('BASE_PATH')
+                ? BASE_PATH
+                : dirname(__DIR__, 3)
+        );
     }
 
     private function mappings(string $projectRoot): array
@@ -143,7 +153,19 @@ class GenerateRules extends HyperfCommand
             return null;
         }
         $relativePath = substr($realFilePath, strlen($realMappedPath) + 1);
-        $class = $namespace . str_replace(['/', '.php'], ['\\', ''], $relativePath);
-        return (! class_exists($class)) ? null : $this->generateRules($class);
+        $class = $namespace . str_replace(
+                [
+                    '/',
+                    '.php',
+                ],
+                [
+                    '\\',
+                    '',
+                ],
+                $relativePath
+            );
+        return (! class_exists($class))
+            ? null
+            : $this->generateRules($class);
     }
 }

@@ -21,6 +21,7 @@ class Game extends GameCommand
         public readonly Timestamp $updatedAt,
         #[Pattern('/^[a-zA-Z]{1,255}$/')]
         string $name,
+        #[Pattern]
         string $slug,
         Timestamp $publishedAt,
         array $data,

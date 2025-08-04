@@ -6,7 +6,7 @@ namespace Serendipity\Test\Testing\Stub;
 
 use DateTimeImmutable;
 use SensitiveParameter;
-use Serendipity\Domain\Entity\Entity;
+use Constructo\Support\Entity;
 use Serendipity\Domain\Support\Reflective\Attribute\Define;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;

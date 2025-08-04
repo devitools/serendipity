@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Presentation\Input;
 
-use Serendipity\Presentation\Input;
+use Constructo\Support\Metadata\Schema;
+use Override;
+use Serendipity\Presentation\ReflectorInput;
 
-class ReadGameInput extends Input
+class ReadGameInput extends ReflectorInput
 {
-    public function rules(): array
+    #[Override]
+    protected function using(Schema $schema): Schema
     {
-        return [
-            'id' => 'required|string',
-        ];
+        $schema->add('id')
+            ->required()
+            ->string();
+        return $schema;
     }
 }

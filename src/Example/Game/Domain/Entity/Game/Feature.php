@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Domain\Entity\Game;
 
-use Serendipity\Domain\Entity\Entity;
+use Constructo\Support\Entity;
 use Serendipity\Domain\Support\Reflective\Attribute\Define;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 

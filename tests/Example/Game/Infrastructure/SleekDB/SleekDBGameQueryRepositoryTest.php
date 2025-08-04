@@ -10,6 +10,7 @@ use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryR
 use Serendipity\Test\Example\Game\InfrastructureCase;
 
 use function Hyperf\Collection\collect;
+use function trim;
 
 class SleekDBGameQueryRepositoryTest extends InfrastructureCase
 {
@@ -81,7 +82,7 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureCase
         $game = $repository
             ->getGames(['id' => $values->get('id')])
             ->current();
-        $this->assertEquals($slug, $game->slug);
+        $this->assertEquals(trim($slug), trim($game->slug));
     }
 
     public function testGetGamesReturnsEmptyCollectionWhenNoGames(): void

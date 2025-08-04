@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Example\Game\Domain\Entity\Command;
 
 use Constructo\Type\Timestamp;
-use Serendipity\Domain\Entity\Entity;
+use Constructo\Support\Entity;
 use Serendipity\Example\Game\Domain\Collection\Game\FeatureCollection;
 
 class GameCommand extends Entity

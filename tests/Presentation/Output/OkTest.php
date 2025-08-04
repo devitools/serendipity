@@ -7,7 +7,7 @@ namespace Serendipity\Test\Presentation\Output;
 use Constructo\Testing\FakerExtension;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Entity\Entity;
+use Constructo\Support\Entity;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Output\Ok;
 use stdClass;
