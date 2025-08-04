@@ -32,7 +32,12 @@ final class Search extends SearchEngine
     public function make(string $field, mixed $value): string
     {
         $value = stringify($value);
-        return implode(self::SEARCH_SEPARATOR, [$field, sprintf('"%s"', $value)]);
+        return implode(self::SEARCH_SEPARATOR,
+            [
+                $field,
+                sprintf('"%s"', $value),
+            ]
+        );
     }
 
     public function unmake(string $filter): array

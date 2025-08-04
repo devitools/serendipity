@@ -28,7 +28,10 @@ class ConditionParser
             return [$key => $content];
         }
 
-        [$alias, $value] = $pieces;
+        [
+            $alias,
+            $value,
+        ] = $pieces;
         $negated = false;
         if (str_starts_with($alias, '!')) {
             $negated = true;

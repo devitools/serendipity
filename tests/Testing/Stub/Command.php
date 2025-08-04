@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Testing\Stub;
 
+use Constructo\Support\Entity;
+use Constructo\Support\Reflective\Attribute\Define;
+use Constructo\Support\Reflective\Definition\Type;
 use DateTimeImmutable;
 use SensitiveParameter;
-use Constructo\Support\Entity;
-use Serendipity\Domain\Support\Reflective\Attribute\Define;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
-use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Test\Testing\Stub\Type\Gender;
 use Serendipity\Test\Testing\Stub\Type\Sensitive;
 

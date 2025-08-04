@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
+use Constructo\Support\Entity;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
-use Constructo\Support\Entity;
 use Serendipity\Domain\Support\Datum;
 use Throwable;
 

@@ -57,6 +57,14 @@ abstract class AbstractLogger implements LoggerInterface
     {
         $scape = fn (mixed $value): string => stringify($value);
         $engine = new Mustache_Engine(['escape' => $scape]);
-        return stringify($engine->render($template, [...$variables, 'message' => $message]));
+        return stringify(
+            $engine->render(
+                $template,
+                [
+                    ...$variables,
+                    'message' => $message,
+                ]
+            )
+        );
     }
 }

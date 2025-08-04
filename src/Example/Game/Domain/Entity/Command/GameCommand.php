@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Domain\Entity\Command;
 
-use Constructo\Type\Timestamp;
 use Constructo\Support\Entity;
+use Constructo\Type\Timestamp;
 use Serendipity\Example\Game\Domain\Collection\Game\FeatureCollection;
 
 class GameCommand extends Entity

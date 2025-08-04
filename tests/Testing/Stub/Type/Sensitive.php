@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Stub\Type;
 
 use Closure;
+use Constructo\Support\Reflective\Definition\TypeExtended;
 use Constructo\Support\Value;
 use Serendipity\Domain\Contract\Testing\Faker;
-use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 
 use function Serendipity\Crypt\decrypt;
 use function Serendipity\Crypt\encrypt;

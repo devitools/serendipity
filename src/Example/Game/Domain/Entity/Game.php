@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Domain\Entity;
 
+use Constructo\Support\Reflective\Attribute\Managed;
+use Constructo\Support\Reflective\Attribute\Pattern;
 use Constructo\Type\Timestamp;
-use Serendipity\Domain\Support\Reflective\Attribute\Managed;
-use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Example\Game\Domain\Collection\Game\FeatureCollection;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 

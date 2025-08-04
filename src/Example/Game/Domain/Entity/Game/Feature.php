@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Example\Game\Domain\Entity\Game;
 
 use Constructo\Support\Entity;
-use Serendipity\Domain\Support\Reflective\Attribute\Define;
-use Serendipity\Domain\Support\Reflective\Definition\Type;
+use Constructo\Support\Reflective\Attribute\Define;
+use Constructo\Support\Reflective\Definition\Type;
 
 class Feature extends Entity
 {

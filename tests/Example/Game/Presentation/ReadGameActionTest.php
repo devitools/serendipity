@@ -13,6 +13,7 @@ use Serendipity\Test\Example\Game\PresentationCase;
 
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Util\extractString;
+use function var_dump;
 
 class ReadGameActionTest extends PresentationCase
 {
@@ -27,11 +28,15 @@ class ReadGameActionTest extends PresentationCase
     {
         $values = $this->seed(Game::class);
 
-        $input = $this->input(class: ReadGameInput::class, params: ['id' => $values->get('id')]);
+        $id = trim($values->get('id'));
+        $input = $this->input(class: ReadGameInput::class, params: ['id' => $id]);
 
         $action = $this->make(ReadGameAction::class);
-        $actual = $action($input);
+        $actual = $this->invoke($action, $input);
 
+        if (! $actual instanceof Ok) {
+            var_dump($id);
+        }
         $this->assertInstanceOf(Ok::class, $actual);
         $game = $actual->content();
         $this->assertInstanceOf(Game::class, $game);
@@ -50,7 +55,10 @@ class ReadGameActionTest extends PresentationCase
 
     final public function testShouldReturnNotFound(): void
     {
-        $input = $this->input(class: ReadGameInput::class, params: ['id' => $this->generator()->uuid()]);
+        $input = $this->input(class: ReadGameInput::class, params: [
+            'id' => $this->generator()
+                ->uuid(),
+        ]);
 
         $action = $this->make(ReadGameAction::class);
         $actual = $action($input);

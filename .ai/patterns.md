@@ -32,11 +32,11 @@ declare(strict_types=1);
 
 namespace App\Example\Domain\Entity;
 
-use Serendipity\Domain\Support\Reflective\Attribute\Managed;
-use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
-use Serendipity\Domain\Type\Timestamp;
 use App\Example\Domain\Collection\Example\FeatureCollection;
 use App\Example\Domain\Entity\Command\ExampleCommand;
+use Constructo\Support\Reflective\Attribute\Managed;
+use Constructo\Support\Reflective\Attribute\Pattern;
+use Constructo\Type\Timestamp;
 
 class Example extends ExampleCommand
 {
@@ -79,9 +79,9 @@ declare(strict_types=1);
 
 namespace App\Example\Domain\Entity\Command;
 
-use Serendipity\Domain\Entity\Entity;
-use Serendipity\Domain\Type\Timestamp;
 use App\Example\Domain\Collection\Example\FeatureCollection;
+use Constructo\Support\Entity;
+use Constructo\Type\Timestamp;
 
 class ExampleCommand extends Entity
 {
@@ -110,8 +110,8 @@ declare(strict_types=1);
 
 namespace App\Example\Domain\Collection;
 
-use Serendipity\Domain\Collection\Collection;
 use App\Example\Domain\Entity\Example;
+use Constructo\Type\Collection;
 
 /**
  * @extends Collection<Example>

@@ -38,7 +38,14 @@ class GoogleCloudLogger extends AbstractLogger
         $context['message'] = $message;
         $payload = $this->payload($severity, $context);
 
-        $message = $this->message($this->format, $message, [...$payload, ...$this->task->toArray()]);
+        $message = $this->message(
+            $this->format,
+            $message,
+            [
+                ...$payload,
+                ...$this->task->toArray(),
+            ]
+        );
         $write = fn () => $this->write($severity, $message, $payload);
 
         $this->useCoroutine

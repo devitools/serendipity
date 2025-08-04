@@ -41,8 +41,14 @@ abstract class HttpRepository
 
     private function format(ResponseInterface $response): Message
     {
-        $headers = array_map(fn (array $item) => count($item) === 1 ? $item[0] : $item, $response->getHeaders());
-        $content = $response->getBody()->getContents();
+        $headers = array_map(
+            fn (array $item) => count($item) === 1
+                ? $item[0]
+                : $item,
+            $response->getHeaders()
+        );
+        $content = $response->getBody()
+            ->getContents();
         return new Received($headers, $content);
     }
 }

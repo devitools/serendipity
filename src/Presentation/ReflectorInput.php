@@ -6,13 +6,10 @@ namespace Serendipity\Presentation;
 
 use Constructo\Factory\ReflectorFactory;
 use Constructo\Factory\SchemaFactory;
-use Constructo\Support\Cache;
 use Constructo\Support\Metadata\Schema;
 use Constructo\Support\Set;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
-
-use function is_array;
 
 abstract class ReflectorInput extends Input
 {
@@ -24,7 +21,6 @@ abstract class ReflectorInput extends Input
      * @throws ReflectionException
      */
     public function __construct(
-        protected readonly Cache $cache,
         protected readonly SchemaFactory $schemaFactory,
         ReflectorFactory $factory,
         ContainerInterface $container,
@@ -44,12 +40,7 @@ abstract class ReflectorInput extends Input
      */
     final public function rules(): array
     {
-        $rules = $this->cache->get('rules');
-        if (is_array($rules)) {
-            return $rules;
-        }
-        $rules = $this->schema->rules();
-        return $this->cache->set('rules', $rules);
+        return $this->schema->rules();
     }
 
     /**
@@ -57,12 +48,7 @@ abstract class ReflectorInput extends Input
      */
     final public function mappings(): array
     {
-        $mappings = $this->cache->get('mappings');
-        if (is_array($mappings)) {
-            return $mappings;
-        }
-        $mappings = $this->schema->mappings();
-        return $this->cache->set('mappings', $mappings);
+        return $this->schema->mappings();
     }
 
     /**
@@ -82,16 +68,14 @@ abstract class ReflectorInput extends Input
     protected function fallback(array $data, string $field): ?string
     {
         return isset($data[$field])
-            ?
-            $field
-            :
-            null;
+            ? $field
+            : null;
     }
 
     /**
      * @throws ReflectionException
      */
-    private function make(ReflectorFactory $factory)
+    private function make(ReflectorFactory $factory): Schema
     {
         if ($this->source === null) {
             return $this->schemaFactory->make();

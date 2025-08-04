@@ -36,7 +36,10 @@ abstract class PostgresRepository extends Repository
         object $instance,
         array $fields,
         array $default = [],
-        array $managed = ['created_at' => 'timestamp', 'updated_at' => 'timestamp']
+        array $managed = [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+        ],
     ): array {
         $values = $this->deserializerFactory->make($instance::class)
             ->deserialize($instance);

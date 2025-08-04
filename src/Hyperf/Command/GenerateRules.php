@@ -65,7 +65,7 @@ class GenerateRules extends HyperfCommand
             default => null,
         };
         if (! $output) {
-            $this->error('It was not possible to generate rules for the entity');
+            $this->error(sprintf("It was not possible to generate rules for the entity '%s'", $entity));
             return;
         }
         $this->info('Rules generated successfully');
@@ -113,13 +113,14 @@ class GenerateRules extends HyperfCommand
         $projectRoot = $this->projectRoot();
         $mappings = $this->mappings($projectRoot);
 
+        $detected = null;
         foreach ($mappings as $namespace => $mappedPath) {
             $realMappedPath = stringify(realpath(sprintf('%s/%s', $projectRoot, stringify($mappedPath))));
             $namespace = stringify($namespace);
             $detected = $this->detect($realMappedPath, $namespace, $filePath);
-            if ($detected !== null) {
-                return $detected;
-            }
+        }
+        if ($detected !== null) {
+            return $this->generateRules($detected);
         }
         return null;
     }
@@ -141,11 +142,6 @@ class GenerateRules extends HyperfCommand
         return arrayify(data_get($target, 'autoload.psr-4', []));
     }
 
-    /**
-     * @throws ReflectionException
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     private function detect(string $realMappedPath, string $namespace, string $filePath): ?string
     {
         $realFilePath = stringify(realpath($filePath));
@@ -153,19 +149,17 @@ class GenerateRules extends HyperfCommand
             return null;
         }
         $relativePath = substr($realFilePath, strlen($realMappedPath) + 1);
-        $class = $namespace . str_replace(
-                [
-                    '/',
-                    '.php',
-                ],
-                [
-                    '\\',
-                    '',
-                ],
-                $relativePath
-            );
-        return (! class_exists($class))
-            ? null
-            : $this->generateRules($class);
+        $search = [
+            '/',
+            '.php',
+        ];
+        $replace = [
+            '\\',
+            '',
+        ];
+        $class = $namespace . str_replace($search, $replace, $relativePath);
+        return class_exists($class)
+            ? $class
+            : null;
     }
 }

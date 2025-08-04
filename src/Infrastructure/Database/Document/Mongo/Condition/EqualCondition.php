@@ -16,7 +16,9 @@ class EqualCondition implements Condition
         $value = trim($value);
         $isDate = $this->isDate($value);
         return [
-            '$eq' => $isDate ? $this->convertToDate($value) : $value,
+            '$eq' => $isDate
+                ? $this->convertToDate($value)
+                : $value,
         ];
     }
 

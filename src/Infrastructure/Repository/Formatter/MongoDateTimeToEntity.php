@@ -21,7 +21,8 @@ class MongoDateTimeToEntity implements Formatter
             $value instanceof DateTimeInterface => $value,
             $value instanceof UTCDateTime => match ($option) {
                 DateTimeImmutable::class => new DateTimeImmutable(
-                    $value->toDateTime()->format(DateTimeInterface::ATOM)
+                    $value->toDateTime()
+                        ->format(DateTimeInterface::ATOM)
                 ),
                 default => $value->toDateTime()
             },

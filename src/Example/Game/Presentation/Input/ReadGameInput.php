@@ -15,7 +15,8 @@ class ReadGameInput extends ReflectorInput
     {
         $schema->add('id')
             ->required()
-            ->string();
+            ->string()
+            ->map(fn (array $data): ?string => $this->fallback($data, 'external_id'));
         return $schema;
     }
 }
