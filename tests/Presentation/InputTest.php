@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation;
 
-use Serendipity\Domain\Support\Set;
+use Constructo\Support\Set;
+use Constructo\Testing\FakerExtension;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Input;
 use Serendipity\Test\Testing\ExtensibleCase;
-use Serendipity\Testing\Extension\FakerExtension;
 
 final class InputTest extends ExtensibleCase
 {
@@ -37,14 +37,23 @@ final class InputTest extends ExtensibleCase
             Input::class,
             [
                 'rules' => [
-                    'test' => ['sometimes', 'string'],
+                    'test' => [
+                        'sometimes',
+                        'string',
+                    ],
                 ],
             ]
         );
         $rules = $input->rules();
 
         $this->assertArrayHasKey('test', $rules);
-        $this->assertEquals(['sometimes', 'string'], $rules['test']);
+        $this->assertEquals(
+            [
+                'sometimes',
+                'string',
+            ],
+            $rules['test']
+        );
     }
 
     public function testShouldGetValueFromParsedBody(): void
@@ -60,7 +69,11 @@ final class InputTest extends ExtensibleCase
         );
         $this->setUpRequestContext($parsedBody);
         $this->assertEquals('cool', $input->value('datum'));
-        $this->assertEquals($parsedBody, $input->values()->toArray());
+        $this->assertEquals(
+            $parsedBody,
+            $input->values()
+                ->toArray()
+        );
     }
 
     public function testShouldGetValueFromValues(): void
@@ -73,7 +86,11 @@ final class InputTest extends ExtensibleCase
                 'values' => Set::createFrom($array),
             ]
         );
-        $this->assertEquals($array, $input->values()->toArray());
+        $this->assertEquals(
+            $array,
+            $input->values()
+                ->toArray()
+        );
         $this->assertSame($input->content(), $input->values());
     }
 
@@ -82,7 +99,11 @@ final class InputTest extends ExtensibleCase
         $headers = ['header' => 'cool'];
         $input = $this->input(class: Input::class, headers: $headers);
         $this->setUpRequestContext(headers: $headers);
-        $this->assertEquals($headers, $input->properties()->toArray());
+        $this->assertEquals(
+            $headers,
+            $input->properties()
+                ->toArray()
+        );
     }
 
     public function testShouldGetPropertyFromProperties(): void
@@ -94,7 +115,11 @@ final class InputTest extends ExtensibleCase
                 'properties' => Set::createFrom($array),
             ]
         );
-        $this->assertEquals($array, $input->properties()->toArray());
+        $this->assertEquals(
+            $array,
+            $input->properties()
+                ->toArray()
+        );
     }
 
     public function testShouldCallValueBehindPost(): void

@@ -9,7 +9,9 @@ use Hyperf\Context\Context;
 use Hyperf\HttpMessage\Server\Request;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
+use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ServerRequestInterface;
+use Serendipity\Presentation\Input;
 
 /**
  * @phpstan-ignore trait.unused
@@ -84,6 +86,26 @@ trait InputExtension
             ->withAttribute(Dispatched::class, new Dispatched($array))
             ->withHeaders($headers);
         Context::set(ServerRequestInterface::class, $value);
+    }
+
+    protected function invoke(callable $action, Input $input, array $values = [], int $columns = 80): mixed
+    {
+        try {
+            return $action($input);
+        } catch (ValidationException $exception) {
+            $message = sprintf(
+                "[%s] %s \n%s\n%s",
+                $exception->getMessage(),
+                json_encode(
+                    $exception->validator->errors()
+                        ->getMessages(),
+                    JSON_PRETTY_PRINT
+                ),
+                str_repeat('#', $columns),
+                json_encode($values, JSON_PRETTY_PRINT),
+            );
+            $this->fail($message);
+        }
     }
 
     /**

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Testing;
 
+use Constructo\Core\Fake\Faker;
+use Constructo\Support\Set;
 use ReflectionException;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Infrastructure\Database\Relational\Connection;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
-use Serendipity\Testing\Faker\Faker;
 use Serendipity\Testing\Resource\AbstractHelper;
 
 use function array_filter;

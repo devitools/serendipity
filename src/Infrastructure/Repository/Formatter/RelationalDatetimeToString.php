@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository\Formatter;
 
+use Constructo\Contract\Formatter;
 use DateTimeInterface;
-use Serendipity\Domain\Contract\Formatter;
 
 use function is_string;
 

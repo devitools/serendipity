@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Entity;
 
+use Constructo\Contract\Exportable;
 use JsonSerializable;
-use Serendipity\Domain\Contract\Exportable;
 
 class Entity implements Exportable, JsonSerializable
 {

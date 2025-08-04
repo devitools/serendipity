@@ -9,10 +9,10 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
+use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Domain\Exception\Parser\Thrown;
 use Serendipity\Domain\Exception\Parser\ThrownFactory;
-use Serendipity\Domain\Exception\InvalidInputException;
 use Throwable;
 
 final class AdditionalFactoryTest extends TestCase
@@ -29,7 +29,8 @@ final class AdditionalFactoryTest extends TestCase
     public function testShouldCreateAdditionalFactory(Throwable $throwable): void
     {
         $uri = $this->createMock(UriInterface::class);
-        $uri->method('__toString')->willReturn('/api/test');
+        $uri->method('__toString')
+            ->willReturn('/api/test');
 
         $request = $this->createMock(RequestInterface::class);
         $request->expects($this->once())
@@ -61,7 +62,13 @@ final class AdditionalFactoryTest extends TestCase
 
         $this->assertEquals('POST /api/test', $additional->line);
         $this->assertEquals(['key' => 'value'], $additional->body);
-        $this->assertEquals(['Content-Type' => 'application/json', 'Accept' => '*/*'], $additional->headers);
+        $this->assertEquals(
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => '*/*',
+            ],
+            $additional->headers
+        );
         $this->assertEquals(['param' => 'value'], $additional->query);
         $this->assertEquals($thrown->resume(), $additional->message);
         $this->assertEquals($errors, $additional->errors);

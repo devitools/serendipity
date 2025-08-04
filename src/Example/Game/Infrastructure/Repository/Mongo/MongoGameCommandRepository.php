@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Example\Game\Infrastructure\Repository\Mongo;
 
 use DateMalformedStringException;
+use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\Deserializer;
 use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
@@ -33,6 +34,7 @@ class MongoGameCommandRepository extends MongoGameRepository implements GameComm
     /**
      * @throws ManagedException
      * @throws DateMalformedStringException
+     * @throws ReflectionException
      */
     public function create(GameCommand $game): string
     {

@@ -21,10 +21,11 @@ class CreateGameActionTest extends PresentationCase
 
     final public function testCreateGameSuccessfully(): void
     {
-        $values = $this->faker()->fake(GameCommand::class);
+        $values = $this->faker()
+            ->fake(GameCommand::class);
         $input = $this->input(CreateGameInput::class, $values->toArray());
         $action = $this->make(CreateGameAction::class);
-        $result = $action($input);
+        $result = $this->invoke($action, $input);
         $this->assertInstanceOf(Accepted::class, $result);
         $this->assertIsString($result->content());
     }

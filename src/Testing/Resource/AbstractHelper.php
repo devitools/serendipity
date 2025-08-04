@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Resource;
 
+use Constructo\Core\Fake\Faker;
+use Constructo\Support\Set;
 use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\DeserializerFactory;
 use Serendipity\Domain\Contract\Adapter\SerializerFactory;
 use Serendipity\Domain\Contract\Testing\Helper;
-use Serendipity\Domain\Support\Set;
-use Serendipity\Testing\Faker\Faker;
 
 use function array_merge;
 
@@ -36,8 +36,10 @@ abstract class AbstractHelper implements Helper
     final protected function fake(string $type, array $override): array
     {
         $fake = $this->faker->fake($type);
-        $instance = $this->serializerFactory->make($type)->serialize($fake->toArray());
-        $datum = $this->deserializerFactory->make($type)->deserialize($instance);
+        $instance = $this->serializerFactory->make($type)
+            ->serialize($fake->toArray());
+        $datum = $this->deserializerFactory->make($type)
+            ->deserialize($instance);
         return array_merge($datum, $override);
     }
 }

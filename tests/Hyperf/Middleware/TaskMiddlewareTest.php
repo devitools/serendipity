@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Middleware;
 
+use Constructo\Testing\FakerExtension;
 use Hyperf\Contract\ConfigInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -14,7 +15,6 @@ use RuntimeException;
 use Serendipity\Domain\Support\Task;
 use Serendipity\Hyperf\Middleware\TaskMiddleware;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Testing\Extension\FakerExtension;
 
 final class TaskMiddlewareTest extends TestCase
 {
@@ -25,14 +25,22 @@ final class TaskMiddlewareTest extends TestCase
     {
         // Arrange
         $task = $this->make(Task::class);
-        $correlationId = $this->generator()->uuid();
-        $platformId = $this->generator()->uuid();
+        $correlationId = $this->generator()
+            ->uuid();
+        $platformId = $this->generator()
+            ->uuid();
 
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
+                'task.default.correlation_id' => [
+                    'X-Correlation-ID',
+                    'header',
+                ],
+                'task.default.invoker_id' => [
+                    'X-Invoker-ID',
+                    'header',
+                ],
                 default => null,
             });
 
@@ -71,14 +79,22 @@ final class TaskMiddlewareTest extends TestCase
     {
         // Arrange
         $task = $this->make(Task::class);
-        $correlationId = $this->generator()->uuid();
-        $platformId = $this->generator()->uuid();
+        $correlationId = $this->generator()
+            ->uuid();
+        $platformId = $this->generator()
+            ->uuid();
 
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['correlation_id', 'query'],
-                'task.default.invoker_id' => ['invoker_id', 'query'],
+                'task.default.correlation_id' => [
+                    'correlation_id',
+                    'query',
+                ],
+                'task.default.invoker_id' => [
+                    'invoker_id',
+                    'query',
+                ],
                 default => null,
             });
 
@@ -116,14 +132,22 @@ final class TaskMiddlewareTest extends TestCase
     {
         // Arrange
         $task = $this->make(Task::class);
-        $correlationId = $this->generator()->uuid();
-        $platformId = $this->generator()->uuid();
+        $correlationId = $this->generator()
+            ->uuid();
+        $platformId = $this->generator()
+            ->uuid();
 
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['correlation_id', 'cookie'],
-                'task.default.invoker_id' => ['invoker_id', 'cookie'],
+                'task.default.correlation_id' => [
+                    'correlation_id',
+                    'cookie',
+                ],
+                'task.default.invoker_id' => [
+                    'invoker_id',
+                    'cookie',
+                ],
                 default => null,
             });
 
@@ -161,14 +185,22 @@ final class TaskMiddlewareTest extends TestCase
     {
         // Arrange
         $task = $this->make(Task::class);
-        $correlationId = $this->generator()->uuid();
-        $platformId = $this->generator()->uuid();
+        $correlationId = $this->generator()
+            ->uuid();
+        $platformId = $this->generator()
+            ->uuid();
 
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['correlation_id', 'body'],
-                'task.default.invoker_id' => ['invoker_id', 'body'],
+                'task.default.correlation_id' => [
+                    'correlation_id',
+                    'body',
+                ],
+                'task.default.invoker_id' => [
+                    'invoker_id',
+                    'body',
+                ],
                 default => null,
             });
 
@@ -210,8 +242,14 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['correlation_id', '***'],
-                'task.default.invoker_id' => ['invoker_id', '***'],
+                'task.default.correlation_id' => [
+                    'correlation_id',
+                    '***',
+                ],
+                'task.default.invoker_id' => [
+                    'invoker_id',
+                    '***',
+                ],
                 default => null,
             });
 
@@ -243,13 +281,20 @@ final class TaskMiddlewareTest extends TestCase
     {
         // Arrange
         $task = $this->make(Task::class);
-        $platformId = $this->generator()->uuid();
+        $platformId = $this->generator()
+            ->uuid();
 
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
+                'task.default.correlation_id' => [
+                    'X-Correlation-ID',
+                    'header',
+                ],
+                'task.default.invoker_id' => [
+                    'X-Invoker-ID',
+                    'header',
+                ],
                 default => null,
             });
 
@@ -288,13 +333,20 @@ final class TaskMiddlewareTest extends TestCase
     {
         // Arrange
         $task = $this->make(Task::class);
-        $correlationId = $this->generator()->uuid();
+        $correlationId = $this->generator()
+            ->uuid();
 
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
+                'task.default.correlation_id' => [
+                    'X-Correlation-ID',
+                    'header',
+                ],
+                'task.default.invoker_id' => [
+                    'X-Invoker-ID',
+                    'header',
+                ],
                 default => null,
             });
 
@@ -336,8 +388,14 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
+                'task.default.correlation_id' => [
+                    'X-Correlation-ID',
+                    'header',
+                ],
+                'task.default.invoker_id' => [
+                    'X-Invoker-ID',
+                    'header',
+                ],
                 default => null,
             });
 

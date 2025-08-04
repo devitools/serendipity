@@ -108,7 +108,13 @@ final class ExceptionResponseNormalizerTest extends TestCase
 
         $body = $this->normalizer->normalizeBody(ResponseType::FAIL, $message);
 
-        $this->assertEquals(['error' => 'Invalid input', 'field' => 'email'], $body);
+        $this->assertEquals(
+            [
+                'error' => 'Invalid input',
+                'field' => 'email',
+            ],
+            $body
+        );
     }
 
     public function testShouldNormalizeBodyForFailWithNonJsonMessage(): void

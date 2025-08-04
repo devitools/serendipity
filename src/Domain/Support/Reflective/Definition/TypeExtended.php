@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Support\Reflective\Definition;
 
 use Closure;
+use Constructo\Support\Value;
 use Serendipity\Domain\Contract\Testing\Faker;
-use Serendipity\Domain\Support\Value;
 
 interface TypeExtended
 {

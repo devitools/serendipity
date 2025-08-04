@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Request;
 
+use Constructo\Support\Set;
 use Hyperf\Context\Context;
 use Hyperf\Validation\Request\FormRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Serendipity\Domain\Support\Set;
 
 use function Hyperf\Collection\data_get;
 

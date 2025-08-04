@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation;
 
+use Constructo\Contract\Message;
+use Constructo\Support\Set;
 use Psr\Container\ContainerInterface;
-use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Request\HyperfFormRequest;
 use Serendipity\Presentation\Input\Mapped;
 use Serendipity\Presentation\Input\Params;

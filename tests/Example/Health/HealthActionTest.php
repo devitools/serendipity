@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Example\Health;
 
+use Constructo\Testing\FakerExtension;
 use Serendipity\Example\Health\HealthAction;
 use Serendipity\Example\Health\HealthInput;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\LoggerExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Test\Testing\ExtensibleCase;
-use Serendipity\Testing\Extension\FakerExtension;
 
 final class HealthActionTest extends ExtensibleCase
 {
@@ -29,7 +29,8 @@ final class HealthActionTest extends ExtensibleCase
 
     public function testHealthAction(): void
     {
-        $message = $this->generator()->word();
+        $message = $this->generator()
+            ->word();
         $input = $this->input(HealthInput::class, ['message' => $message]);
         $action = $this->make(HealthAction::class);
         $result = $action($input);

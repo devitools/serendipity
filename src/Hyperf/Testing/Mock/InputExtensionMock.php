@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Mock;
+namespace Serendipity\Hyperf\Testing\Mock;
 
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Testing\FailException;
@@ -95,7 +95,10 @@ final class InputExtensionMock
      */
     public static function fail(string $message = ''): never
     {
-        throw new FailException($message ?: 'Test failure');
+        throw new FailException(
+            $message
+                ?: 'Test failure'
+        );
     }
 
     protected function registerTearDown(callable $callback): void

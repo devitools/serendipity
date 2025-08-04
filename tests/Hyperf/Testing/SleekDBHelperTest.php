@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Testing;
 
+use Constructo\Core\Fake\Faker;
+use Constructo\Support\Set;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Adapter\Deserializer;
 use Serendipity\Domain\Contract\Adapter\Serializer;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\SleekDBHelper;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
-use Serendipity\Testing\Faker\Faker;
 use SleekDB\Store;
 
 final class SleekDBHelperTest extends TestCase
@@ -66,7 +66,13 @@ final class SleekDBHelperTest extends TestCase
 
         $this->store->expects($this->once())
             ->method('deleteBy')
-            ->with(['_id', '>=', 0]);
+            ->with(
+                [
+                    '_id',
+                    '>=',
+                    0,
+                ]
+            );
 
         // Act
         $this->helper->truncate($this->resource);
@@ -77,11 +83,27 @@ final class SleekDBHelperTest extends TestCase
         // Arrange
         $type = 'TestEntity';
         $override = ['name' => 'Test Override'];
-        $fakerData = ['name' => 'Faker Generated', 'age' => 25];
-        $serializedData = ['name' => 'Serialized', 'age' => 25];
-        $deserializedData = ['name' => 'Deserialized', 'age' => 25];
-        $expectedResult = ['name' => 'Test Override', 'age' => 25]; // Override + deserialized
-        $insertResult = ['_id' => 123, 'name' => 'Test Override', 'age' => 25];
+        $fakerData = [
+            'name' => 'Faker Generated',
+            'age' => 25,
+        ];
+        $serializedData = [
+            'name' => 'Serialized',
+            'age' => 25,
+        ];
+        $deserializedData = [
+            'name' => 'Deserialized',
+            'age' => 25,
+        ];
+        $expectedResult = [
+            'name' => 'Test Override',
+            'age' => 25,
+        ]; // Override + deserialized
+        $insertResult = [
+            '_id' => 123,
+            'name' => 'Test Override',
+            'age' => 25,
+        ];
 
         $this->faker->expects($this->once())
             ->method('fake')
@@ -130,11 +152,32 @@ final class SleekDBHelperTest extends TestCase
         // Arrange
         $type = 'TestEntity';
         $override = ['name' => 'Nome Sobrescrito'];
-        $fakerData = ['name' => 'Nome Original', 'email' => 'email@teste.com', 'age' => 30];
-        $serializedData = ['name' => 'Nome Serializado', 'email' => 'email@teste.com', 'age' => 30];
-        $deserializedData = ['name' => 'Nome Deserializado', 'email' => 'email@teste.com', 'age' => 30];
-        $expectedResult = ['name' => 'Nome Sobrescrito', 'email' => 'email@teste.com', 'age' => 30];
-        $insertResult = ['_id' => 456, 'name' => 'Nome Sobrescrito', 'email' => 'email@teste.com', 'age' => 30];
+        $fakerData = [
+            'name' => 'Nome Original',
+            'email' => 'email@teste.com',
+            'age' => 30,
+        ];
+        $serializedData = [
+            'name' => 'Nome Serializado',
+            'email' => 'email@teste.com',
+            'age' => 30,
+        ];
+        $deserializedData = [
+            'name' => 'Nome Deserializado',
+            'email' => 'email@teste.com',
+            'age' => 30,
+        ];
+        $expectedResult = [
+            'name' => 'Nome Sobrescrito',
+            'email' => 'email@teste.com',
+            'age' => 30,
+        ];
+        $insertResult = [
+            '_id' => 456,
+            'name' => 'Nome Sobrescrito',
+            'email' => 'email@teste.com',
+            'age' => 30,
+        ];
 
         $this->faker->expects($this->once())
             ->method('fake')
@@ -183,8 +226,16 @@ final class SleekDBHelperTest extends TestCase
         // Arrange
         $filters = ['status' => 'active'];
         $documents = [
-            ['_id' => 1, 'name' => 'Document 1', 'status' => 'active'],
-            ['_id' => 2, 'name' => 'Document 2', 'status' => 'active'],
+            [
+                '_id' => 1,
+                'name' => 'Document 1',
+                'status' => 'active',
+            ],
+            [
+                '_id' => 2,
+                'name' => 'Document 2',
+                'status' => 'active',
+            ],
         ];
 
         $this->factory->expects($this->once())
@@ -231,9 +282,22 @@ final class SleekDBHelperTest extends TestCase
     {
         // Arrange
         $type = 'ComplexEntity';
-        $fakerData = ['id' => 1, 'name' => 'Original', 'created_at' => '2023-01-01'];
-        $serializedData = ['id' => 1, 'name' => 'Serialized', 'created_at' => '2023-01-01'];
-        $deserializedData = ['id' => 1, 'name' => 'Final', 'created_at' => '2023-01-01', 'is_active' => true];
+        $fakerData = [
+            'id' => 1,
+            'name' => 'Original',
+            'created_at' => '2023-01-01',
+        ];
+        $serializedData = [
+            'id' => 1,
+            'name' => 'Serialized',
+            'created_at' => '2023-01-01',
+        ];
+        $deserializedData = [
+            'id' => 1,
+            'name' => 'Final',
+            'created_at' => '2023-01-01',
+            'is_active' => true,
+        ];
         $insertResult = [
             '_id' => 789,
             'id' => 1,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository\Formatter;
 
-use Serendipity\Domain\Contract\Formatter;
+use Constructo\Contract\Formatter;
 
 use function is_array;
 use function is_string;

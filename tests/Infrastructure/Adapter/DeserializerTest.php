@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter;
 
+use Constructo\Contract\Message;
+use Constructo\Support\Set;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Test\Testing\Stub\Stub;
 
@@ -60,6 +60,12 @@ final class DeserializerTest extends TestCase
         };
 
         $deserializer = new Deserializer($mapped::class);
-        $this->assertEquals(['name' => 'John Doe', 'age' => 30], $deserializer->deserialize($mapped));
+        $this->assertEquals(
+            [
+                'name' => 'John Doe',
+                'age' => 30,
+            ],
+            $deserializer->deserialize($mapped)
+        );
     }
 }

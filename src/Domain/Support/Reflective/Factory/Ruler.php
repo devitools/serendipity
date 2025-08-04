@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support\Reflective\Factory;
 
+use Constructo\Support\Reflective\Notation;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -13,7 +14,6 @@ use Serendipity\Domain\Support\Reflective\Factory\Ruler\AttributeChain;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\MandatoryChain;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\RecursiveChain;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\TypeChain;
-use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 
 class Ruler extends Engine

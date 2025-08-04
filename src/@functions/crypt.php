@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Crypt;
 
+use Constructo\Support\Set;
 use InvalidArgumentException;
 use RuntimeException;
-use Serendipity\Domain\Support\Set;
 
 use function base64_decode;
 use function base64_encode;

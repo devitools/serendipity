@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Testing;
 
+use Constructo\Core\Fake\Faker;
+use Constructo\Support\Set;
 use ReflectionException;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
-use Serendipity\Testing\Faker\Faker;
 use Serendipity\Testing\Resource\AbstractHelper;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;
@@ -36,7 +36,13 @@ final class SleekDBHelper extends AbstractHelper
     public function truncate(string $resource): void
     {
         $database = $this->factory->make($resource);
-        $database->deleteBy(['_id', '>=', 0]);
+        $database->deleteBy(
+            [
+                '_id',
+                '>=',
+                0,
+            ]
+        );
     }
 
     /**
@@ -52,7 +58,8 @@ final class SleekDBHelper extends AbstractHelper
     {
         $data = $this->fake($type, $override);
 
-        $generated = $this->factory->make($resource)->insert($data);
+        $generated = $this->factory->make($resource)
+            ->insert($data);
         return new Set(array_merge($data, $generated));
     }
 

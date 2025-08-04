@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository\Formatter;
 
+use Constructo\Contract\Formatter;
 use DateMalformedStringException;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use MongoDB\BSON\UTCDateTime;
-use Serendipity\Domain\Contract\Formatter;
 
 class MongoDateTimeToDatabase implements Formatter
 {

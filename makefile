@@ -9,6 +9,7 @@ setup: ## Setup the project
 	@make prune
 	@make install
 	@make up
+	@make wait-for-postgres
 	@make migrate
 
 ##@ Bash controls
@@ -84,6 +85,17 @@ postgres: ## Start the postgres container
 
 migrate: ## Execute the migrations
 	@$(COMPOSE_RUNNER) run --rm --entrypoint "php bin/hyperf.php" app migrate --database=postgres
+
+wait-for-postgres: ## Wait for Postgres to be ready
+	@echo "Waiting for Postgres to be ready..."
+	@for i in {1..12}; do \
+		if $(COMPOSE_RUNNER) exec postgres pg_isready; then \
+			sleep 1; \
+			exit 0; \
+		fi; \
+		sleep 5; \
+	done; \
+	echo "Postgres did not become ready in time. Exiting."; \
 
 
 ## Quality

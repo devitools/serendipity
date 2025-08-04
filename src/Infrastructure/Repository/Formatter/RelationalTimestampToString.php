@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository\Formatter;
 
-use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Domain\Type\Timestamp;
+use Constructo\Contract\Formatter;
+use Constructo\Type\Timestamp;
 
 use function is_string;
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Testing;
 
+use Constructo\Core\Fake\Faker;
+use Constructo\Support\Set;
 use ReflectionException;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
-use Serendipity\Testing\Faker\Faker;
 use Serendipity\Testing\Resource\AbstractHelper;
 
 use function Serendipity\Type\Cast\arrayify;
@@ -40,14 +40,18 @@ final class MongoHelper extends AbstractHelper
     {
         $data = $this->fake($type, $override);
 
-        $insertOneResult = $this->factory->make($resource)->insertOne($data);
+        $insertOneResult = $this->factory->make($resource)
+            ->insertOne($data);
         return new Set(array_merge($data, ['_id' => $insertOneResult]));
     }
 
     public function count(string $resource, array $filters = []): int
     {
         $database = $this->factory->make($resource);
-        $array = arrayify($database->find($filters)->toArray());
+        $array = arrayify(
+            $database->find($filters)
+                ->toArray()
+        );
         return count($array);
     }
 }

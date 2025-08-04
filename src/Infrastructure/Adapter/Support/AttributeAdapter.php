@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Support;
 
+use Constructo\Support\Value;
 use DateMalformedStringException;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -14,7 +15,6 @@ use Serendipity\Domain\Support\Reflective\Attribute\Managed;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
-use Serendipity\Domain\Support\Value;
 
 trait AttributeAdapter
 {

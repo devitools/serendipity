@@ -12,7 +12,10 @@ class PostgresRepositoryTestMock extends PostgresRepository
         object $instance,
         array $fields,
         array $default = [],
-        array $generate = ['created_at' => 'timestamp', 'updated_at' => 'timestamp']
+        array $generate = [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+        ],
     ): array {
         return $this->bindings($instance, $fields, $default, $generate);
     }

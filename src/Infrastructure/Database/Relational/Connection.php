@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Database\Relational;
 
 use Closure;
-use Serendipity\Domain\Support\Set;
+use Constructo\Support\Set;
 
 interface Connection
 {

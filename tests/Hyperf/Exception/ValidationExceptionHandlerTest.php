@@ -11,9 +11,9 @@ use Hyperf\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
+use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Domain\Exception\Parser\ThrownFactory;
-use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Hyperf\Exception\ValidationExceptionHandler;
 use Serendipity\Infrastructure\Http\ExceptionResponseNormalizer;
 use Serendipity\Infrastructure\Http\JsonFormatter;
@@ -40,17 +40,30 @@ final class ValidationExceptionHandlerTest extends TestCase
         $request->expects($this->once())
             ->method('getHeaders')
             ->willReturn([
-                'accept' => ['application/json', 'UTF-8'],
+                'accept' => [
+                    'application/json',
+                    'UTF-8',
+                ],
                 'content-type' => 'text/xml',
             ]);
-        $request->method('getMethod')->willReturn('POST');
+        $request->method('getMethod')
+            ->willReturn('POST');
 
         $uri = $this->createMock(UriInterface::class);
-        $uri->method('__toString')->willReturn('/api/test');
-        $request->method('getUri')->willReturn($uri);
+        $uri->method('__toString')
+            ->willReturn('/api/test');
+        $request->method('getUri')
+            ->willReturn($uri);
 
-        $request->method('post')->willReturn(['name' => '', 'slug' => '']);
-        $request->method('query')->willReturn([]);
+        $request->method('post')
+            ->willReturn(
+                [
+                    'name' => '',
+                    'slug' => '',
+                ]
+            );
+        $request->method('query')
+            ->willReturn([]);
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();
@@ -107,15 +120,21 @@ final class ValidationExceptionHandlerTest extends TestCase
             });
 
         $request = $this->createMock(RequestInterface::class);
-        $request->method('getMethod')->willReturn('POST');
+        $request->method('getMethod')
+            ->willReturn('POST');
 
         $uri = $this->createMock(UriInterface::class);
-        $uri->method('__toString')->willReturn('/api/test');
-        $request->method('getUri')->willReturn($uri);
+        $uri->method('__toString')
+            ->willReturn('/api/test');
+        $request->method('getUri')
+            ->willReturn($uri);
 
-        $request->method('post')->willReturn(['field' => 'value']);
-        $request->method('query')->willReturn([]);
-        $request->method('getHeaders')->willReturn([]);
+        $request->method('post')
+            ->willReturn(['field' => 'value']);
+        $request->method('query')
+            ->willReturn([]);
+        $request->method('getHeaders')
+            ->willReturn([]);
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();

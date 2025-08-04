@@ -8,8 +8,8 @@ use Hyperf\Context\Context;
 use Hyperf\HttpServer\Router\Dispatched;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Serendipity\Hyperf\Testing\Mock\InputExtensionMock;
 use Serendipity\Testing\FailException;
-use Serendipity\Testing\Mock\InputExtensionMock;
 
 final class InputExtensionTest extends TestCase
 {
@@ -120,7 +120,11 @@ final class InputExtensionTest extends TestCase
         $this->assertEquals($parsedBody, $request->getParsedBody());
         $this->assertEquals($queryParams, $request->getQueryParams());
         $this->assertEquals($method, $request->getMethod());
-        $this->assertEquals($uri, $request->getUri()->__toString());
+        $this->assertEquals(
+            $uri,
+            $request->getUri()
+                ->__toString()
+        );
 
         // Verificar se os cabeçalhos foram configurados corretamente
         $this->assertArrayHasKey('Authorization', $request->getHeaders());

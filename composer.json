@@ -32,6 +32,7 @@
     "ext-json": "*",
     "ext-mongodb": "*",
     "ext-pdo": "*",
+    "devitools/constructo": "^1.2.0",
     "fakerphp/faker": "^1.24",
     "google/cloud-logging": "^1.32",
     "guzzlehttp/guzzle": "^7.9",
@@ -87,8 +88,7 @@
     "rakibtg/sleekdb": "^2.15",
     "sentry/sentry": "^4.11",
     "swow/psr7-plus": "^1.1",
-    "symfony/console": "^7.2",
-    "visus/cuid2": "^4.1"
+    "symfony/console": "^7.2"
   },
   "require-dev": {
     "bnf/phpstan-psr-container": "^1.1",

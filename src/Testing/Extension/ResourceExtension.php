@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Extension;
 
+use Constructo\Support\Set;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsTrue;
 use Serendipity\Domain\Contract\Testing\Helper;
-use Serendipity\Domain\Support\Set;
 
 use function array_key_first;
 use function count;

@@ -82,7 +82,12 @@ final class PostgresRepositoryTest extends TestCase
     {
         $this->assertEquals(
             '"field_one", "field_two"',
-            $this->repository->exposeColumns(['field_one', 'field_two'])
+            $this->repository->exposeColumns(
+                [
+                    'field_one',
+                    'field_two',
+                ]
+            )
         );
     }
 
@@ -90,7 +95,12 @@ final class PostgresRepositoryTest extends TestCase
     {
         $this->assertEquals(
             '?, ?',
-            $this->repository->exposeWildcards(['field_one', 'field_two'])
+            $this->repository->exposeWildcards(
+                [
+                    'field_one',
+                    'field_two',
+                ]
+            )
         );
     }
 }

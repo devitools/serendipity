@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Contract\Testing;
 
-use Serendipity\Domain\Support\Set;
+use Constructo\Support\Set;
 
 interface Helper
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter;
 
+use Constructo\Contract\Formatter;
 use Serendipity\Domain\Contract\Adapter\Serializer as ContractSerializer;
 use Serendipity\Domain\Contract\Adapter\SerializerFactory as ContractFactory;
-use Serendipity\Domain\Contract\Formatter;
 
 class SerializerFactory implements ContractFactory
 {

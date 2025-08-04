@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository\Adapter;
 
+use Constructo\Type\Timestamp;
 use DateTime;
 use DateTimeImmutable;
 use Serendipity\Domain\Collection\Collection;
-use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoArrayToEntity;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToEntity;

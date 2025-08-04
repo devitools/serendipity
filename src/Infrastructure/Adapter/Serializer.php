@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter;
 
+use Constructo\Contract\Formatter;
+use Constructo\Support\Reflective\Notation;
+use Constructo\Support\Set;
 use Serendipity\Domain\Contract\Adapter\Serializer as Contract;
-use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Domain\Support\Reflective\Notation;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 
 /**

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Http;
 
+use Constructo\Contract\Formatter;
 use InvalidArgumentException;
-use Serendipity\Domain\Contract\Formatter;
 use Throwable;
 
 use function json_encode;

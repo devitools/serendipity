@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Example\Game\Infrastructure\Mongo;
 
+use Constructo\Testing\BuilderExtension;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\Mongo\MongoGameCommandRepository;
 use Serendipity\Test\Example\Game\InfrastructureCase;
-use Serendipity\Testing\Extension\BuilderExtension;
 
 class MongoGameCommandRepositoryTest extends InfrastructureCase
 {
@@ -24,9 +24,14 @@ class MongoGameCommandRepositoryTest extends InfrastructureCase
     public function testShouldPersistSuccessfully(): void
     {
         $repository = $this->make(MongoGameCommandRepository::class);
-        $presets = ['data' => $this->generator()->words()];
-        $values = $this->faker()->fake(GameCommand::class, $presets);
-        $game = $this->builder()->build(GameCommand::class, $values);
+        $presets = [
+            'data' => $this->generator()
+                ->words(),
+        ];
+        $values = $this->faker()
+            ->fake(GameCommand::class, $presets);
+        $game = $this->builder()
+            ->build(GameCommand::class, $values);
         $id = $repository->create($game);
 
         $this->assertHas(['id' => $id]);

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Http;
 
-use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Set;
+use Constructo\Contract\Message;
+use Constructo\Support\Set;
 
 readonly class Received implements Message
 {

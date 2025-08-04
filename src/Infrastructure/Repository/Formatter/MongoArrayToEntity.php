@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Repository\Formatter;
 
 use ArrayObject;
-use Serendipity\Domain\Contract\Formatter;
+use Constructo\Contract\Formatter;
 
 class MongoArrayToEntity implements Formatter
 {

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Middleware;
 
+use Constructo\Contract\Exportable;
+use Constructo\Contract\Message;
+use Constructo\Support\Set;
+use Constructo\Testing\BuilderExtension;
+use Constructo\Testing\FakerExtension;
 use FastRoute\Dispatcher;
 use Hyperf\Context\ResponseContext;
 use Hyperf\Contract\ConfigInterface;
@@ -17,9 +22,6 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
-use Serendipity\Domain\Contract\Exportable;
-use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Example\Game\Domain\Collection\GameCollection;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Hyperf\Event\HttpHandleCompleted;
@@ -29,8 +31,6 @@ use Serendipity\Hyperf\Middleware\HttpHandlerMiddleware;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 use Serendipity\Presentation\Output;
-use Serendipity\Testing\Extension\BuilderExtension;
-use Serendipity\Testing\Extension\FakerExtension;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 
@@ -294,8 +294,10 @@ final class HttpHandlerMiddlewareTest extends TestCase
 
         ResponseContext::set(new Response());
 
-        $set = $this->faker()->fake(Game::class);
-        $game = $this->builder()->build(Game::class, $set);
+        $set = $this->faker()
+            ->fake(Game::class);
+        $game = $this->builder()
+            ->build(Game::class, $set);
         $collection = new GameCollection();
         $collection->push($game);
 
@@ -327,7 +329,8 @@ final class HttpHandlerMiddlewareTest extends TestCase
                 default => null,
             },
         ]);
-        $actual = $response->getBody()->getContents();
+        $actual = $response->getBody()
+            ->getContents();
         $this->assertEquals($expected, $actual);
     }
 

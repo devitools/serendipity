@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Example\Game;
 
+use Constructo\Testing\FakerExtension;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Hyperf\Testing\PostgresHelper;
 use Serendipity\Hyperf\Testing\SleekDBHelper;
 use Serendipity\Test\Testing\ExtensibleCase;
-use Serendipity\Testing\Extension\FakerExtension;
 use Serendipity\Testing\Extension\ResourceExtension;
 
 abstract class PresentationCase extends ExtensibleCase

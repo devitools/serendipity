@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository\Adapter;
 
+use Constructo\Type\Timestamp;
 use DateTime;
 use DateTimeImmutable;
-use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;

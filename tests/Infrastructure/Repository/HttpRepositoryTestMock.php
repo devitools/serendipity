@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository;
 
-use Serendipity\Domain\Contract\Message;
+use Constructo\Contract\Message;
 use Serendipity\Infrastructure\Repository\HttpRepository;
 
 class HttpRepositoryTestMock extends HttpRepository

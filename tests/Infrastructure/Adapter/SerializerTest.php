@@ -21,7 +21,10 @@ final class SerializerTest extends TestCase
 
     public function testSerialize(): void
     {
-        $datum = ['foo' => 'John Doe', 'bar' => 30];
+        $datum = [
+            'foo' => 'John Doe',
+            'bar' => 30,
+        ];
 
         $result = $this->serializer->serialize($datum);
 

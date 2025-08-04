@@ -45,7 +45,10 @@ class HttpRepositoryTest extends TestCase
         $response = $repository->exposeRequest();
 
         $this->assertEquals('{"message": "Hello, World!"}', $response->content());
-        $this->assertEquals('application/json', $response->properties()->get('Content-Type'));
+        $this->assertEquals('application/json',
+            $response->properties()
+                ->get('Content-Type')
+        );
     }
 
     public function testShouldRaiseGeneralException(): void

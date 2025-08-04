@@ -179,7 +179,10 @@ interface ExampleQueryRepository
 
 #### Input Pattern
 
-Input classes in Serendipity encapsulate and validate incoming data for use cases such as commands, queries, or API endpoints. They extend the base `Input` class and define a `rules()` method that specifies validation rules for each field, following a convention similar to Laravel's validation system. This approach ensures consistent, reusable, and testable input validation across the application.
+Input classes in Serendipity encapsulate and validate incoming data for use cases such as commands, queries, or API
+endpoints. They extend the base `Input` class and define a `rules()` method that specifies validation rules for each
+field, following a convention similar to Laravel's validation system. This approach ensures consistent, reusable, and
+testable input validation across the application.
 
 **Characteristics:**
 
@@ -264,7 +267,8 @@ class ExampleSearchInput extends Input
 
 #### Action Pattern
 
-Actions in Serendipity are readonly classes that encapsulate business logic for specific use cases. They follow the single responsibility principle and use constructor-based dependency injection with an `__invoke` method for execution.
+Actions in Serendipity are readonly classes that encapsulate business logic for specific use cases. They follow the
+single responsibility principle and use constructor-based dependency injection with an `__invoke` method for execution.
 
 **Characteristics:**
 
@@ -282,7 +286,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Presentation\Action;
 
-use Serendipity\Domain\Contract\Message;
+use Constructo\Contract\Message;
 use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
@@ -319,7 +323,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Presentation\Action;
 
-use Serendipity\Domain\Contract\Message;
+use Constructo\Contract\Message;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Example\Game\Presentation\Input\ReadGameInput;
@@ -342,6 +346,13 @@ readonly class ReadGameAction
     }
 }
 ```
+
+Notes:
+
+- Inputs do not have other methods but `values()` which returns an array of the input data and the `value()` method to
+  retrieve a specific value by key. The default value given to `value()` must be of the same type as the expected value;
+- When getting a value from an input use `->value('id', '')` or `->value('amount', 0)` to ensure type safety;
+- Avoid using `get()` or `has()` methods in inputs, as they can follow to an unsafe type context.
 
 ## Summary of Implemented Patterns
 

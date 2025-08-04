@@ -6,9 +6,9 @@ namespace Serendipity\Test\Hyperf\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Hyperf\Testing\Mock\LoggerExtensionMock;
 use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Memory;
 use Serendipity\Testing\FailException;
-use Serendipity\Testing\Mock\LoggerExtensionMock;
 
 final class LoggerExtensionTest extends TestCase
 {

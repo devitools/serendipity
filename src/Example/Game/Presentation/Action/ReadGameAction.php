@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Presentation\Action;
 
-use Serendipity\Domain\Contract\Message;
+use Constructo\Contract\Message;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Example\Game\Presentation\Input\ReadGameInput;

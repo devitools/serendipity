@@ -14,7 +14,9 @@ final class MongoRepositoryTest extends TestCase
     {
         $generator = $this->createMock(Managed::class);
         $mongoFactory = $this->createMock(MongoFactory::class);
-        $mongoFactory->expects($this->once())->method('make')->with('x');
+        $mongoFactory->expects($this->once())
+            ->method('make')
+            ->with('x');
         new MongoRepositoryTestMock($generator, $mongoFactory);
     }
 }

@@ -13,6 +13,14 @@ class InConditionTest extends TestCase
     {
         $condition = new InCondition();
         $composed = $condition->compose('A,B');
-        $this->assertEquals(['$in' => ['A', 'B']], $composed);
+        $this->assertEquals(
+            [
+                '$in' => [
+                    'A',
+                    'B',
+                ],
+            ],
+            $composed
+        );
     }
 }

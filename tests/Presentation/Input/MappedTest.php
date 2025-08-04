@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation\Input;
 
+use Constructo\Testing\FakerExtension;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Input;
 use Serendipity\Presentation\Input\Mapped;
 use Serendipity\Test\Testing\ExtensibleCase;
-use Serendipity\Testing\Extension\FakerExtension;
 
 use function Serendipity\Type\Cast\stringify;
 

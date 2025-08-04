@@ -17,11 +17,13 @@ class BetweenConditionTest extends TestCase
         $composed = $condition->compose('2024-11-17 11:00:00,2024-11-17 11:35:00');
         $this->assertEquals(
             '2024-11-17T11:00:00.000+00:00',
-            $composed['$gte']->toDateTime()->format(DateTimeInterface::RFC3339_EXTENDED)
+            $composed['$gte']->toDateTime()
+                ->format(DateTimeInterface::RFC3339_EXTENDED)
         );
         $this->assertEquals(
             '2024-11-17T11:35:00.000+00:00',
-            $composed['$lte']->toDateTime()->format(DateTimeInterface::RFC3339_EXTENDED)
+            $composed['$lte']->toDateTime()
+                ->format(DateTimeInterface::RFC3339_EXTENDED)
         );
     }
 
@@ -31,11 +33,13 @@ class BetweenConditionTest extends TestCase
         $composed = $condition->compose('2024-11-16,2024-11-17');
         $this->assertEquals(
             '2024-11-16T00:00:00.000+00:00',
-            $composed['$gte']->toDateTime()->format(DateTimeInterface::RFC3339_EXTENDED)
+            $composed['$gte']->toDateTime()
+                ->format(DateTimeInterface::RFC3339_EXTENDED)
         );
         $this->assertEquals(
             '2024-11-17T23:59:59.000+00:00',
-            $composed['$lte']->toDateTime()->format(DateTimeInterface::RFC3339_EXTENDED)
+            $composed['$lte']->toDateTime()
+                ->format(DateTimeInterface::RFC3339_EXTENDED)
         );
     }
 

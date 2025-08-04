@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Mock;
+namespace Serendipity\Hyperf\Testing\Mock;
 
 use Closure;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -59,7 +59,10 @@ final class LoggerExtensionMock
      */
     public static function fail(string $message = ''): never
     {
-        throw new FailException($message ?: 'Test failure');
+        throw new FailException(
+            $message
+                ?: 'Test failure'
+        );
     }
 
     public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void

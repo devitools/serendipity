@@ -20,7 +20,16 @@ final class StdoutLoggerTest extends TestCase
         parent::setUp();
 
         $this->output = $this->createMock(OutputInterface::class);
-        $levels = ['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
+        $levels = [
+            'debug',
+            'info',
+            'notice',
+            'warning',
+            'error',
+            'critical',
+            'alert',
+            'emergency',
+        ];
 
         $this->stdoutLogger = new StdoutLogger(
             output: $this->output,
@@ -84,7 +93,10 @@ final class StdoutLoggerTest extends TestCase
         $message = 'Test Message';
         $context = ['key' => 'value'];
 
-        $limitedLevels = ['error', 'critical'];
+        $limitedLevels = [
+            'error',
+            'critical',
+        ];
 
         $stdoutLogger = new StdoutLogger(
             output: $this->output,
@@ -104,7 +116,12 @@ final class StdoutLoggerTest extends TestCase
     {
         // Arrange
         $message = 'Complex Context';
-        $context = ['user' => ['id' => 1, 'name' => 'Test User']];
+        $context = [
+            'user' => [
+                'id' => 1,
+                'name' => 'Test User',
+            ],
+        ];
 
         $expectedOutput = "[test.info] Complex Context: ['user' => ['id' => 1, 'name' => 'Test User']]";
 

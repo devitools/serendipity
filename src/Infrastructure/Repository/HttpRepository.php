@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
+use Constructo\Contract\Message;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Guzzle\ClientFactory;
 use Psr\Http\Message\ResponseInterface;
-use Serendipity\Domain\Contract\Message;
 use Serendipity\Domain\Exception\RepositoryException;
 use Serendipity\Infrastructure\Http\Received;
 

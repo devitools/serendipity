@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Middleware;
 
+use Constructo\Contract\Exportable;
+use Constructo\Contract\Message;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\HttpServer\CoreMiddleware as Hyperf;
@@ -15,8 +17,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionException;
 use Serendipity\Domain\Collection\Collection;
-use Serendipity\Domain\Contract\Exportable;
-use Serendipity\Domain\Contract\Message;
 use Serendipity\Hyperf\Event\HttpHandleCompleted;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;

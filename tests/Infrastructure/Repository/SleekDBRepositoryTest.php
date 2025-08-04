@@ -14,7 +14,9 @@ final class SleekDBRepositoryTest extends TestCase
     {
         $generator = $this->createMock(Managed::class);
         $databaseFactory = $this->createMock(SleekDBFactory::class);
-        $databaseFactory->expects($this->once())->method('make')->with('x');
+        $databaseFactory->expects($this->once())
+            ->method('make')
+            ->with('x');
         new SleekDBRepositoryTestMock($generator, $databaseFactory);
     }
 }

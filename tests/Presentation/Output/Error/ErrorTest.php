@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation\Output\Error;
 
+use Constructo\Testing\FakerExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
@@ -17,7 +18,6 @@ use Serendipity\Presentation\Output\Error\NotImplemented;
 use Serendipity\Presentation\Output\Error\ProtocolVersionNotSupported;
 use Serendipity\Presentation\Output\Error\ServiceUnavailable;
 use Serendipity\Presentation\Output\Error\VariantAlsoNegotiates;
-use Serendipity\Testing\Extension\FakerExtension;
 
 final class ErrorTest extends TestCase
 {
@@ -47,24 +47,34 @@ final class ErrorTest extends TestCase
     public function testErrorClassesWithStringContent(string $className): void
     {
         $content = 'Um erro interno ocorreu no servidor';
-        $properties = ['trace_id' => $this->generator()->uuid()];
+        $properties = [
+            'trace_id' => $this->generator()
+                ->uuid(),
+        ];
 
         $instance = $className::createFrom($content, $properties);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals($properties, $instance->properties()->toArray());
+        $this->assertEquals(
+            $properties,
+            $instance->properties()
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
     #[DataProvider('errorClassesProvider')]
     public function testErrorClassesWithIntegerContent(string $className): void
     {
-        $content = $this->generator()->numberBetween(500, 599);
+        $content = $this->generator()
+            ->numberBetween(500, 599);
 
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([], $instance->properties()->toArray());
+        $this->assertEquals([],
+            $instance->properties()
+                ->toArray());
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -74,13 +84,18 @@ final class ErrorTest extends TestCase
         $properties = [
             'timestamp' => date('Y-m-d H:i:s'),
             'server' => 'api-server-01',
-            'request_id' => $this->generator()->uuid(),
+            'request_id' => $this->generator()
+                ->uuid(),
         ];
 
         $instance = $className::createFrom(null, $properties);
 
         $this->assertNull($instance->content());
-        $this->assertEquals($properties, $instance->properties()->toArray());
+        $this->assertEquals(
+            $properties,
+            $instance->properties()
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -89,7 +104,8 @@ final class ErrorTest extends TestCase
     {
         $content = 'Sistema temporariamente indisponível';
         $properties = [
-            'trace_id' => $this->generator()->uuid(),
+            'trace_id' => $this->generator()
+                ->uuid(),
             'timestamp' => date('Y-m-d H:i:s'),
             'details' => [
                 'file' => 'PaymentProcessor.php',
@@ -105,7 +121,11 @@ final class ErrorTest extends TestCase
         $instance = $className::createFrom($content, $properties);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals($properties, $instance->properties()->toArray());
+        $this->assertEquals(
+            $properties,
+            $instance->properties()
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 }

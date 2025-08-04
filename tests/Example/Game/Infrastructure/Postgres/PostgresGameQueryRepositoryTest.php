@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Example\Game\Infrastructure\Postgres;
 
+use Constructo\Testing\ManagedExtension;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\Postgres\PostgresGameQueryRepository;
 use Serendipity\Test\Example\Game\InfrastructureCase;
-use Serendipity\Testing\Extension\ManagedExtension;
 
 use function Hyperf\Collection\collect;
 
@@ -33,7 +33,8 @@ class PostgresGameQueryRepositoryTest extends InfrastructureCase
 
     final public function testShouldReturnNullWhenGameNotExists(): void
     {
-        $id = $this->managed()->id();
+        $id = $this->managed()
+            ->id();
         $repository = $this->make(PostgresGameQueryRepository::class);
         $this->assertNull($repository->getGame($id));
     }
@@ -55,7 +56,8 @@ class PostgresGameQueryRepositoryTest extends InfrastructureCase
         $this->seed(Game::class);
 
         $repository = $this->make(PostgresGameQueryRepository::class);
-        $all = $repository->getGames()->all();
+        $all = $repository->getGames()
+            ->all();
         $count = collect($all)
             ->filter(fn ($game) => $game->id === $values->get('id'))
             ->count();

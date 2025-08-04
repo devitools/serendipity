@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 
+use Constructo\Type\Timestamp;
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Collection\Collection;
-use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoArrayToEntity;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToEntity;

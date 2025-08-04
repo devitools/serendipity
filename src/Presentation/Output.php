@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation;
 
-use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Set;
+use Constructo\Contract\Message;
+use Constructo\Support\Set;
 
 class Output implements Message
 {

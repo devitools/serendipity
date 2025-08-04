@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation\Output\Fail;
 
+use Constructo\Testing\FakerExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
@@ -32,7 +33,6 @@ use Serendipity\Presentation\Output\Fail\UnavailableForLegalReasons;
 use Serendipity\Presentation\Output\Fail\UnprocessableEntity;
 use Serendipity\Presentation\Output\Fail\UnsupportedMediaType;
 use Serendipity\Presentation\Output\Fail\UpdateRequired;
-use Serendipity\Testing\Extension\FakerExtension;
 
 final class FailTest extends TestCase
 {
@@ -76,13 +76,21 @@ final class FailTest extends TestCase
     #[DataProvider('failClassesProvider')]
     public function testFailClassesWithStringContent(string $className): void
     {
-        $content = $this->generator()->sentence();
-        $properties = ['error_code' => $this->generator()->numberBetween(400, 499)];
+        $content = $this->generator()
+            ->sentence();
+        $properties = [
+            'error_code' => $this->generator()
+                ->numberBetween(400, 499),
+        ];
 
         $instance = $className::createFrom($content, $properties);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals($properties, $instance->properties()->toArray());
+        $this->assertEquals(
+            $properties,
+            $instance->properties()
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -105,19 +113,24 @@ final class FailTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([], $instance->properties()->toArray());
+        $this->assertEquals([],
+            $instance->properties()
+                ->toArray());
         $this->assertInstanceOf($className, $instance);
     }
 
     #[DataProvider('failClassesProvider')]
     public function testFailClassesWithIntegerContent(string $className): void
     {
-        $content = $this->generator()->numberBetween(1000, 9999);
+        $content = $this->generator()
+            ->numberBetween(1000, 9999);
 
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([], $instance->properties()->toArray());
+        $this->assertEquals([],
+            $instance->properties()
+                ->toArray());
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -132,7 +145,11 @@ final class FailTest extends TestCase
         $instance = $className::createFrom(null, $properties);
 
         $this->assertNull($instance->content());
-        $this->assertEquals($properties, $instance->properties()->toArray());
+        $this->assertEquals(
+            $properties,
+            $instance->properties()
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -145,13 +162,18 @@ final class FailTest extends TestCase
                 'field1' => ['message' => 'Required'],
                 'field2' => ['message' => 'Invalid format'],
             ],
-            'request_id' => $this->generator()->uuid(),
+            'request_id' => $this->generator()
+                ->uuid(),
         ];
 
         $instance = $className::createFrom($content, $properties);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals($properties, $instance->properties()->toArray());
+        $this->assertEquals(
+            $properties,
+            $instance->properties()
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 }

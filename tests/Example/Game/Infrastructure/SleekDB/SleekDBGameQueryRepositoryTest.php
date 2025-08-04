@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Example\Game\Infrastructure\SleekDB;
 
+use Constructo\Testing\ManagedExtension;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryRepository;
 use Serendipity\Test\Example\Game\InfrastructureCase;
-use Serendipity\Testing\Extension\ManagedExtension;
 
 use function Hyperf\Collection\collect;
 
@@ -33,7 +33,8 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureCase
 
     final public function testShouldReturnNullWhenGameNotExists(): void
     {
-        $id = $this->managed()->id();
+        $id = $this->managed()
+            ->id();
         $repository = $this->make(SleekDBGameQueryRepository::class);
         $this->assertNull($repository->getGame($id));
     }
@@ -58,7 +59,8 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureCase
         $this->seed(Game::class);
 
         $repository = $this->make(SleekDBGameQueryRepository::class);
-        $all = $repository->getGames()->all();
+        $all = $repository->getGames()
+            ->all();
         $count = collect($all)
             ->filter(fn ($game) => $game->id === $values->get('id'))
             ->count();
@@ -67,7 +69,8 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureCase
 
     public function testGetGamesContainsExpectedSlug(): void
     {
-        $slug = $this->generator()->slug();
+        $slug = $this->generator()
+            ->slug();
         $this->seed(Game::class);
         $this->seed(Game::class);
         $values = $this->seed(Game::class, ['slug' => $slug]);

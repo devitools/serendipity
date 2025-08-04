@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Database;
 
+use Constructo\Type\Timestamp;
 use Serendipity\Domain\Exception\ManagedException;
-use Serendipity\Domain\Type\Timestamp;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 

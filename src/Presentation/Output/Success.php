@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Output;
 
-use Serendipity\Domain\Contract\Message;
+use Constructo\Contract\Message;
 use Serendipity\Presentation\Output;
 
 abstract class Success extends Output

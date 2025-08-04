@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support\Reflective\Engine;
 
+use Constructo\Contract\Formatter;
+use Constructo\Support\Reflective\Notation;
+use Constructo\Support\Value;
 use ReflectionParameter;
-use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
-use Serendipity\Domain\Support\Reflective\Notation;
-use Serendipity\Domain\Support\Value;
 
 use function is_array;
 use function Serendipity\Notation\format;

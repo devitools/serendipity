@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Notation;
 
+use Constructo\Support\Reflective\Notation;
 use Jawira\CaseConverter\Convert;
-use Serendipity\Domain\Support\Reflective\Notation;
 
 use function Serendipity\Type\Cast\stringify;
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Exception;
 
+use Constructo\Testing\FakerExtension;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Parser\Thrown;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Testing\Extension\FakerExtension;
 
 class ThrownTest extends TestCase
 {
@@ -38,7 +38,10 @@ class ThrownTest extends TestCase
 
     public function testShouldResume(): void
     {
-        $exception = new Exception($this->generator()->sentence(3));
+        $exception = new Exception(
+            $this->generator()
+                ->sentence(3)
+        );
         $thrown = Thrown::createFrom($exception);
         $this->assertStringContainsString($exception->getMessage(), $thrown->resume());
     }

@@ -6,9 +6,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Database\Relational;
 
+use Constructo\Support\Set;
 use Hyperf\DB\DB as Database;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Database\Relational\HyperfConnection;
 
 final class HyperfConnectionTest extends TestCase
@@ -59,7 +59,13 @@ final class HyperfConnectionTest extends TestCase
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('insert', [$query, $bindings])
+            ->with(
+                'insert',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn(123);
 
         $result = $this->connection->insert($query, $bindings);
@@ -73,7 +79,13 @@ final class HyperfConnectionTest extends TestCase
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('insert', [$query, $bindings])
+            ->with(
+                'insert',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn('não numérico');
 
         $result = $this->connection->insert($query, $bindings);
@@ -87,7 +99,13 @@ final class HyperfConnectionTest extends TestCase
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('execute', [$query, $bindings])
+            ->with(
+                'execute',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn(5);
 
         $result = $this->connection->execute($query, $bindings);
@@ -99,13 +117,25 @@ final class HyperfConnectionTest extends TestCase
         $query = 'SELECT * FROM test';
         $bindings = [];
         $expectedResult = [
-            ['id' => 1, 'name' => 'Test 1'],
-            ['id' => 2, 'name' => 'Test 2'],
+            [
+                'id' => 1,
+                'name' => 'Test 1',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Test 2',
+            ],
         ];
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('query', [$query, $bindings])
+            ->with(
+                'query',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn($expectedResult);
 
         $result = $this->connection->query($query, $bindings);
@@ -119,7 +149,13 @@ final class HyperfConnectionTest extends TestCase
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('query', [$query, $bindings])
+            ->with(
+                'query',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn(null);
 
         $result = $this->connection->query($query, $bindings);
@@ -130,11 +166,20 @@ final class HyperfConnectionTest extends TestCase
     {
         $query = 'SELECT * FROM test WHERE id = ?';
         $bindings = [1];
-        $expectedData = ['id' => 1, 'name' => 'Test 1'];
+        $expectedData = [
+            'id' => 1,
+            'name' => 'Test 1',
+        ];
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('fetch', [$query, $bindings])
+            ->with(
+                'fetch',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn((object) $expectedData);
 
         $result = $this->connection->fetch($query, $bindings);
@@ -145,11 +190,20 @@ final class HyperfConnectionTest extends TestCase
     {
         $query = 'SELECT * FROM test WHERE id = ?';
         $bindings = [1];
-        $expectedData = (object) ['id' => 1, 'name' => 'Test 1'];
+        $expectedData = (object) [
+            'id' => 1,
+            'name' => 'Test 1',
+        ];
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('fetch', [$query, $bindings])
+            ->with(
+                'fetch',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn($expectedData);
 
         $result = $this->connection->fetch($query, $bindings);
@@ -160,11 +214,20 @@ final class HyperfConnectionTest extends TestCase
     {
         $query = 'SELECT * FROM test WHERE id = ?';
         $bindings = [1];
-        $expectedData = ['id' => 1, 'name' => 'Test 1'];
+        $expectedData = [
+            'id' => 1,
+            'name' => 'Test 1',
+        ];
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('fetch', [$query, $bindings])
+            ->with(
+                'fetch',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn($expectedData);
 
         $result = $this->connection->fetch($query, $bindings);
@@ -178,7 +241,13 @@ final class HyperfConnectionTest extends TestCase
 
         $this->database->expects($this->once())
             ->method('__call')
-            ->with('fetch', [$query, $bindings])
+            ->with(
+                'fetch',
+                [
+                    $query,
+                    $bindings,
+                ]
+            )
             ->willReturn(null);
 
         $result = $this->connection->fetch($query, $bindings);

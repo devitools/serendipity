@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Database\Relational;
 
 use Closure;
+use Constructo\Support\Set;
 use Hyperf\DB\DB as Database;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Database\Relational\Connection;
 
 use function get_object_vars;

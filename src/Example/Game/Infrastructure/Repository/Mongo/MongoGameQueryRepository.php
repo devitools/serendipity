@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Infrastructure\Repository\Mongo;
 
-use MongoDB\Model\BSONDocument;
 use Serendipity\Example\Game\Domain\Collection\GameCollection;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;

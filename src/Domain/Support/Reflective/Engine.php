@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support\Reflective;
 
+use Constructo\Contract\Formatter;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionIntersectionType;
@@ -12,7 +13,6 @@ use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 use Serendipity\Domain\Collection\Collection;
-use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Support\Reflective\Engine\Resolution;
 
 use function array_map;

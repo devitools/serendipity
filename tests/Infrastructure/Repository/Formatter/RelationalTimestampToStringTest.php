@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository\Formatter;
 
+use Constructo\Type\Timestamp;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalTimestampToString;
 
 final class RelationalTimestampToStringTest extends TestCase
