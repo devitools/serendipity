@@ -12,14 +12,15 @@
       "Serendipity\\": "src/"
     },
     "files": [
-      "src/mirror.php",
-      "src/polyfill.php",
-      "src/runtime.php"
+      "src/_/mirror.php",
+      "src/_/polyfill.php",
+      "src/_/runtime.php"
     ]
   },
   "autoload-dev": {
     "psr-4": {
-      "Serendipity\\Test\\": "tests/"
+      "Serendipity\\Test\\": "tests/",
+      "Serendipity\\Test\\_\\": "tests/_/"
     }
   },
   "require": {
@@ -28,7 +29,7 @@
     "ext-json": "*",
     "ext-mongodb": "*",
     "ext-pdo": "*",
-    "devitools/constructo": "^1.2.0",
+    "devitools/constructo": "^1.3.0",
     "fakerphp/faker": "^1.24",
     "google/cloud-logging": "^1.32",
     "guzzlehttp/guzzle": "^7.9",

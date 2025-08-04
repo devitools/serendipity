@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Exception\Parser;
+namespace Serendipity\Infrastructure\Http;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
+use Serendipity\Domain\Exception\Parser\Additional;
+use Serendipity\Domain\Exception\Parser\ThrownFactory;
 use Throwable;
 
 use function array_map;
@@ -16,7 +18,7 @@ use function Constructo\Cast\stringify;
 use function implode;
 use function is_array;
 
-class AdditionalFactory
+class RequestAdditionalFactory
 {
     public function __construct(private readonly ThrownFactory $factory)
     {

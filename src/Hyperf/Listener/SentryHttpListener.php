@@ -12,9 +12,9 @@ use Sentry\Dsn;
 use Sentry\HttpClient\HttpClientInterface;
 use Sentry\Integration\IntegrationInterface;
 use Sentry\State\Scope;
-use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
+use Serendipity\Infrastructure\Http\RequestAdditionalFactory;
 use Throwable;
 
 use function Constructo\Cast\arrayify;
@@ -85,7 +85,7 @@ class SentryHttpListener implements ListenerInterface
     public function __construct(
         private readonly ConfigInterface $config,
         private readonly LoggerInterface $logger,
-        private readonly AdditionalFactory $factory,
+        private readonly RequestAdditionalFactory $factory,
         private bool $booted = false,
     ) {
         $this->options = arrayify($this->config->get('sentry.options'));

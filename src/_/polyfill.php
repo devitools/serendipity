@@ -71,7 +71,13 @@ if (! function_exists('array_unshift_key')) {
     }
 }
 
+/**
+ * @SuppressWarnings(ExcessiveMethodLength)
+ */
 if (! function_exists('array_export')) {
+    /**
+     * @SuppressWarnings(ExcessiveMethodLength)
+     */
     function array_export(array $array, int $level = 0, int $currentDepth = 0): string
     {
         $arrayExportKey = fn (int|string $key): string => match (true) {
@@ -79,14 +85,12 @@ if (! function_exists('array_export')) {
             default => '',
         };
 
-        $arrayExportValue = function (mixed $value) use ($level, $currentDepth): string {
-            return match (true) {
-                is_string($value) => sprintf("'%s'", $value),
-                is_scalar($value) => (string) $value,
-                is_array($value) => array_export($value, $level, $currentDepth + 1),
-                is_object($value) => sprintf("'%s'", json_encode($value)),
-                default => 'null',
-            };
+        $arrayExportValue = fn (mixed $value): string => match (true) {
+            is_string($value) => sprintf("'%s'", $value),
+            is_scalar($value) => (string) $value,
+            is_array($value) => array_export($value, $level, $currentDepth + 1),
+            is_object($value) => sprintf("'%s'", json_encode($value)),
+            default => 'null',
         };
 
         $items = [];
@@ -94,12 +98,10 @@ if (! function_exists('array_export')) {
             $items[] = sprintf('%s%s', $arrayExportKey($key), $arrayExportValue($value));
         }
 
-        // Se level for 0 ou se estamos além do nível desejado, usa formato inline
         if ($level === 0 || $currentDepth >= $level) {
             return sprintf('[%s]', implode(', ', $items));
         }
 
-        // Calcula a indentação baseada na profundidade atual
         $indent = str_repeat('    ', $currentDepth + 1);
         $closeIndent = str_repeat('    ', $currentDepth);
 

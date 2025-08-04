@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\Parser\Additional;
-use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Domain\Exception\Parser\Thrown;
 use Serendipity\Domain\Exception\ThrowableType;
 use Serendipity\Hyperf\Exception\GeneralExceptionHandler;
 use Serendipity\Infrastructure\Http\ExceptionResponseNormalizer;
 use Serendipity\Infrastructure\Http\JsonFormatter;
+use Serendipity\Infrastructure\Http\RequestAdditionalFactory;
 use Serendipity\Infrastructure\Http\ResponseType;
 
 final class GeneralExceptionHandlerTest extends TestCase
@@ -25,7 +25,7 @@ final class GeneralExceptionHandlerTest extends TestCase
     private LoggerInterface $logger;
     private JsonFormatter $formatter;
     private RequestInterface $request;
-    private AdditionalFactory $factory;
+    private RequestAdditionalFactory $factory;
     private ExceptionResponseNormalizer $normalizer;
     private ConfigInterface $config;
     private GeneralExceptionHandler $handler;
@@ -37,7 +37,7 @@ final class GeneralExceptionHandlerTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->request = $this->createMock(RequestInterface::class);
         $this->formatter = new JsonFormatter();
-        $this->factory = $this->createMock(AdditionalFactory::class);
+        $this->factory = $this->createMock(RequestAdditionalFactory::class);
         $this->normalizer = $this->createMock(ExceptionResponseNormalizer::class);
         $this->config = $this->createMock(ConfigInterface::class);
 

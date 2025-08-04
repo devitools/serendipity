@@ -11,10 +11,10 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Domain\Exception\ThrowableType;
 use Serendipity\Infrastructure\Http\ExceptionResponseNormalizer;
 use Serendipity\Infrastructure\Http\JsonFormatter;
+use Serendipity\Infrastructure\Http\RequestAdditionalFactory;
 use Throwable;
 
 use function array_map;
@@ -30,7 +30,7 @@ class GeneralExceptionHandler extends ExceptionHandler
         private readonly RequestInterface $request,
         private readonly ConfigInterface $config,
         private readonly JsonFormatter $formatter,
-        private readonly AdditionalFactory $factory,
+        private readonly RequestAdditionalFactory $factory,
         private readonly ExceptionResponseNormalizer $normalizer,
     ) {
     }

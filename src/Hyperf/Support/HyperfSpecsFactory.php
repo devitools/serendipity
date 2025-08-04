@@ -12,6 +12,8 @@ readonly class HyperfSpecsFactory extends DefaultSpecsFactory
     public function __construct(ConfigInterface $config)
     {
         $specs = $config->get('schema.specs', []);
+        /** @var array $specs */
+        $specs = is_array($specs) ? $specs : [];
         parent::__construct($specs);
     }
 }

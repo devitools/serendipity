@@ -11,9 +11,9 @@ use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Presentation\Output\Ok;
 use Serendipity\Test\Example\Game\PresentationCase;
 
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\stringify;
 use function Constructo\Util\extractString;
-use function Serendipity\Type\Cast\arrayify;
-use function var_dump;
 
 class ReadGameActionTest extends PresentationCase
 {
@@ -28,15 +28,12 @@ class ReadGameActionTest extends PresentationCase
     {
         $values = $this->seed(Game::class);
 
-        $id = trim($values->get('id'));
+        $id = trim(stringify($values->get('id')));
         $input = $this->input(class: ReadGameInput::class, params: ['id' => $id]);
 
         $action = $this->make(ReadGameAction::class);
         $actual = $this->invoke($action, $input);
 
-        if (! $actual instanceof Ok) {
-            var_dump($id);
-        }
         $this->assertInstanceOf(Ok::class, $actual);
         $game = $actual->content();
         $this->assertInstanceOf(Game::class, $game);

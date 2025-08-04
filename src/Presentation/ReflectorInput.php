@@ -18,6 +18,8 @@ abstract class ReflectorInput extends Input
     protected ?string $source = null;
 
     /**
+     * @param array<string, array|string> $rules
+     * @param array<string, callable(mixed):mixed|string> $mappings
      * @throws ReflectionException
      */
     public function __construct(
@@ -44,7 +46,7 @@ abstract class ReflectorInput extends Input
     }
 
     /**
-     * @return array<string, callable(array $data):mixed|string>
+     * @return array<string, callable(mixed):mixed|string>
      */
     final public function mappings(): array
     {
@@ -80,7 +82,12 @@ abstract class ReflectorInput extends Input
         if ($this->source === null) {
             return $this->schemaFactory->make();
         }
+        if (!class_exists($this->source)) {
+            return $this->schemaFactory->make();
+        }
         $reflector = $factory->make();
-        return $reflector->reflect($this->source);
+        /** @var class-string<object> $source */
+        $source = $this->source;
+        return $reflector->reflect($source);
     }
 }

@@ -12,9 +12,9 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Infrastructure\Http\ExceptionResponseNormalizer;
 use Serendipity\Infrastructure\Http\JsonFormatter;
+use Serendipity\Infrastructure\Http\RequestAdditionalFactory;
 use Serendipity\Infrastructure\Http\ResponseType;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
@@ -27,7 +27,7 @@ class ValidationExceptionHandler extends ExceptionHandler
         private readonly LoggerInterface $logger,
         private readonly RequestInterface $request,
         private readonly JsonFormatter $formatter,
-        private readonly AdditionalFactory $factory,
+        private readonly RequestAdditionalFactory $factory,
         private readonly ExceptionResponseNormalizer $normalizer,
     ) {
     }

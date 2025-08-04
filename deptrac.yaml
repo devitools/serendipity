@@ -14,7 +14,12 @@ deptrac:
     - name: Domain
       collectors:
         - type: classLike
-          value: ^Serendipity\\Domain\\.*
+          value:
+            ^Serendipity\\Domain\\.*|\
+            ^Constructo\\Core\\.*|\
+            ^Constructo\\Support\\.*|\
+            ^Constructo\\Type\\.*|\
+            ^Constructo\\Factory\\.*
 
     - name: Infrastructure
       collectors:
@@ -30,7 +35,7 @@ deptrac:
     - name: Contract
       collectors:
         - type: classLike
-          value: ^Hyperf\\Contract\\.*
+          value: ^Hyperf\\Contract\\.*|Constructo\\Contract\\.*
 
     - name: Native
       collectors:
@@ -76,6 +81,7 @@ deptrac:
   ruleset:
     Application:
       - Domain
+      - Contract
       - Native
     Domain:
       - Contract
@@ -87,8 +93,10 @@ deptrac:
       - Vendor
       - Validation
     Presentation:
-      - Application
       - Domain
+      - Contract
+      - Native
+      - Application
       - Infrastructure
       - Validation
     Validation:

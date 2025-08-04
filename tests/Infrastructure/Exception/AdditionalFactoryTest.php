@@ -10,18 +10,18 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Domain\Exception\Parser\Thrown;
 use Serendipity\Domain\Exception\Parser\ThrownFactory;
+use Serendipity\Infrastructure\Http\RequestAdditionalFactory;
 use Throwable;
 
 final class AdditionalFactoryTest extends TestCase
 {
-    private AdditionalFactory $additionalFactory;
+    private RequestAdditionalFactory $additionalFactory;
 
     protected function setUp(): void
     {
-        $this->additionalFactory = new AdditionalFactory(new ThrownFactory());
+        $this->additionalFactory = new RequestAdditionalFactory(new ThrownFactory());
     }
 
     #[TestWith([new Exception('Test exception')])]
