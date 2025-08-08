@@ -19,13 +19,13 @@ bash: ## Start nginx bash
 	@$(COMPOSE_RUNNER) exec app sh
 
 up: ## Start the project
-	@$(COMPOSE_RUNNER) up -d
+	@$(COMPOSE_RUNNER) --profile mongo --profile postgres up -d
 
 down: ## Stop the project
-	@$(COMPOSE_RUNNER) down --remove-orphans
+	@$(COMPOSE_RUNNER) --profile mongo --profile postgres down --remove-orphans
 
 prune: ## Prune the project
-	@$(COMPOSE_RUNNER) down --remove-orphans --volumes
+	@$(COMPOSE_RUNNER) --profile mongo --profile postgres down --remove-orphans --volumes
 
 watch: ## Start the project in watch mode
 	@make up

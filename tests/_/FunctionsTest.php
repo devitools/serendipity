@@ -13,7 +13,6 @@ class FunctionsTest extends TestCase
         // Require the function files first
         $files = [
             'src/_/mirror.php',
-            'src/_/polyfill.php',
             'src/_/runtime.php',
         ];
         foreach ($files as $file) {

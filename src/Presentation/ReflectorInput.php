@@ -79,10 +79,7 @@ abstract class ReflectorInput extends Input
      */
     private function make(ReflectorFactory $factory): Schema
     {
-        if ($this->source === null) {
-            return $this->schemaFactory->make();
-        }
-        if (!class_exists($this->source)) {
+        if ($this->source === null || ! class_exists($this->source)) {
             return $this->schemaFactory->make();
         }
         $reflector = $factory->make();

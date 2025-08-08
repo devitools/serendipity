@@ -18,47 +18,47 @@
 
 # Serendipity
 
-**O componente que faltava no Hyperf**
+**The Hyperf missing component**
 
-Serendipity é uma biblioteca PHP que estende o framework Hyperf com funcionalidades avançadas de Domain-Driven Design (
-DDD), validação inteligente, serialização automática e infraestrutura robusta para aplicações de alta performance.
+Serendipity is a PHP library that extends the Hyperf framework with advanced Domain-Driven Design (DDD) features,
+intelligent validation, automatic serialization, and robust infrastructure for high-performance applications.
 
-## 🍿 Visão Geral
+## 🍿 Overview
 
-Serendipity preenche as lacunas do ecossistema Hyperf, oferecendo uma camada de abstração poderosa que combina os
-melhores padrões de desenvolvimento com a performance assíncrona do Hyperf. Utilizando
-o [Constructo](https://github.com/devitools/constructo) como base, oferece metaprogramação avançada para resolver
-dependências e formatar dados de forma flexível.
+Serendipity fills the gaps in the Hyperf ecosystem by providing a powerful abstraction layer that combines the best
+development patterns with Hyperf's asynchronous performance. Built on top
+of [Constructo](https://github.com/devitools/constructo), it offers advanced metaprogramming to resolve dependencies and
+format data flexibly.
 
-### Principais Características
+### Key Features
 
-- **🏗️ Arquitetura DDD**: Estrutura completa seguindo Domain-Driven Design
-- **⚡ Assíncrono por Padrão**: Totalmente compatível com corrotinas do Hyperf
-- **🔍 Validação Inteligente**: Sistema de validação baseado em atributos e regras
-- **📊 Serialização Automática**: Conversão inteligente de entidades para diferentes formatos
-- **🎯 Type Safety**: Tipagem forte com suporte a generics
-- **🧪 Testabilidade**: Ferramentas completas para testes unitários e de integração
-- **📈 Observabilidade**: Logging estruturado e monitoramento integrado
+- **🏗️ DDD Architecture**: Complete structure following Domain-Driven Design
+- **⚡ Async by Default**: Fully compatible with Hyperf coroutines
+- **🔍 Smart Validation**: Attribute-based validation system with intelligent rules
+- **📊 Automatic Serialization**: Smart entity conversion to different formats
+- **🎯 Type Safety**: Strong typing with generics support
+- **🧪 Testability**: Complete tools for unit and integration testing
+- **📈 Observability**: Structured logging and integrated monitoring
 
-## 🚀 Instalação
+## 🚀 Installation
 
-### Pré-requisitos
+### Prerequisites
 
 - PHP 8.3+
-- Extensões: ds, json, mongodb, pdo, swoole
+- Extensions: ds, json, mongodb, pdo, swoole
 - Hyperf 3.1+
-- Docker 25+ (para desenvolvimento)
+- Docker 25+ (for development)
 - Docker Compose 2.23+
 
-### Instalação via Composer
+### Install via Composer
 
 ```bash
 composer require devitools/serendipity
 ```
 
-### Configuração Básica
+### Basic Configuration
 
-**Registre o ConfigProvider** no seu `config/config.php`:
+**Register the ConfigProvider** in your `config/config.php`:
 
 ```php
 <?php
@@ -70,7 +70,7 @@ return [
 ];
 ```
 
-**Configure as dependências** em `config/autoload/dependencies.php`:
+**Configure dependencies** in `config/autoload/dependencies.php`:
 
 ```php
 <?php
@@ -83,11 +83,11 @@ return [
 ];
 ```
 
-## 🎯 Funcionalidades Principais
+## 🎯 Core Features
 
-### Entidades com Tipagem Forte
+### Strongly Typed Entities
 
-Crie entidades robustas com validação automática e serialização inteligente:
+Create robust entities with automatic validation and intelligent serialization:
 
 ```php
 <?php
@@ -124,9 +124,9 @@ class Game extends GameCommand
 }
 ```
 
-### Coleções Tipadas
+### Typed Collections
 
-Trabalhe com coleções type-safe que garantem integridade dos dados:
+Work with type-safe collections that ensure data integrity:
 
 ```php
 <?php
@@ -152,9 +152,9 @@ class FeatureCollection extends Collection
 }
 ```
 
-### Validação de Input Inteligente
+### Smart Input Validation
 
-Sistema de validação integrado com Hyperf que suporta regras complexas:
+Integrated validation system with Hyperf that supports complex rules:
 
 ```php
 <?php
@@ -174,9 +174,9 @@ final class HealthInput extends Input
 }
 ```
 
-### Actions com Injeção de Dependência
+### Actions with Dependency Injection
 
-Crie actions limpas com injeção automática de dependências:
+Create clean actions with automatic dependency injection:
 
 ```php
 <?php
@@ -187,7 +187,7 @@ readonly class HealthAction
     {
         return [
             'method' => $input->getMethod(),
-            'message' => $input->value('message', 'Sistema funcionando perfeitamente!'),
+            'message' => $input->value('message', 'System running perfectly!'),
             'timestamp' => time(),
             'status' => 'healthy'
         ];
@@ -195,94 +195,109 @@ readonly class HealthAction
 }
 ```
 
-## 🏗️ Arquitetura de Projeto com Serendipity
+## 🏗️ Project Architecture with Serendipity
 
-Estrutura recomendada para projetos que utilizam Serendipity, baseada em projetos reais em produção:
+Recommended structure for projects using Serendipity, based on real production projects:
 
 ```
-/
-├── app/                   # Código fonte da aplicação
-│   ├── Application/       # Casos de uso da aplicação
-│   │   ├── Exception/     # Exceções de aplicação
-│   │   └── Service/       # Serviços de aplicação
-│   ├── Domain/            # Lógica de negócio pura
-│   │   ├── Entity/        # Entidades do domínio
-│   │   ├── Enum/          # Enums do domínio
-│   │   ├── Provider/      # Provedores de domínio
-│   │   ├── Repository/    # Contratos de repositório
-│   │   ├── Service/       # Serviços de domínio
-│   │   ├── Support/       # Utilitários do domínio
-│   │   └── Validator/     # Validadores de negócio
-│   ├── Infrastructure/    # Implementações de infraestrutura
-│   │   ├── Exception/     # Exceções de infraestrutura
-│   │   ├── Parser/        # Parsers de dados
-│   │   ├── Repository/    # Implementações de repositório
-│   │   ├── Service/       # Serviços de infraestrutura
-│   │   ├── Support/       # Utilitários de infraestrutura
-│   │   └── Validator/     # Validadores de infraestrutura
-│   └── Presentation/      # Camada de apresentação
+project/
+├── .github/               # GitHub workflows and templates
+├── .project/              # Project-specific configurations
+├── app/                   # Application source code
+│   ├── Application/       # Application use cases
+│   │   ├── Exception/     # Application exceptions
+│   │   └── Service/       # Application services
+│   ├── Domain/            # Pure business logic
+│   │   ├── Entity/        # Domain entities
+│   │   ├── Enum/          # Domain enums
+│   │   ├── Provider/      # Domain providers
+│   │   ├── Repository/    # Repository contracts
+│   │   ├── Service/       # Domain services
+│   │   ├── Support/       # Domain utilities
+│   │   └── Validator/     # Business validators
+│   ├── Infrastructure/    # Infrastructure implementations
+│   │   ├── Exception/     # Infrastructure exceptions
+│   │   ├── Parser/        # Data parsers
+│   │   ├── Repository/    # Repository implementations
+│   │   ├── Service/       # Infrastructure services
+│   │   ├── Support/       # Infrastructure utilities
+│   │   └── Validator/     # Infrastructure validators
+│   └── Presentation/      # Presentation layer
 │       ├── Action/        # Controllers/Actions
-│       ├── Input/         # Validação de entrada
-│       └── Service/       # Serviços de apresentação
-├── bin/                   # Scripts executáveis
-│   ├── hyperf.php         # Script principal do Hyperf
-│   └── phpunit.php        # Script de testes
-├── compose.yml           # Configuração principal do Docker Compose
-├── composer.json         # Dependências do Composer
-├── composer.lock         # Lock das dependências
-├── config/               # Configurações da aplicação
-│   └── autoload/         # Configurações carregadas automaticamente
-├── deptrac.yaml          # Configuração de análise de dependências
-├── Dockerfile            # Configuração do Docker
-├── LICENSE               # Licença do projeto
-├── makefile              # Comandos de desenvolvimento
-├── migrations/           # Migrações do banco de dados
-├── phpcs.xml            # Configuração do PHP CodeSniffer
-├── phpmd.xml            # Configuração do PHP Mess Detector
-├── phpstan.neon         # Configuração do PHPStan
-├── phpunit.xml          # Configuração do PHPUnit
-├── psalm.xml            # Configuração do Psalm
-├── README.md            # Documentação principal
-├── rector.php           # Configuração do Rector
-├── runtime/             # Arquivos temporários e cache
-├── sonar-project.properties # Configuração do SonarQube
-├── storage/             # Armazenamento local
-└── tests/               # Testes automatizados
-    ├── Application/     # Testes de aplicação
-    ├── Domain/          # Testes de domínio
-    ├── Infrastructure/  # Testes de infraestrutura
-    └── Presentation/    # Testes de apresentação
+│       ├── Input/         # Input validation
+│       └── Service/       # Presentation services
+├── bin/                   # Executable scripts
+│   ├── hyperf.php         # Main Hyperf script
+│   └── phpunit.php        # Test script
+├── compose.override.yml   # Docker Compose override
+├── compose.yml           # Main Docker Compose configuration
+├── composer.json         # Composer dependencies
+├── composer.lock         # Dependencies lock file
+├── config/               # Application configurations
+│   └── autoload/         # Auto-loaded configurations
+│       ├── commands.php
+│       ├── databases.php
+│       ├── dependencies.php
+│       ├── exceptions.php
+│       ├── http.php
+│       ├── listeners.php
+│       ├── logger.php
+│       ├── middlewares.php
+│       ├── schema.php
+│       └── server.php
+├── deptrac.yaml          # Dependency analysis configuration
+├── Dockerfile            # Docker configuration
+├── docs/                 # Project documentation
+├── LICENSE               # Project license
+├── makefile              # Development commands
+├── migrations/           # Database migrations
+├── phpcs.xml            # PHP CodeSniffer configuration
+├── phpmd.xml            # PHP Mess Detector configuration
+├── phpstan.neon         # PHPStan configuration
+├── phpunit.xml          # PHPUnit configuration
+├── psalm.xml            # Psalm configuration
+├── README.md            # Main documentation
+├── rector.php           # Rector configuration
+├── runtime/             # Temporary files and cache
+├── sonar-project.properties # SonarQube configuration
+├── storage/             # Local storage
+├── tests/               # Automated tests
+│   ├── Application/     # Application tests
+│   ├── Domain/          # Domain tests
+│   ├── Infrastructure/  # Infrastructure tests
+│   └── Presentation/    # Presentation tests
+└── vendor/              # Composer dependencies
 ```
 
-### Organização das Camadas
+### Layer Organization
 
-**Application Layer** - Casos de uso e orquestração
+**Application Layer** - Use cases and orchestration
 
-- **Service/**: Coordenam operações entre domínio e infraestrutura
-- **Exception/**: Exceções específicas da camada de aplicação
+- **Service/**: Coordinate operations between domain and infrastructure
+- **Exception/**: Application layer specific exceptions
 
-**Domain Layer** - Lógica de negócio pura
+**Domain Layer** - Pure business logic
 
-- **Entity/**: Entidades principais do negócio
-- **Enum/**: Enumerações e constantes do domínio
-- **Repository/**: Interfaces para persistência
-- **Service/**: Regras de negócio complexas
-- **Validator/**: Validações de regras de negócio
+- **Entity/**: Main business entities
+- **Enum/**: Domain enumerations and constants
+- **Repository/**: Persistence interfaces
+- **Service/**: Complex business rules
+- **Validator/**: Business rule validations
 
-**Infrastructure Layer** - Implementações técnicas
+**Infrastructure Layer** - Technical implementations
 
-- **Repository/**: Implementações concretas dos repositórios
-- **Service/**: Integrações com APIs externas
-- **Parser/**: Processamento e transformação de dados
-- **Support/**: Utilitários técnicos
+- **Repository/**: Concrete repository implementations
+- **Service/**: External API integrations
+- **Parser/**: Data processing and transformation
+- **Support/**: Technical utilities
 
-**Presentation Layer** - Interface com o mundo externo
+**Presentation Layer** - External world interface
 
-- **Action/**: Endpoints HTTP e handlers
-- **Input/**: Validação e sanitização de entrada
-- **Service/**: Formatação de resposta
+- **Action/**: HTTP endpoints and handlers
+- **Input/**: Input validation and sanitization
+- **Service/**: Response formatting
 
-### Exemplo de Estrutura de Action
+### Example Action Structure
 
 ```php
 <?php
@@ -310,9 +325,9 @@ readonly class ProcessLeadAction
 }
 ```
 
-## 📋 Exemplos Práticos
+## 📋 Practical Examples
 
-### Entidade User com Validação
+### User Entity with Validation
 
 ```php
 <?php
@@ -353,7 +368,7 @@ readonly class User
 }
 ```
 
-### Input de Validação para User
+### User Validation Input
 
 ```php
 <?php
@@ -380,16 +395,16 @@ final class CreateUserInput extends Input
     public function messages(): array
     {
         return [
-            'name.regex' => 'O nome deve conter apenas letras e espaços',
-            'birth_date.before' => 'A data de nascimento deve ser anterior a hoje',
-            'email.unique' => 'Este email já está em uso',
-            'password.confirmed' => 'A confirmação da senha não confere',
+            'name.regex' => 'Name must contain only letters and spaces',
+            'birth_date.before' => 'Birth date must be before today',
+            'email.unique' => 'This email is already in use',
+            'password.confirmed' => 'Password confirmation does not match',
         ];
     }
 }
 ```
 
-### Action para Criação de User
+### User Creation Action
 
 ```php
 <?php
@@ -414,7 +429,7 @@ readonly class CreateUserAction
         $userData = $input->validated();
         
         $user = new User(
-            id: 0, // Será preenchido pelo banco
+            id: 0, // Will be filled by database
             name: $userData['name'],
             birthDate: new DateTime($userData['birth_date']),
             isActive: $userData['is_active'] ?? true,
@@ -423,7 +438,7 @@ readonly class CreateUserAction
 
         $savedUser = $this->userService->create($user, $userData['password']);
 
-        $this->logger->info('Usuário criado com sucesso', [
+        $this->logger->info('User created successfully', [
             'user_id' => $savedUser->id,
             'name' => $savedUser->name,
             'is_adult' => $savedUser->isAdult(),
@@ -444,7 +459,7 @@ readonly class CreateUserAction
 }
 ```
 
-### Serviço de Domínio para User
+### User Domain Service
 
 ```php
 <?php
@@ -464,19 +479,19 @@ readonly class UserService
 
     public function create(User $user, string $password): User
     {
-        // Validações de negócio
+        // Business validations
         if (!$user->isAdult()) {
-            throw new \DomainException('Usuário deve ser maior de idade');
+            throw new \DomainException('User must be an adult');
         }
 
         if (count($user->tags) > 10) {
-            throw new \DomainException('Usuário não pode ter mais de 10 tags');
+            throw new \DomainException('User cannot have more than 10 tags');
         }
 
-        // Hash da senha
+        // Hash password
         $hashedPassword = $this->passwordService->hash($password);
 
-        // Persistir no banco
+        // Persist to database
         return $this->userRepository->save($user, $hashedPassword);
     }
 
@@ -485,11 +500,11 @@ readonly class UserService
         $user = $this->userRepository->findById($userId);
         
         if (!$user) {
-            throw new \DomainException('Usuário não encontrado');
+            throw new \DomainException('User not found');
         }
 
         if (count($newTags) > 10) {
-            throw new \DomainException('Usuário não pode ter mais de 10 tags');
+            throw new \DomainException('User cannot have more than 10 tags');
         }
 
         return $this->userRepository->updateTags($userId, $newTags);
@@ -497,7 +512,7 @@ readonly class UserService
 }
 ```
 
-### Repositório de User
+### User Repository
 
 ```php
 <?php
@@ -522,7 +537,7 @@ interface UserRepositoryInterface
 }
 ```
 
-### Implementação do Repositório
+### Repository Implementation
 
 ```php
 <?php
@@ -649,7 +664,7 @@ readonly class UserRepository implements UserRepositoryInterface
 }
 ```
 
-### Coleção Tipada de Users
+### Typed User Collection
 
 ```php
 <?php
@@ -712,9 +727,9 @@ class UserCollection extends Collection
 }
 ```
 
-## 🧪 Testes
+## 🧪 Testing
 
-Serendipity fornece ferramentas robustas para testes:
+Serendipity provides robust testing tools:
 
 ```php
 <?php
@@ -730,13 +745,13 @@ class CreateUserActionTest extends TestCase
     public function testCreateUserSuccess(): void
     {
         $input = new CreateUserInput([
-            'name' => 'João Silva',
+            'name' => 'John Silva',
             'birth_date' => '1990-05-15',
-            'email' => 'joao@example.com',
-            'password' => 'senha123456',
-            'password_confirmation' => 'senha123456',
+            'email' => 'john@example.com',
+            'password' => 'password123456',
+            'password_confirmation' => 'password123456',
             'is_active' => true,
-            'tags' => ['desenvolvedor', 'php'],
+            'tags' => ['developer', 'php'],
         ]);
 
         $action = $this->container()->get(CreateUserAction::class);
@@ -744,10 +759,10 @@ class CreateUserActionTest extends TestCase
 
         $this->assertTrue($result['success']);
         $this->assertArrayHasKey('user', $result);
-        $this->assertEquals('João Silva', $result['user']['name']);
+        $this->assertEquals('John Silva', $result['user']['name']);
         $this->assertTrue($result['user']['is_adult']);
         $this->assertTrue($result['user']['is_active']);
-        $this->assertContains('desenvolvedor', $result['user']['tags']);
+        $this->assertContains('developer', $result['user']['tags']);
     }
 
     public function testCreateUserValidationFails(): void
@@ -755,10 +770,10 @@ class CreateUserActionTest extends TestCase
         $this->expectException(\Hyperf\Validation\ValidationException::class);
 
         $input = new CreateUserInput([
-            'name' => '', // Nome vazio
-            'birth_date' => '2020-01-01', // Menor de idade
-            'email' => 'email-invalido', // Email inválido
-            'password' => '123', // Senha muito curta
+            'name' => '', // Empty name
+            'birth_date' => '2020-01-01', // Minor
+            'email' => 'invalid-email', // Invalid email
+            'password' => '123', // Too short password
         ]);
 
         $input->validated();
@@ -774,7 +789,7 @@ class CreateUserActionTest extends TestCase
             tags: ['designer', 'ui-ux']
         );
 
-        $this->assertEquals(39, $user->getAge()); // Assumindo 2024
+        $this->assertEquals(39, $user->getAge()); // Assuming 2024
         $this->assertTrue($user->isAdult());
         $this->assertEquals(['designer', 'ui-ux', 'frontend'], $user->addTag('frontend'));
     }
@@ -788,13 +803,13 @@ class UserServiceTest extends TestCase
         
         $user = new User(
             id: 0,
-            name: 'Pedro Costa',
+            name: 'Peter Costa',
             birthDate: new DateTime('1992-08-10'),
             isActive: true,
             tags: ['backend']
         );
 
-        $result = $userService->create($user, 'senhaSegura123');
+        $result = $userService->create($user, 'securePassword123');
 
         $this->assertInstanceOf(User::class, $result);
         $this->assertGreaterThan(0, $result->id);
@@ -803,26 +818,26 @@ class UserServiceTest extends TestCase
     public function testCreateMinorUserFails(): void
     {
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Usuário deve ser maior de idade');
+        $this->expectExceptionMessage('User must be an adult');
 
         $userService = $this->container()->get(\App\Domain\Service\UserService::class);
         
         $minorUser = new User(
             id: 0,
-            name: 'Criança',
+            name: 'Child',
             birthDate: new DateTime('2020-01-01'),
             isActive: true,
             tags: []
         );
 
-        $userService->create($minorUser, 'senha123');
+        $userService->create($minorUser, 'password123');
     }
 
     public function testUpdateTagsSuccess(): void
     {
         $userService = $this->container()->get(\App\Domain\Service\UserService::class);
         
-        // Mock do usuário existente
+        // Mock existing user
         $existingUser = new User(
             id: 1,
             name: 'Ana Silva',
@@ -844,27 +859,27 @@ class UserCollectionTest extends TestCase
     public function testUserCollectionFilters(): void
     {
         $users = [
-            new User(1, 'João', new DateTime('1990-01-01'), true, ['php']),
-            new User(2, 'Maria', new DateTime('2010-01-01'), true, ['js']), // Menor
-            new User(3, 'Pedro', new DateTime('1985-01-01'), false, ['python']), // Inativo
+            new User(1, 'John', new DateTime('1990-01-01'), true, ['php']),
+            new User(2, 'Maria', new DateTime('2010-01-01'), true, ['js']), // Minor
+            new User(3, 'Peter', new DateTime('1985-01-01'), false, ['python']), // Inactive
             new User(4, 'Ana', new DateTime('1992-01-01'), true, ['php', 'laravel']),
         ];
 
         $collection = new \App\Domain\Collection\UserCollection($users);
 
-        // Teste filtro de usuários ativos
+        // Test active users filter
         $activeUsers = $collection->getActiveUsers();
         $this->assertCount(3, $activeUsers);
 
-        // Teste filtro de usuários adultos
+        // Test adult users filter
         $adultUsers = $collection->getAdultUsers();
         $this->assertCount(3, $adultUsers);
 
-        // Teste filtro por tag
+        // Test filter by tag
         $phpUsers = $collection->getUsersByTag('php');
         $this->assertCount(2, $phpUsers);
 
-        // Teste média de idade
+        // Test average age
         $averageAge = $collection->getAverageAge();
         $this->assertGreaterThan(0, $averageAge);
     }
@@ -877,14 +892,14 @@ class UserCollectionTest extends TestCase
 }
 ```
 
-## ⚡ Performance e Observabilidade
+## ⚡ Performance and Observability
 
-### Logging Estruturado
+### Structured Logging
 
 ```php
 <?php
 
-$this->logger->info('Lead processado com sucesso', [
+$this->logger->info('Lead processed successfully', [
     'lead_id' => $leadId,
     'source' => $source,
     'processing_time_ms' => $processingTime,
@@ -892,30 +907,30 @@ $this->logger->info('Lead processado com sucesso', [
 ]);
 ```
 
-### Métricas e Monitoramento
+### Metrics and Monitoring
 
 ```php
 <?php
 
-// Integração com sistemas de métricas
+// Integration with metrics systems
 use Hyperf\Context\Context;
 
 Context::set('metrics.processing_start', microtime(true));
 $result = $this->processLead($input);
 $duration = microtime(true) - Context::get('metrics.processing_start');
 
-$this->logger->info('Métrica de performance', [
+$this->logger->info('Performance metric', [
     'operation' => 'process_lead',
     'duration_ms' => round($duration * 1000, 2),
     'success' => $result->isSuccess(),
 ]);
 ```
 
-## 🔧 Configuração Avançada
+## 🔧 Advanced Configuration
 
-### Schema e Especificações
+### Schema and Specifications
 
-Configure schemas personalizados em `config/autoload/schema.php`:
+Configure custom schemas in `config/autoload/schema.php`:
 
 ```php
 <?php
@@ -939,7 +954,7 @@ return [
 ];
 ```
 
-### Middlewares Personalizados
+### Custom Middlewares
 
 ```php
 <?php
@@ -955,11 +970,11 @@ class LeadValidationMiddleware extends AbstractMiddleware
         ServerRequestInterface $request, 
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        // Validação específica de leads
+        // Lead-specific validation
         $body = $request->getParsedBody();
         
         if (isset($body['email']) && !filter_var($body['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Email inválido');
+            throw new InvalidArgumentException('Invalid email');
         }
         
         return $handler->handle($request);
@@ -967,40 +982,40 @@ class LeadValidationMiddleware extends AbstractMiddleware
 }
 ```
 
-## 📚 Comandos CLI
+## 📚 CLI Commands
 
-Serendipity inclui comandos úteis para desenvolvimento:
+Serendipity includes useful commands for development:
 
 ```bash
-# Gerar regras de validação
+# Generate validation rules
 php bin/hyperf.php gen:rules LeadRules
 
-# Executar health check via CLI
+# Execute health check via CLI
 php bin/hyperf.php health:check
 
-# Processar leads em lote
+# Process leads in batch
 php bin/hyperf.php lead:process-batch
 
-# Limpar caches
+# Clear caches
 php bin/hyperf.php cache:clear
 ```
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-Fork o projeto, crie uma branch para sua feature, commit suas mudanças, push para a branch e abra um Pull Request.
+Fork the project, create a feature branch, commit your changes, push to the branch and open a Pull Request.
 
-### Padrões de Desenvolvimento
+### Development Standards
 
-- Siga PSR-12 para código PHP
-- Use tipagem forte sempre que possível
-- Implemente testes para novas funcionalidades
-- Documente mudanças no README
+- Follow PSR-12 for PHP code
+- Use strong typing whenever possible
+- Implement tests for new features
+- Document changes in README
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links Relacionados
+## 🔗 Related Links
 
 - [Hyperf Framework](https://hyperf.io/)
 - [Constructo](https://github.com/devitools/constructo)
@@ -1008,4 +1023,4 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 ---
 
-**Serendipity** - Descobrindo o potencial completo do Hyperf através de componentes elegantes e poderosos.
+**Serendipity** - Discovering Hyperf's full potential through elegant and powerful components.

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Testing\Mock;
 
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
+use Serendipity\Presentation\Input;
 use Serendipity\Testing\FailException;
 
-final class InputExtensionMock
+class InputExtensionMock
 {
     use InputExtension;
 
@@ -19,7 +20,7 @@ final class InputExtensionMock
 
     private array $makeArgs = [];
 
-    public function __construct(private mixed $makeReturn = null)
+    public function __construct(private readonly mixed $makeReturn = null)
     {
     }
 
@@ -63,6 +64,11 @@ final class InputExtensionMock
         string $uri = '/',
     ): void {
         $this->setUpRequestContext($parsedBody, $queryParams, $params, $headers, $method, $uri);
+    }
+
+    public function exposeInvoke(callable $action, Input $input, array $values = [], int $columns = 80): mixed
+    {
+        return $this->invoke($action, $input, $values, $columns);
     }
 
     public function getRegisteredTearDowns(): array

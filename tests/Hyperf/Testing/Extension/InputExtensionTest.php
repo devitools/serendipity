@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Serendipity\Test\Hyperf\Testing\Extension;
 
 use Hyperf\Context\Context;
+use Hyperf\Contract\ValidatorInterface;
 use Hyperf\HttpServer\Router\Dispatched;
+use Hyperf\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Hyperf\Testing\Mock\InputExtensionMock;
+use Serendipity\Presentation\Input;
 use Serendipity\Testing\FailException;
 
 final class InputExtensionTest extends TestCase
@@ -134,5 +137,24 @@ final class InputExtensionTest extends TestCase
         $dispatched = $request->getAttribute(Dispatched::class);
         $this->assertNotNull($dispatched);
         $this->assertEquals($params, $dispatched->params);
+    }
+
+    public function testShouldCallInvoke(): void
+    {
+        $input = $this->createMock(Input::class);
+
+        $action = fn (Input $called) => $called;
+        $invoked = $this->mock->exposeInvoke($action, $input);
+        $this->assertEquals($input, $invoked);
+    }
+
+    public function testShouldFailCallingInvoke(): void
+    {
+        $input = $this->createMock(Input::class);
+
+        $this->expectException(FailException::class);
+        $validator = $this->createMock(ValidatorInterface::class);
+        $action = fn (Input $called) => throw new ValidationException($validator);
+        $this->mock->exposeInvoke($action, $input);
     }
 }

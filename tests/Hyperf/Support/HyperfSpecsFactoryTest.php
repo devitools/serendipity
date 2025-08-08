@@ -4,26 +4,54 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Support;
 
+use Constructo\Core\Serialize\Builder;
 use Hyperf\Contract\ConfigInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Serendipity\Hyperf\Support\HyperfSpecsFactory;
 
 class HyperfSpecsFactoryTest extends TestCase
 {
+    private ConfigInterface $config;
+
+    private ContainerInterface $container;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->config = $this->createMock(ConfigInterface::class);
+        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container->expects($this->exactly(2))
+            ->method('get')
+            ->willReturnMap([
+                [
+                    ConfigInterface::class,
+                    $this->config,
+                ],
+                [
+                    Builder::class,
+                    $this->createMock(Builder::class),
+                ],
+            ]);
+    }
+
     public function testConstructorWithEmptySpecs(): void
     {
         // Arrange
-        $config = $this->createMock(ConfigInterface::class);
-        $config->expects($this->once())
+        $this->config->expects($this->once())
             ->method('get')
             ->with('schema.specs', [])
-            ->willReturn([]);
+            ->willReturn(null);
 
         // Act
-        $factory = new HyperfSpecsFactory($config);
+        $factory = new HyperfSpecsFactory($this->container);
 
         // Assert
-        $this->assertInstanceOf(HyperfSpecsFactory::class, $factory);
+        $this->assertFalse(
+            $factory->make()
+                ->has('required')
+        );
     }
 
     public function testConstructorWithSpecs(): void
@@ -33,46 +61,16 @@ class HyperfSpecsFactoryTest extends TestCase
             'required' => ['message' => 'This field is required'],
             'string' => ['message' => 'This field must be a string'],
         ];
-
-        $config = $this->createMock(ConfigInterface::class);
-        $config->expects($this->once())
+        $this->config->expects($this->once())
             ->method('get')
             ->with('schema.specs', [])
             ->willReturn($specs);
 
         // Act
-        $factory = new HyperfSpecsFactory($config);
+        $factory = new HyperfSpecsFactory($this->container);
 
         // Assert
-        $this->assertInstanceOf(HyperfSpecsFactory::class, $factory);
-    }
-
-    public function testExtendsDefaultSpecsFactory(): void
-    {
-        // Arrange
-        $config = $this->createMock(ConfigInterface::class);
-        $config->method('get')
-            ->willReturn([]);
-
-        // Act
-        $factory = new HyperfSpecsFactory($config);
-
-        // Assert
-        $this->assertInstanceOf(\Constructo\Factory\DefaultSpecsFactory::class, $factory);
-    }
-
-    public function testIsReadonly(): void
-    {
-        // Arrange
-        $config = $this->createMock(ConfigInterface::class);
-        $config->method('get')
-            ->willReturn([]);
-
-        // Act
-        $factory = new HyperfSpecsFactory($config);
-
-        // Assert
-        $reflection = new \ReflectionClass($factory);
-        $this->assertTrue($reflection->isReadOnly());
+        $reflector = $factory->make();
+        $this->assertTrue($reflector->has('required'));
     }
 }
