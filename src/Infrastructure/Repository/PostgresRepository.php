@@ -16,13 +16,15 @@ abstract class PostgresRepository extends Repository
 {
     protected readonly Connection $database;
 
+    protected string $connection = 'postgres';
+
     public function __construct(
         protected readonly Managed $managed,
         protected readonly RelationalDeserializerFactory $deserializerFactory,
         protected readonly RelationalSerializerFactory $serializerFactory,
-        ConnectionFactory $relationalDatabaseFactory,
+        ConnectionFactory $connectionFactory,
     ) {
-        $this->database = $relationalDatabaseFactory->make('postgres');
+        $this->database = $connectionFactory->make($this->connection);
     }
 
     /**
