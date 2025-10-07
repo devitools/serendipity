@@ -20,9 +20,9 @@ use function array_shift;
 use function array_values;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\integerify;
+use function Constructo\Json\encode;
 use function count;
 use function implode;
-use function Serendipity\Type\Json\encode;
 use function sprintf;
 use function str_repeat;
 
@@ -35,10 +35,11 @@ final class PostgresHelper extends AbstractHelper
         RelationalSerializerFactory $serializerFactory,
         RelationalDeserializerFactory $deserializerFactory,
         HyperfConnectionFactory $hyperfDatabaseFactory,
+        ?string $connection = null,
     ) {
         parent::__construct($faker, $serializerFactory, $deserializerFactory);
 
-        $this->database = $hyperfDatabaseFactory->make('postgres');
+        $this->database = $hyperfDatabaseFactory->make($connection ?? 'postgres');
     }
 
     public function truncate(string $resource): void
