@@ -16,7 +16,8 @@ final class HyperfSleekDBFactoryTest extends TestCase
 
     public function testShouldCreateSleekDB(): void
     {
-        $options = $this->make(ConfigInterface::class)->get('databases.sleek');
+        $options = $this->make(ConfigInterface::class)
+            ->get('databases.sleek');
 
         $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->once())

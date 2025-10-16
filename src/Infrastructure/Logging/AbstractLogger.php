@@ -53,7 +53,7 @@ abstract class AbstractLogger implements LoggerInterface
         $this->log(LogLevel::DEBUG, $message, $context);
     }
 
-    protected function message(string $template, Stringable|string $message, array $variables): string
+    protected function message(string $template, string|Stringable $message, array $variables): string
     {
         $scape = fn (mixed $value): string => stringify($value);
         $engine = new Mustache_Engine(['escape' => $scape]);

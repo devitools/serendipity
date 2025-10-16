@@ -22,7 +22,7 @@ class HyperfConnectionChecker implements ConnectionChecker
     {
         $attempts = 0;
         do {
-            $attempts++;
+            ++$attempts;
             if ($this->isAvailable()) {
                 return $attempts;
             }

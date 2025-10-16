@@ -38,6 +38,15 @@ abstract class ReflectorInput extends Input
     }
 
     /**
+     * @throws ReflectionException
+     */
+    protected function setup(ReflectorFactory $factory): Schema
+    {
+        $schema = $this->make($factory);
+        return $this->using($schema);
+    }
+
+    /**
      * @return array<string, array|string>
      */
     final public function rules(): array
@@ -51,15 +60,6 @@ abstract class ReflectorInput extends Input
     final public function mappings(): array
     {
         return $this->schema->mappings();
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    protected function setup(ReflectorFactory $factory): Schema
-    {
-        $schema = $this->make($factory);
-        return $this->using($schema);
     }
 
     protected function using(Schema $schema): Schema

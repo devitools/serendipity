@@ -21,7 +21,8 @@ final class SearchGamesActionTest extends PresentationCase
 
     public function testShouldReturnGames(): void
     {
-        $slug = $this->generator()->slug();
+        $slug = $this->generator()
+            ->slug();
         $this->seed(Game::class, ['slug' => $slug]);
         $this->seed(Game::class, ['slug' => $slug]);
         $this->seed(Game::class, ['slug' => $slug]);
@@ -33,12 +34,19 @@ final class SearchGamesActionTest extends PresentationCase
 
         $this->assertInstanceOf(Ok::class, $actual);
         $this->assertCount(3, $actual->content());
-        $this->assertEquals($slug, $actual->content()->current()->slug);
+        $this->assertEquals(
+            $slug,
+            $actual->content()
+                ->current()->slug
+        );
     }
 
     public function testShouldReturnEmptyArray(): void
     {
-        $input = $this->input(class: SearchGamesInput::class, params: ['id' => $this->generator()->uuid()]);
+        $input = $this->input(class: SearchGamesInput::class, params: [
+            'id' => $this->generator()
+                ->uuid(),
+        ]);
 
         $action = $this->make(SearchGamesAction::class);
         $actual = $action($input);

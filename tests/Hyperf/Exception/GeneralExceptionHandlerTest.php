@@ -23,11 +23,17 @@ use Serendipity\Infrastructure\Http\ResponseType;
 final class GeneralExceptionHandlerTest extends TestCase
 {
     private LoggerInterface $logger;
+
     private JsonFormatter $formatter;
+
     private RequestInterface $request;
+
     private RequestAdditionalFactory $factory;
+
     private ExceptionResponseNormalizer $normalizer;
+
     private ConfigInterface $config;
+
     private GeneralExceptionHandler $handler;
 
     protected function setUp(): void
@@ -324,7 +330,6 @@ final class GeneralExceptionHandlerTest extends TestCase
         $this->assertJson((string) $result->getBody());
         $this->assertStringContainsString('"status":"error"', (string) $result->getBody());
     }
-
 
     public function testIsValidShouldReturnTrueWhenExceptionIsNotIgnored(): void
     {

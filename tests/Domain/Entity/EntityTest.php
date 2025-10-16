@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Domain\Entity;
 
-use PHPUnit\Framework\TestCase;
 use Constructo\Support\Entity;
+use PHPUnit\Framework\TestCase;
 
 final class EntityTest extends TestCase
 {

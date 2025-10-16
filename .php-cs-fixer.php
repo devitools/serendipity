@@ -83,6 +83,7 @@ return (new Config())
         'multiline_comment_opening_closing' => true,
         'single_line_empty_body' => false,
         'php_unit_test_class_requires_covers' => false,
+        'php_unit_internal_class' => false,
     ])
     ->setFinder(
         Finder::create()

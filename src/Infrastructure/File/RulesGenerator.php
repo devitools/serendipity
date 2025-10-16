@@ -60,12 +60,11 @@ class RulesGenerator
             $detected = $this->detect($realMappedPath, $namespace, $filePath);
         }
         if ($detected !== null && class_exists($detected)) {
-            /** @var class-string<object> $detected */
+            /* @var class-string<object> $detected */
             return $this->generateRules($detected);
         }
         return null;
     }
-
 
     private function projectRoot(): string
     {

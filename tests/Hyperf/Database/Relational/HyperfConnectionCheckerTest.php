@@ -13,7 +13,9 @@ use Serendipity\Hyperf\Database\Relational\HyperfConnectionChecker;
 class HyperfConnectionCheckerTest extends TestCase
 {
     private HyperfConnection $database;
+
     private LoggerInterface $logger;
+
     private HyperfConnectionChecker $hyperfConnectionChecker;
 
     protected function setUp(): void

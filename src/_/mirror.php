@@ -8,7 +8,7 @@ if (! function_exists(__NAMESPACE__ . '\arrayify')) {
     /**
      * @param array<T, U> $default
      * @return array<T, U>
-     * @deprecated Use \Constructo\Cast\arrayify instead.
+     * @deprecated use \Constructo\Cast\arrayify instead
      * @template T of array-key
      * @template U
      */
@@ -22,7 +22,7 @@ if (! function_exists(__NAMESPACE__ . '\mapify')) {
     /**
      * @param array<string, mixed> $default
      * @return array<string, mixed>
-     * @deprecated Use \Constructo\Cast\mapify instead.
+     * @deprecated use \Constructo\Cast\mapify instead
      */
     function mapify(mixed $data, array $default = []): array
     {
@@ -32,10 +32,10 @@ if (! function_exists(__NAMESPACE__ . '\mapify')) {
 
 if (! function_exists(__NAMESPACE__ . '\stringify')) {
     /**
-     * @deprecated Use \Constructo\Cast\stringify instead.
+     * @deprecated use \Constructo\Cast\stringify instead
      */
     /**
-     * @deprecated Use \Constructo\Cast\stringify instead.
+     * @deprecated use \Constructo\Cast\stringify instead
      */
     function stringify(mixed $value, string $default = ''): string
     {
@@ -45,7 +45,7 @@ if (! function_exists(__NAMESPACE__ . '\stringify')) {
 
 if (! function_exists(__NAMESPACE__ . '\integerify')) {
     /**
-     * @deprecated Use \Constructo\Cast\integerify instead.
+     * @deprecated use \Constructo\Cast\integerify instead
      */
     function integerify(mixed $value, int $default = 0): int
     {
@@ -55,7 +55,7 @@ if (! function_exists(__NAMESPACE__ . '\integerify')) {
 
 if (! function_exists(__NAMESPACE__ . '\floatify')) {
     /**
-     * @deprecated Use \Constructo\Cast\floatify instead.
+     * @deprecated use \Constructo\Cast\floatify instead
      */
     function floatify(mixed $value, float $default = 0.0): float
     {
@@ -65,7 +65,7 @@ if (! function_exists(__NAMESPACE__ . '\floatify')) {
 
 if (! function_exists(__NAMESPACE__ . '\boolify')) {
     /**
-     * @deprecated Use \Constructo\Cast\boolify instead.
+     * @deprecated use \Constructo\Cast\boolify instead
      */
     function boolify(mixed $value, bool $default = false): bool
     {
@@ -81,7 +81,7 @@ use const DEFAULT_CRYPT_KEY;
 
 if (! function_exists(__NAMESPACE__ . '\encrypt')) {
     /**
-     * @deprecated Use \Constructo\Crypt\encrypt instead.
+     * @deprecated use \Constructo\Crypt\encrypt instead
      */
     function encrypt(string $plaintext, string $key = DEFAULT_CRYPT_KEY): string
     {
@@ -91,7 +91,7 @@ if (! function_exists(__NAMESPACE__ . '\encrypt')) {
 
 if (! function_exists(__NAMESPACE__ . '\decrypt')) {
     /**
-     * @deprecated Use \Constructo\Crypt\decrypt instead.
+     * @deprecated use \Constructo\Crypt\decrypt instead
      */
     function decrypt(string $encrypted, string $key = DEFAULT_CRYPT_KEY): string
     {
@@ -101,7 +101,7 @@ if (! function_exists(__NAMESPACE__ . '\decrypt')) {
 
 if (! function_exists(__NAMESPACE__ . '\group')) {
     /**
-     * @deprecated Use \Constructo\Crypt\group instead.
+     * @deprecated use \Constructo\Crypt\group instead
      */
     function group(string $algo, string $salt, string $ciphertext): string
     {
@@ -111,7 +111,7 @@ if (! function_exists(__NAMESPACE__ . '\group')) {
 
 if (! function_exists(__NAMESPACE__ . '\ungroup')) {
     /**
-     * @deprecated Use \Constructo\Crypt\ungroup instead.
+     * @deprecated use \Constructo\Crypt\ungroup instead
      */
     function ungroup(string $encrypted): Set
     {
@@ -123,7 +123,7 @@ namespace Serendipity\Type\Json;
 
 if (! function_exists(__NAMESPACE__ . '\decode')) {
     /**
-     * @deprecated Use \Constructo\Json\decode instead.
+     * @deprecated use \Constructo\Json\decode instead
      */
     function decode(string $json): ?array
     {
@@ -133,7 +133,7 @@ if (! function_exists(__NAMESPACE__ . '\decode')) {
 
 if (! function_exists(__NAMESPACE__ . '\encode')) {
     /**
-     * @deprecated Use \Constructo\Json\encode instead.
+     * @deprecated use \Constructo\Json\encode instead
      */
     function encode(array $data): ?string
     {
@@ -147,7 +147,7 @@ use Constructo\Support\Reflective\Notation;
 
 if (! function_exists(__NAMESPACE__ . '\format')) {
     /**
-     * @deprecated Use \Constructo\Notation\format instead.
+     * @deprecated use \Constructo\Notation\format instead
      */
     function format(string $string, Notation $notation): string
     {
@@ -157,7 +157,7 @@ if (! function_exists(__NAMESPACE__ . '\format')) {
 
 if (! function_exists(__NAMESPACE__ . '\snakify')) {
     /**
-     * @deprecated Use \Constructo\Notation\snakify instead.
+     * @deprecated use \Constructo\Notation\snakify instead
      */
     function snakify(string $string, bool $includeDigits = true): string
     {
@@ -167,7 +167,7 @@ if (! function_exists(__NAMESPACE__ . '\snakify')) {
 
 if (! function_exists(__NAMESPACE__ . '\camelify')) {
     /**
-     * @deprecated Use \Constructo\Notation\camelify instead.
+     * @deprecated use \Constructo\Notation\camelify instead
      */
     function camelify(string $string): string
     {
@@ -177,7 +177,7 @@ if (! function_exists(__NAMESPACE__ . '\camelify')) {
 
 if (! function_exists(__NAMESPACE__ . '\pascalify')) {
     /**
-     * @deprecated Use \Constructo\Notation\pascalify instead.
+     * @deprecated use \Constructo\Notation\pascalify instead
      */
     function pascalify(string $string): string
     {
@@ -187,7 +187,7 @@ if (! function_exists(__NAMESPACE__ . '\pascalify')) {
 
 if (! function_exists(__NAMESPACE__ . '\adaify')) {
     /**
-     * @deprecated Use \Constructo\Notation\adaify instead.
+     * @deprecated use \Constructo\Notation\adaify instead
      */
     function adaify(string $string): string
     {
@@ -197,7 +197,7 @@ if (! function_exists(__NAMESPACE__ . '\adaify')) {
 
 if (! function_exists(__NAMESPACE__ . '\macroify')) {
     /**
-     * @deprecated Use \Constructo\Notation\macroify instead.
+     * @deprecated use \Constructo\Notation\macroify instead
      */
     function macroify(string $string): string
     {
@@ -207,7 +207,7 @@ if (! function_exists(__NAMESPACE__ . '\macroify')) {
 
 if (! function_exists(__NAMESPACE__ . '\kebabify')) {
     /**
-     * @deprecated Use \Constructo\Notation\kebabify instead.
+     * @deprecated use \Constructo\Notation\kebabify instead
      */
     function kebabify(string $string): string
     {
@@ -217,7 +217,7 @@ if (! function_exists(__NAMESPACE__ . '\kebabify')) {
 
 if (! function_exists(__NAMESPACE__ . '\trainify')) {
     /**
-     * @deprecated Use \Constructo\Notation\trainify instead.
+     * @deprecated use \Constructo\Notation\trainify instead
      */
     function trainify(string $string): string
     {
@@ -227,7 +227,7 @@ if (! function_exists(__NAMESPACE__ . '\trainify')) {
 
 if (! function_exists(__NAMESPACE__ . '\cobolify')) {
     /**
-     * @deprecated Use \Constructo\Notation\cobolify instead.
+     * @deprecated use \Constructo\Notation\cobolify instead
      */
     function cobolify(string $string): string
     {
@@ -237,7 +237,7 @@ if (! function_exists(__NAMESPACE__ . '\cobolify')) {
 
 if (! function_exists(__NAMESPACE__ . '\lowerify')) {
     /**
-     * @deprecated Use \Constructo\Notation\lowerify instead.
+     * @deprecated use \Constructo\Notation\lowerify instead
      */
     function lowerify(string $string): string
     {
@@ -247,7 +247,7 @@ if (! function_exists(__NAMESPACE__ . '\lowerify')) {
 
 if (! function_exists(__NAMESPACE__ . '\upperify')) {
     /**
-     * @deprecated Use \Constructo\Notation\upperify instead.
+     * @deprecated use \Constructo\Notation\upperify instead
      */
     function upperify(string $string): string
     {
@@ -257,7 +257,7 @@ if (! function_exists(__NAMESPACE__ . '\upperify')) {
 
 if (! function_exists(__NAMESPACE__ . '\titlelify')) {
     /**
-     * @deprecated Use \Constructo\Notation\titlelify instead.
+     * @deprecated use \Constructo\Notation\titlelify instead
      */
     function titlelify(string $string): string
     {
@@ -267,7 +267,7 @@ if (! function_exists(__NAMESPACE__ . '\titlelify')) {
 
 if (! function_exists(__NAMESPACE__ . '\sentencify')) {
     /**
-     * @deprecated Use \Constructo\Notation\sentencify instead.
+     * @deprecated use \Constructo\Notation\sentencify instead
      */
     function sentencify(string $string): string
     {
@@ -277,7 +277,7 @@ if (! function_exists(__NAMESPACE__ . '\sentencify')) {
 
 if (! function_exists(__NAMESPACE__ . '\dotify')) {
     /**
-     * @deprecated Use \Constructo\Notation\dotify instead.
+     * @deprecated use \Constructo\Notation\dotify instead
      */
     function dotify(string $string): string
     {
@@ -292,7 +292,7 @@ if (! function_exists(__NAMESPACE__ . '\extractArray')) {
      * @param array<string, array<T, U>> $array
      * @param array<T, U> $default
      * @return array<T, U>
-     * @deprecated Use \Constructo\Util\extractArray instead.
+     * @deprecated use \Constructo\Util\extractArray instead
      * @template T
      * @template U
      */
@@ -305,7 +305,7 @@ if (! function_exists(__NAMESPACE__ . '\extractArray')) {
 if (! function_exists(__NAMESPACE__ . '\extractString')) {
     /**
      * @param array<string, mixed> $array
-     * @deprecated Use \Constructo\Util\extractString instead.
+     * @deprecated use \Constructo\Util\extractString instead
      */
     function extractString(array $array, string $property, string $default = ''): string
     {
@@ -316,7 +316,7 @@ if (! function_exists(__NAMESPACE__ . '\extractString')) {
 if (! function_exists(__NAMESPACE__ . '\extractInt')) {
     /**
      * @param array<string, mixed> $array
-     * @deprecated Use \Constructo\Util\extractInt instead.
+     * @deprecated use \Constructo\Util\extractInt instead
      */
     function extractInt(array $array, string $property, int $default = 0): int
     {
@@ -327,7 +327,7 @@ if (! function_exists(__NAMESPACE__ . '\extractInt')) {
 if (! function_exists(__NAMESPACE__ . '\extractBool')) {
     /**
      * @param array<string, mixed> $array
-     * @deprecated Use \Constructo\Util\extractBool instead.
+     * @deprecated use \Constructo\Util\extractBool instead
      */
     function extractBool(array $array, string $property, bool $default = false): bool
     {
@@ -338,7 +338,7 @@ if (! function_exists(__NAMESPACE__ . '\extractBool')) {
 if (! function_exists(__NAMESPACE__ . '\extractNumeric')) {
     /**
      * @param array<string, mixed> $array
-     * @deprecated Use \Constructo\Util\extractInt instead.
+     * @deprecated use \Constructo\Util\extractInt instead
      */
     function extractNumeric(array $array, string $property, float|int $default = 0): float
     {

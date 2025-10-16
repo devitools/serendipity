@@ -62,7 +62,7 @@ return [
         'timezone' => ['kind' => 'type'],
 
         # Constraints
-        ## Numbers constraints
+        # # Numbers constraints
         'min' => ['params' => ['min']],
         'max' => ['params' => ['max']],
         'between' => [
@@ -78,7 +78,7 @@ return [
                 'max',
             ],
         ],
-        ## Among fields constraints
+        # # Among fields constraints
         'gt' => ['params' => ['field']],
         'gte' => ['params' => ['field']],
         'lt' => ['params' => ['field']],
@@ -88,22 +88,22 @@ return [
         'confirmed' => [],
         'distinct' => [],
         'in_array' => ['params' => ['field']],
-        ## String constraints
+        # # String constraints
         'accepted' => [],
         'alpha' => [],
         'alpha_dash' => [],
         'alpha_num' => [],
         'starts_with' => [],
-        ## Date constraints
+        # # Date constraints
         'after' => ['params' => ['date']],
         'after_or_equal' => ['params' => ['date']],
         'before' => ['params' => ['date']],
         'before_or_equal' => ['params' => ['date']],
         'date_equals' => ['params' => ['date']],
         'date_format' => ['params' => ['format']],
-        ## Multiple types constraints
+        # # Multiple types constraints
         'size' => ['params' => ['size']],
-        ## File constraints
+        # # File constraints
         'mimes' => ['params' => '...'],
         'mimetypes' => ['params' => '...'],
         'dimensions' => ['params' => '...'],

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Support;
 
+use Constructo\Factory\DefaultTypesFactory;
 use Hyperf\Contract\ConfigInterface;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Serendipity\Hyperf\Support\HyperfTypesFactory;
 
 class HyperfTypesFactoryTest extends TestCase
@@ -75,7 +77,7 @@ class HyperfTypesFactoryTest extends TestCase
         $factory = new HyperfTypesFactory($config);
 
         // Assert
-        $this->assertInstanceOf(\Constructo\Factory\DefaultTypesFactory::class, $factory);
+        $this->assertInstanceOf(DefaultTypesFactory::class, $factory);
     }
 
     public function testIsReadonly(): void
@@ -89,7 +91,7 @@ class HyperfTypesFactoryTest extends TestCase
         $factory = new HyperfTypesFactory($config);
 
         // Assert
-        $reflection = new \ReflectionClass($factory);
+        $reflection = new ReflectionClass($factory);
         $this->assertTrue($reflection->isReadOnly());
     }
 

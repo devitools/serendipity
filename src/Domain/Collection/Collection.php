@@ -9,7 +9,7 @@ use Constructo\Type\Collection as Constructo;
 /**
  * @template T
  * @extends Constructo<T>
- * @deprecated Use `Constructo\Type\Collection` directly.
+ * @deprecated use `Constructo\Type\Collection` directly
  */
 abstract class Collection extends Constructo
 {

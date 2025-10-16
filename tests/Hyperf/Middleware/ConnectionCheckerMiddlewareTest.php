@@ -36,7 +36,8 @@ final class ConnectionCheckerMiddlewareTest extends TestCase
         $request = $this->createMock(ServerRequestInterface::class);
         $response = $this->createMock(ResponseInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $handler->method('handle')->willReturn($response);
+        $handler->method('handle')
+            ->willReturn($response);
 
         // Assert
         $connectionChecker->expects($this->once())
@@ -75,7 +76,8 @@ final class ConnectionCheckerMiddlewareTest extends TestCase
         $request = $this->createMock(ServerRequestInterface::class);
         $response = $this->createMock(ResponseInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $handler->method('handle')->willReturn($response);
+        $handler->method('handle')
+            ->willReturn($response);
 
         $connectionChecker->expects($this->once())
             ->method('check')

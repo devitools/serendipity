@@ -54,14 +54,18 @@ class GenerateRulesTest extends TestCase
 
         $messages = [];
         $output = $this->createMock(SymfonyStyle::class);
-        $output->method('title')->willReturnSelf();
-        $output->method('writeln')->willReturnCallback(function (mixed $string) use (&$messages) {
-            $messages[] = $string;
-        });
-        $output->method('info')->willReturnCallback(function (mixed $string) use (&$messages) {
-            $messages[] = $string;
-        });
-        $output->method('newLine')->willReturnSelf();
+        $output->method('title')
+            ->willReturnSelf();
+        $output->method('writeln')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('info')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('newLine')
+            ->willReturnSelf();
         $command->setOutput($output);
 
         $input = $this->createMock(InputInterface::class);
@@ -97,14 +101,18 @@ class GenerateRulesTest extends TestCase
 
         $messages = [];
         $output = $this->createMock(SymfonyStyle::class);
-        $output->method('title')->willReturnSelf();
-        $output->method('writeln')->willReturnCallback(function (mixed $string) use (&$messages) {
-            $messages[] = $string;
-        });
-        $output->method('error')->willReturnCallback(function (mixed $string) use (&$messages) {
-            $messages[] = $string;
-        });
-        $output->method('newLine')->willReturnSelf();
+        $output->method('title')
+            ->willReturnSelf();
+        $output->method('writeln')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('error')
+            ->willReturnCallback(function (mixed $string) use (&$messages) {
+                $messages[] = $string;
+            });
+        $output->method('newLine')
+            ->willReturnSelf();
         $command->setOutput($output);
 
         $input = $this->createMock(InputInterface::class);

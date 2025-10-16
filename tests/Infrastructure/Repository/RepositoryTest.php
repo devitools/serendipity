@@ -53,14 +53,14 @@ final class RepositoryTest extends TestCase
             });
 
         $collection = new class extends Collection {
-            protected function validate(mixed $datum): Entity|Datum
+            protected function validate(mixed $datum): Datum|Entity
             {
                 return $datum instanceof Entity || $datum instanceof Datum
                     ? $datum
                     : throw new RuntimeException();
             }
 
-            public function current(): Entity|Datum
+            public function current(): Datum|Entity
             {
                 return $this->validate($this->datum());
             }

@@ -20,8 +20,10 @@ final class AcceptedTest extends TestCase
             ->uuid();
         $output = Accepted::createFrom($token);
         $this->assertEquals($token, $output->content());
-        $this->assertEquals(['token' => $token],
+        $this->assertEquals(
+            ['token' => $token],
             $output->properties()
-                ->toArray());
+                ->toArray()
+        );
     }
 }

@@ -47,8 +47,14 @@ final class StdoutLoggerFactoryTest extends TestCase
         $this->container->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                [ConsoleOutput::class, $this->consoleOutput],
-                [ConfigInterface::class, $this->config],
+                [
+                    ConsoleOutput::class,
+                    $this->consoleOutput,
+                ],
+                [
+                    ConfigInterface::class,
+                    $this->config,
+                ],
             ]);
 
         // Act
@@ -76,8 +82,14 @@ final class StdoutLoggerFactoryTest extends TestCase
         $this->container->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                [ConsoleOutput::class, $this->consoleOutput],
-                [ConfigInterface::class, $this->config],
+                [
+                    ConsoleOutput::class,
+                    $this->consoleOutput,
+                ],
+                [
+                    ConfigInterface::class,
+                    $this->config,
+                ],
             ]);
 
         // Act
@@ -101,8 +113,14 @@ final class StdoutLoggerFactoryTest extends TestCase
         $this->container->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                [ConsoleOutput::class, $this->consoleOutput],
-                [ConfigInterface::class, $this->config],
+                [
+                    ConsoleOutput::class,
+                    $this->consoleOutput,
+                ],
+                [
+                    ConfigInterface::class,
+                    $this->config,
+                ],
             ]);
 
         // Act

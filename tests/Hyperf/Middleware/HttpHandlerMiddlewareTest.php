@@ -47,7 +47,7 @@ final class HttpHandlerMiddlewareTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function ($event) {
                 static $callCount = 0;
-                $callCount++;
+                ++$callCount;
 
                 if ($callCount === 1) {
                     $this->assertInstanceOf(HttpHandleStarted::class, $event);
@@ -102,7 +102,7 @@ final class HttpHandlerMiddlewareTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function ($event) {
                 static $callCount = 0;
-                $callCount++;
+                ++$callCount;
 
                 if ($callCount === 1) {
                     $this->assertInstanceOf(HttpHandleStarted::class, $event);
@@ -152,7 +152,7 @@ final class HttpHandlerMiddlewareTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function ($event) {
                 static $callCount = 0;
-                $callCount++;
+                ++$callCount;
 
                 if ($callCount === 1) {
                     $this->assertInstanceOf(HttpHandleStarted::class, $event);
@@ -216,7 +216,7 @@ final class HttpHandlerMiddlewareTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function ($event) {
                 static $callCount = 0;
-                $callCount++;
+                ++$callCount;
 
                 if ($callCount === 1) {
                     $this->assertInstanceOf(HttpHandleStarted::class, $event);
@@ -270,7 +270,7 @@ final class HttpHandlerMiddlewareTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function ($event) {
                 static $callCount = 0;
-                $callCount++;
+                ++$callCount;
 
                 if ($callCount === 1) {
                     $this->assertInstanceOf(HttpHandleStarted::class, $event);
@@ -353,7 +353,7 @@ final class HttpHandlerMiddlewareTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function ($event) {
                 static $callCount = 0;
-                $callCount++;
+                ++$callCount;
 
                 if ($callCount === 1) {
                     $this->assertInstanceOf(HttpHandleStarted::class, $event);

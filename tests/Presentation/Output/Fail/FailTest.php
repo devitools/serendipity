@@ -39,40 +39,6 @@ final class FailTest extends TestCase
     use MakeExtension;
     use FakerExtension;
 
-    /**
-     * @return array<string, array{class-string}>
-     */
-    public static function failClassesProvider(): array
-    {
-        return [
-            'BadRequest' => [BadRequest::class],
-            'Conflict' => [Conflict::class],
-            'ExpectationFailed' => [ExpectationFailed::class],
-            'FailedDependency' => [FailedDependency::class],
-            'Forbidden' => [Forbidden::class],
-            'Gone' => [Gone::class],
-            'LengthRequired' => [LengthRequired::class],
-            'Locked' => [Locked::class],
-            'MethodNotAllowed' => [MethodNotAllowed::class],
-            'Misdirected' => [Misdirected::class],
-            'PayloadTooLarge' => [PayloadTooLarge::class],
-            'PaymentRequired' => [PaymentRequired::class],
-            'PreconditionFailed' => [PreconditionFailed::class],
-            'PreconditionRequired' => [PreconditionRequired::class],
-            'ProxyAuthenticationRequired' => [ProxyAuthenticationRequired::class],
-            'RangeNotSatisfiable' => [RangeNotSatisfiable::class],
-            'PropertiesAreTooLarge' => [PropertiesAreTooLarge::class],
-            'RequestTimeout' => [RequestTimeout::class],
-            'TooEarly' => [TooEarly::class],
-            'TooMany' => [TooMany::class],
-            'Unauthorized' => [Unauthorized::class],
-            'UnavailableForLegalReasons' => [UnavailableForLegalReasons::class],
-            'UnprocessableEntity' => [UnprocessableEntity::class],
-            'UnsupportedMediaType' => [UnsupportedMediaType::class],
-            'UpdateRequired' => [UpdateRequired::class],
-        ];
-    }
-
     #[DataProvider('failClassesProvider')]
     public function testFailClassesWithStringContent(string $className): void
     {
@@ -113,9 +79,11 @@ final class FailTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -128,9 +96,11 @@ final class FailTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -175,5 +145,39 @@ final class FailTest extends TestCase
                 ->toArray()
         );
         $this->assertInstanceOf($className, $instance);
+    }
+
+    /**
+     * @return array<string, array{class-string}>
+     */
+    public static function failClassesProvider(): array
+    {
+        return [
+            'BadRequest' => [BadRequest::class],
+            'Conflict' => [Conflict::class],
+            'ExpectationFailed' => [ExpectationFailed::class],
+            'FailedDependency' => [FailedDependency::class],
+            'Forbidden' => [Forbidden::class],
+            'Gone' => [Gone::class],
+            'LengthRequired' => [LengthRequired::class],
+            'Locked' => [Locked::class],
+            'MethodNotAllowed' => [MethodNotAllowed::class],
+            'Misdirected' => [Misdirected::class],
+            'PayloadTooLarge' => [PayloadTooLarge::class],
+            'PaymentRequired' => [PaymentRequired::class],
+            'PreconditionFailed' => [PreconditionFailed::class],
+            'PreconditionRequired' => [PreconditionRequired::class],
+            'ProxyAuthenticationRequired' => [ProxyAuthenticationRequired::class],
+            'RangeNotSatisfiable' => [RangeNotSatisfiable::class],
+            'PropertiesAreTooLarge' => [PropertiesAreTooLarge::class],
+            'RequestTimeout' => [RequestTimeout::class],
+            'TooEarly' => [TooEarly::class],
+            'TooMany' => [TooMany::class],
+            'Unauthorized' => [Unauthorized::class],
+            'UnavailableForLegalReasons' => [UnavailableForLegalReasons::class],
+            'UnprocessableEntity' => [UnprocessableEntity::class],
+            'UnsupportedMediaType' => [UnsupportedMediaType::class],
+            'UpdateRequired' => [UpdateRequired::class],
+        ];
     }
 }

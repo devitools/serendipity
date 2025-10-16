@@ -34,7 +34,7 @@ class RequestAdditionalFactory
             default => [],
         };
         return new Additional(
-            line: sprintf("%s %s", $request->getMethod(), $request->getUri()),
+            line: sprintf('%s %s', $request->getMethod(), $request->getUri()),
             body: $this->body($request),
             headers: $this->headers($request),
             query: $this->query($request),

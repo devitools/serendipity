@@ -35,8 +35,8 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
             'features',
         ];
         /* @noinspection SqlNoDataSourceInspection, SqlResolve */
-        $query = 'insert into "games"' .
-            ' ("id", "created_at", "updated_at", "name", "slug", "published_at", "data", "features") '
+        $query = 'insert into "games"'
+            . ' ("id", "created_at", "updated_at", "name", "slug", "published_at", "data", "features") '
             . 'values (?, ?, ?, ?, ?, ?, ?, ?)';
 
 

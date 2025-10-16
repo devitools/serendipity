@@ -24,25 +24,6 @@ final class ErrorTest extends TestCase
     use MakeExtension;
     use FakerExtension;
 
-    /**
-     * @return array<string, array{class-string}>
-     */
-    public static function errorClassesProvider(): array
-    {
-        return [
-            'InternalServerError' => [InternalServerError::class],
-            'BadGateway' => [BadGateway::class],
-            'InsufficientStorage' => [InsufficientStorage::class],
-            'ServiceUnavailable' => [ServiceUnavailable::class],
-            'ProtocolVersionNotSupported' => [ProtocolVersionNotSupported::class],
-            'VariantAlsoNegotiates' => [VariantAlsoNegotiates::class],
-            'NotImplemented' => [NotImplemented::class],
-            'GatewayTimeout' => [GatewayTimeout::class],
-            'NetworkAuthenticationRequired' => [NetworkAuthenticationRequired::class],
-            'LoopDetected' => [LoopDetected::class],
-        ];
-    }
-
     #[DataProvider('errorClassesProvider')]
     public function testErrorClassesWithStringContent(string $className): void
     {
@@ -72,9 +53,11 @@ final class ErrorTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -127,5 +110,24 @@ final class ErrorTest extends TestCase
                 ->toArray()
         );
         $this->assertInstanceOf($className, $instance);
+    }
+
+    /**
+     * @return array<string, array{class-string}>
+     */
+    public static function errorClassesProvider(): array
+    {
+        return [
+            'InternalServerError' => [InternalServerError::class],
+            'BadGateway' => [BadGateway::class],
+            'InsufficientStorage' => [InsufficientStorage::class],
+            'ServiceUnavailable' => [ServiceUnavailable::class],
+            'ProtocolVersionNotSupported' => [ProtocolVersionNotSupported::class],
+            'VariantAlsoNegotiates' => [VariantAlsoNegotiates::class],
+            'NotImplemented' => [NotImplemented::class],
+            'GatewayTimeout' => [GatewayTimeout::class],
+            'NetworkAuthenticationRequired' => [NetworkAuthenticationRequired::class],
+            'LoopDetected' => [LoopDetected::class],
+        ];
     }
 }

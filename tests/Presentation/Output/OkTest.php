@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation\Output;
 
+use Constructo\Support\Entity;
 use Constructo\Testing\FakerExtension;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
-use Constructo\Support\Entity;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Output\Ok;
 use stdClass;
@@ -42,9 +42,11 @@ class OkTest extends TestCase
     {
         $output = Ok::createFrom($content);
         $this->assertEquals($content, $output->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $output->properties()
-                ->toArray());
+                ->toArray()
+        );
     }
 
     public function testShouldHandleMessage(): void
@@ -52,9 +54,11 @@ class OkTest extends TestCase
         $message = Ok::createFrom('message', ['id' => 1234567890]);
         $output = Ok::createFrom($message);
         $this->assertEquals('message', $output->content());
-        $this->assertEquals(['id' => 1234567890],
+        $this->assertEquals(
+            ['id' => 1234567890],
             $output->properties()
-                ->toArray());
+                ->toArray()
+        );
     }
 
     public function testShouldHandleExportable(): void

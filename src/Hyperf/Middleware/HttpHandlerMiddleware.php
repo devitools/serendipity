@@ -123,7 +123,7 @@ class HttpHandlerMiddleware extends Hyperf
     {
         return match (true) {
             $value instanceof LegacyCollection,
-                $value instanceof Collection => $this->demolisher->demolishCollection($value),
+            $value instanceof Collection => $this->demolisher->demolishCollection($value),
             is_object($value) => $this->demolisher->demolish($value),
             default => $value,
         };

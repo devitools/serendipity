@@ -35,7 +35,12 @@ deptrac:
     - name: Contract
       collectors:
         - type: classLike
-          value: ^Hyperf\\Contract\\.*|Constructo\\Contract\\.*
+          value:
+            ^Hyperf\\Contract\\.*|\
+            ^Psr\\Container\\ContainerExceptionInterface$|\
+            ^Psr\\Container\\NotFoundExceptionInterface$|\
+            ^Psr\\EventDispatcher\\EventDispatcherInterface$|\
+            ^Constructo\\Contract\\.*
 
     - name: Native
       collectors:
@@ -61,8 +66,12 @@ deptrac:
           must_not:
             - type: classLike
               value:
+                ^Hyperf\\Contract\\.*|\
                 ^Psr\\Container\\ContainerInterface$|\
+                ^Psr\\Container\\ContainerExceptionInterface$|\
+                ^Psr\\Container\\NotFoundExceptionInterface$|\
                 ^Psr\\Http\\Message\\ServerRequestInterface$|\
+                ^Psr\\EventDispatcher\\EventDispatcherInterface$|\
                 ^Hyperf\\Context\\Context$|\
                 ^Hyperf\\Validation\\ValidationException$|\
                 ^Hyperf\\Validation\\Request\\FormRequest$
@@ -102,3 +111,4 @@ deptrac:
     Validation:
       - Domain
       - Native
+      - Contract

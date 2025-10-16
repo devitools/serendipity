@@ -24,22 +24,6 @@ final class SuccessTest extends TestCase
     use MakeExtension;
     use FakerExtension;
 
-    /**
-     * @return array<string, array{class-string}>
-     */
-    public static function successClassesProvider(): array
-    {
-        return [
-            'Ok' => [Ok::class],
-            'AlreadyReported' => [AlreadyReported::class],
-            'ImUsed' => [ImUsed::class],
-            'MultiStatus' => [MultiStatus::class],
-            'NonAuthoritative' => [NonAuthoritative::class],
-            'PartialContent' => [PartialContent::class],
-            'ResetContent' => [ResetContent::class],
-        ];
-    }
-
     #[DataProvider('successClassesProvider')]
     public function testSuccessClassesWithPrimitiveContent(string $className): void
     {
@@ -103,9 +87,11 @@ final class SuccessTest extends TestCase
             $instance->content()
                 ->export()
         );
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -115,9 +101,11 @@ final class SuccessTest extends TestCase
         $instance = $className::createFrom();
 
         $this->assertNull($instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -133,9 +121,11 @@ final class SuccessTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -147,9 +137,11 @@ final class SuccessTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
     }
 
@@ -162,9 +154,27 @@ final class SuccessTest extends TestCase
         $instance = $className::createFrom($content);
 
         $this->assertEquals($content, $instance->content());
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $instance->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertInstanceOf($className, $instance);
+    }
+
+    /**
+     * @return array<string, array{class-string}>
+     */
+    public static function successClassesProvider(): array
+    {
+        return [
+            'Ok' => [Ok::class],
+            'AlreadyReported' => [AlreadyReported::class],
+            'ImUsed' => [ImUsed::class],
+            'MultiStatus' => [MultiStatus::class],
+            'NonAuthoritative' => [NonAuthoritative::class],
+            'PartialContent' => [PartialContent::class],
+            'ResetContent' => [ResetContent::class],
+        ];
     }
 }

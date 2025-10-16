@@ -21,8 +21,10 @@ use stdClass;
 class SentryHttpListenerTest extends TestCase
 {
     private ConfigInterface|MockObject $config;
+
     private LoggerInterface|MockObject $logger;
-    private RequestAdditionalFactory|MockObject $factory;
+
+    private MockObject|RequestAdditionalFactory $factory;
 
     protected function setUp(): void
     {

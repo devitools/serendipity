@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Testing\Stub;
 
-use DateTime;
 use Constructo\Support\Entity;
+use DateTime;
 use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 
 class EntityStub extends Entity

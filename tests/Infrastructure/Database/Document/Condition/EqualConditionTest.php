@@ -23,7 +23,8 @@ class EqualConditionTest extends TestCase
         $composed = $condition->compose('2024-11-17');
         $this->assertArrayHasKey('$eq', $composed);
         $this->assertInstanceOf(UTCDateTime::class, $composed['$eq']);
-        $this->assertEquals(1731801600,
+        $this->assertEquals(
+            1731801600,
             $composed['$eq']->toDateTime()
                 ->getTimestamp()
         );

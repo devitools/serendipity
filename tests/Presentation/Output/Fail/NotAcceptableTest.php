@@ -20,8 +20,10 @@ final class NotAcceptableTest extends TestCase
             ->uuid();
         $output = NotAcceptable::createFrom($token);
         $this->assertEquals($token, $output->content());
-        $this->assertEquals(['token' => $token],
+        $this->assertEquals(
+            ['token' => $token],
             $output->properties()
-                ->toArray());
+                ->toArray()
+        );
     }
 }

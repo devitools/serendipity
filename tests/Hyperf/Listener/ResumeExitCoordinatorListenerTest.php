@@ -25,6 +25,9 @@ final class ResumeExitCoordinatorListenerTest extends TestCase
 
         $listener->process($event);
 
-        $this->assertTrue(CoordinatorManager::until(Constants::WORKER_EXIT)->isClosing());
+        $this->assertTrue(
+            CoordinatorManager::until(Constants::WORKER_EXIT)
+                ->isClosing()
+        );
     }
 }

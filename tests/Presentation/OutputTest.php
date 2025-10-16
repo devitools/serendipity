@@ -12,18 +12,22 @@ class OutputTest extends TestCase
     public function testShouldHasPropertiesAsEmptyArrayAndValuesNull(): void
     {
         $output = new Output();
-        $this->assertEquals([],
+        $this->assertEquals(
+            [],
             $output->properties()
-                ->toArray());
+                ->toArray()
+        );
         $this->assertNull($output->content());
     }
 
     public function testShouldHasProperties(): void
     {
         $output = new Output(null, ['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'],
+        $this->assertEquals(
+            ['foo' => 'bar'],
             $output->properties()
-                ->toArray());
+                ->toArray()
+        );
     }
 
     public function testShouldHasValues(): void
