@@ -261,7 +261,7 @@ final class PostgresHelperTest extends TestCase
             1,
             'Final',
             '2023-01-01',
-            true,
+            1,
         ];
 
         $this->connection->expects($this->once())
