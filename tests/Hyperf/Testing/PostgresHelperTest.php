@@ -8,11 +8,12 @@ namespace Serendipity\Test\Hyperf\Testing;
 
 use Constructo\Core\Fake\Faker;
 use Constructo\Support\Set;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Adapter\Deserializer;
 use Serendipity\Domain\Contract\Adapter\Serializer;
+use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Hyperf\Testing\PostgresHelper;
 use Serendipity\Infrastructure\Database\Relational\Connection;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
@@ -20,17 +21,19 @@ use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
 final class PostgresHelperTest extends TestCase
 {
-    private Faker|MockObject $faker;
+    use MakeExtension;
 
-    private MockObject|RelationalSerializerFactory $serializerFactory;
+    private Faker $faker;
 
-    private MockObject|RelationalDeserializerFactory $deserializerFactory;
+    private RelationalSerializerFactory $serializerFactory;
 
-    private Connection|MockObject $connection;
+    private RelationalDeserializerFactory $deserializerFactory;
 
-    private MockObject|Serializer $serializer;
+    private Connection $connection;
 
-    private Deserializer|MockObject $deserializer;
+    private Serializer $serializer;
+
+    private Deserializer $deserializer;
 
     private PostgresHelper $helper;
 
@@ -338,9 +341,9 @@ final class PostgresHelperTest extends TestCase
     public function testCountShouldReturnZeroWhenCountIsNotPresent(): void
     {
         // Arrange
-        $filters = ['status' => 'deleted'];
+        $filters = ['status' => false];
         $expectedQuery = 'select count(*) as count from "resource" where "status" = ?';
-        $expectedBindings = ['deleted'];
+        $expectedBindings = [false];
         $queryResult = [[]];  // Resultado vazio sem a chave count
 
         $this->connection->expects($this->once())
@@ -353,5 +356,21 @@ final class PostgresHelperTest extends TestCase
 
         // Assert
         $this->assertEquals(0, $count);
+    }
+
+    public function testShouldWorksFine(): void
+    {
+        $helper = $this->make(PostgresHelper::class);
+
+        $game = $helper->seed(Game::class, 'games');
+
+        $count = $helper->count('games', ['id' => $game->at('id')]);
+        $this->assertEquals(1, $count);
+        $helper->truncate('games');
+
+        $helper->seed(Game::class, 'games', ['is_active' => false]);
+
+        $count = $helper->count('games', ['is_active' => false]);
+        $this->assertEquals(1, $count);
     }
 }

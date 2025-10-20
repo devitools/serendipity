@@ -57,17 +57,13 @@ final class PostgresHelper extends AbstractHelper
     {
         $data = $this->fake($type, $override);
         $fields = array_keys($data);
-        $fields = array_map(static fn (string $field) => sprintf('"%s"', $field), $fields);
+        $fields = array_map(fn (string $field) => sprintf('"%s"', $field), $fields);
         $columns = implode(',', $fields);
         $values = str_repeat('?,', count($fields) - 1) . '?';
 
         /** @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = sprintf('insert into "%s" (%s) values (%s)', $resource, $columns, $values);
-        $callback = fn (mixed $element) => match (true) {
-            is_scalar($element) => $element,
-            default => encode(arrayify($element)),
-        };
-        $bindings = array_map($callback, array_values($data));
+        $bindings = array_map(fn (mixed $element) => $this->normalize($element), array_values($data));
 
         $this->database->execute($query, $bindings);
         return new Set($data);
@@ -75,21 +71,15 @@ final class PostgresHelper extends AbstractHelper
 
     public function count(string $resource, array $filters): int
     {
-        $callback = static function (string $key, mixed $value): string {
-            if ($value === null) {
-                return sprintf('"%s" is null', $key);
-            }
-            return sprintf('"%s" = ?', $key);
-        };
+        $callback = fn (string $key, mixed $value): string => ($value === null)
+            ? sprintf('"%s" is null', $key)
+            : sprintf('"%s" = ?', $key);
         $wildcards = array_map($callback, array_keys($filters), array_values($filters));
         $where = implode(' and ', $wildcards);
         /** @noinspection SqlNoDataSourceInspection */
-        $query = sprintf(
-            'select count(*) as count from %s where %s',
-            sprintf('"%s"', $resource),
-            $where
-        );
-        $bindings = array_values(array_filter($filters, static fn (mixed $value) => $value !== null));
+        $query = sprintf('select count(*) as count from "%s" where %s', $resource, $where);
+        $bindings = array_values(array_filter($filters, fn (mixed $value) => $value !== null));
+        $bindings = array_map(fn (mixed $element) => $this->normalize($element), $bindings);
         $result = $this->database->query($query, $bindings);
         $array = arrayify($result);
         $data = arrayify(array_shift($array));
@@ -98,5 +88,14 @@ final class PostgresHelper extends AbstractHelper
         }
         $count = $data['count'] ?? 0;
         return integerify($count);
+    }
+
+    private function normalize(mixed $element): float|int|string|null
+    {
+        return match (true) {
+            is_bool($element) => integerify($element),
+            is_scalar($element) => $element,
+            default => encode(arrayify($element)),
+        };
     }
 }

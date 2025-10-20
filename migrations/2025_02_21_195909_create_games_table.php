@@ -11,12 +11,16 @@ return new class extends Migration {
     {
         Schema::create('games', function (Blueprint $table) {
             $table->bigIncrements('_id');
-            $table->char('id', 10)->unique();
+            $table->char('id', 10)
+                ->unique();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug')
+                ->unique();
             $table->dateTime('published_at');
             $table->json('data');
             $table->json('features');
+            $table->boolean('is_active')
+                ->default(true);
 
             $table->datetimes();
         });

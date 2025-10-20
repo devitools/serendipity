@@ -12,6 +12,8 @@ services:
     networks:
       - serendipity-network
     restart: on-failure
+    ports:
+      - "9600:9501"
 
   postgres:
     container_name: serendipity-postgres
@@ -32,6 +34,8 @@ services:
       - serendipity-postgres-data:/var/lib/postgresql/data
     networks:
       - serendipity-network
+    ports:
+      - "9610:5432"
 
   mongo:
     container_name: serendipity-mongo
@@ -48,6 +52,8 @@ services:
       start_period: 30s
     networks:
       - serendipity-network
+    ports:
+      - "9620:27017"
 
   mongo-bootstrap:
     container_name: serendipity-mongo-bootstrap
