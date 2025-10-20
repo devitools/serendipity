@@ -68,7 +68,7 @@ final class ResourceExtensionTest extends TestCase
     public function testShouldFailOnInvalidHelper(): void
     {
         $this->expectException(FailException::class);
-        $this->expectExceptionMessage('Resource not defined');
+        $this->expectExceptionMessage("Resource isn't defined");
 
         $this->mock->exposeSeed('type', ['override'], 'resource');
     }
@@ -76,7 +76,7 @@ final class ResourceExtensionTest extends TestCase
     public function testShouldFailOnResourceNotDefined(): void
     {
         $this->expectException(FailException::class);
-        $this->expectExceptionMessage('Resource not defined');
+        $this->expectExceptionMessage("Resource isn't defined");
 
         $helper = $this->createMock(Helper::class);
         $this->mock->exposeSetUpResourceHelper('alias', $helper);

@@ -8,6 +8,7 @@ use Constructo\Support\Set;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsTrue;
 use Serendipity\Domain\Contract\Testing\Helper;
+use Serendipity\Domain\Support\Truncate;
 
 use function array_key_first;
 use function Constructo\Cast\stringify;
@@ -36,7 +37,7 @@ trait ResourceExtension
         $this->helpers[$alias] = $helper;
     }
 
-    protected function setUpResource(string $resource, string $alias): void
+    protected function setUpResource(string $resource, string $alias, Truncate $truncate = Truncate::BOTH): void
     {
         if (! isset($this->helpers[$alias])) {
             static::fail('Helper not defined');
@@ -45,8 +46,8 @@ trait ResourceExtension
         $helper = $this->helpers[$alias];
 
         $this->resources[$resource] = $helper;
-        $helper->truncate($resource);
-        $this->registerTearDown(fn () => $helper->truncate($resource));
+
+        $this->configureTruncate($helper, $resource, $truncate);
     }
 
     protected function seed(string $type, array $override = [], ?string $resource = null): Set
@@ -113,6 +114,25 @@ trait ResourceExtension
         if (count($this->resources) === 1) {
             return array_key_first($this->resources);
         }
-        static::fail('Resource not defined');
+        static::fail("Resource isn't defined");
+    }
+
+    private function configureTruncate(Helper $helper, string $resource, Truncate $truncate): void
+    {
+        $before = [
+            Truncate::BEFORE,
+            Truncate::BOTH,
+        ];
+        if (in_array($truncate, $before, true)) {
+            $helper->truncate($resource);
+        }
+
+        $after = [
+            Truncate::AFTER,
+            Truncate::BOTH,
+        ];
+        if (in_array($truncate, $after, true)) {
+            $this->registerTearDown(fn () => $helper->truncate($resource));
+        }
     }
 }
