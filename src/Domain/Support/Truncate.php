@@ -9,4 +9,5 @@ enum Truncate
     case BOTH;
     case BEFORE;
     case AFTER;
+    case NONE;
 }
