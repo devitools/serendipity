@@ -13,6 +13,9 @@ use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
 use Serendipity\Hyperf\Database\Relational\Support\HasPostgresUniqueConstraint;
 use Serendipity\Infrastructure\Repository\PostgresRepository;
 
+/**
+ * @extends PostgresRepository<GameCommand>
+ */
 class PostgresGameCommandRepository extends PostgresRepository implements GameCommandRepository
 {
     use HasPostgresUniqueConstraint;

@@ -15,6 +15,9 @@ use SleekDB\Exceptions\IOException;
 
 use function Constructo\Cast\arrayify;
 
+/**
+ * @extends SleekDBGameRepository<Game>
+ */
 class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQueryRepository
 {
     public function __construct(

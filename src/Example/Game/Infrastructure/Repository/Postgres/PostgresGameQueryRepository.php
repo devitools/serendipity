@@ -9,6 +9,9 @@ use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Infrastructure\Repository\PostgresRepository;
 
+/**
+ * @extends PostgresRepository<Game>
+ */
 class PostgresGameQueryRepository extends PostgresRepository implements GameQueryRepository
 {
     public function getGame(string $id): ?Game

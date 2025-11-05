@@ -14,6 +14,9 @@ use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Managed;
 use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
 
+/**
+ * @extends MongoGameRepository<GameCommand>
+ */
 class MongoGameCommandRepository extends MongoGameRepository implements GameCommandRepository
 {
     /*
