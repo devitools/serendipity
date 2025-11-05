@@ -13,7 +13,7 @@ class Union
 {
     public function __construct(
         public readonly int|string $builtin,
-        public readonly null|int|string $nullable,
+        public readonly int|string|null $nullable,
         public readonly DateTimeInterface|stdClass $native,
         public readonly DateTimeImmutable|PDO $more,
     ) {

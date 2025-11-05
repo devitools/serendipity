@@ -10,7 +10,7 @@ class InCondition implements Condition
 {
     public function compose(string $value): array
     {
-        $pieces = array_map('trim', explode(',', $value));
+        $pieces = array_map(trim(...), explode(',', $value));
         return [
             '$in' => $pieces,
         ];

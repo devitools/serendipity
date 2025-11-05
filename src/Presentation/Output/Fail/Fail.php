@@ -8,12 +8,12 @@ use Serendipity\Presentation\Output;
 
 abstract class Fail extends Output
 {
-    final public function __construct(null|array|int|string $content, array $properties = [])
+    final public function __construct(array|int|string|null $content, array $properties = [])
     {
         parent::__construct($content, $properties);
     }
 
-    final public static function createFrom(null|array|int|string $content = null, array $properties = []): static
+    final public static function createFrom(array|int|string|null $content = null, array $properties = []): static
     {
         return new static($content, $properties);
     }

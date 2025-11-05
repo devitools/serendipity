@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 use SleekDB\Query;
 
+use function Constructo\Cast\arrayify;
+use function Constructo\Cast\boolify;
+use function Constructo\Cast\floatify;
+use function Constructo\Cast\stringify;
 use function Hyperf\Support\env;
-use function Serendipity\Type\Cast\boolify;
-use function Serendipity\Type\Cast\floatify;
-use function Serendipity\Type\Cast\stringify;
 
 $connections = [
     'postgres' => [
@@ -111,9 +112,9 @@ $connections = [
     ],
 ];
 
-$default = env('DB_CONNECTION', 'postgres');
+$default = stringify(env('DB_CONNECTION', 'postgres'));
 
 return [
-    'default' => $connections[$default] ?? $connections['postgres'],
+    'default' => arrayify($connections[$default] ?? $connections['postgres']),
     ...$connections,
 ];

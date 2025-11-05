@@ -10,7 +10,7 @@ class RegexCondition implements Condition
 {
     public function compose(string $value): array
     {
-        $patterns = array_map('trim', explode(',', $value));
+        $patterns = array_map(trim(...), explode(',', $value));
         if (count($patterns) > 1) {
             return [
                 '$or' => array_map(fn ($pattern) => ['$regex' => $pattern], $patterns),

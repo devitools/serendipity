@@ -63,7 +63,7 @@ final class PostgresHelper extends AbstractHelper
 
         /** @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = sprintf('insert into "%s" (%s) values (%s)', $resource, $columns, $values);
-        $bindings = array_map(fn (mixed $element) => $this->normalize($element), array_values($data));
+        $bindings = array_map($this->normalize(...), array_values($data));
 
         $this->database->execute($query, $bindings);
         return new Set($data);
@@ -79,7 +79,7 @@ final class PostgresHelper extends AbstractHelper
         /** @noinspection SqlNoDataSourceInspection */
         $query = sprintf('select count(*) as count from "%s" where %s', $resource, $where);
         $bindings = array_values(array_filter($filters, fn (mixed $value) => $value !== null));
-        $bindings = array_map(fn (mixed $element) => $this->normalize($element), $bindings);
+        $bindings = array_map($this->normalize(...), $bindings);
         $result = $this->database->query($query, $bindings);
         $array = arrayify($result);
         $data = arrayify(array_shift($array));
