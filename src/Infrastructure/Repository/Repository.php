@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Repository;
 
 use Constructo\Support\Datum;
-use Constructo\Support\Entity;
 use Constructo\Type\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Throwable;
@@ -13,10 +12,12 @@ use Throwable;
 use function array_shift;
 use function Constructo\Cast\arrayify;
 
+/**
+ * @template T of object
+ */
 abstract class Repository
 {
     /**
-     * @template T of Entity
      * @param Serializer<T> $serializer
      *
      * @return null|T
@@ -32,10 +33,11 @@ abstract class Repository
     }
 
     /**
-     * @template T of Collection
-     * @param class-string<T> $collection
+     * @template U of Collection
+     * @param Serializer<T> $serializer
+     * @param class-string<U> $collection
      *
-     * @return T
+     * @return U
      */
     protected function collection(Serializer $serializer, array $data, string $collection): mixed
     {

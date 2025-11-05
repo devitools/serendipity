@@ -8,6 +8,10 @@ use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Infrastructure\Database\Managed;
 use SleekDB\Store;
 
+/**
+ * @template T of object
+ * @extends Repository<T>
+ */
 abstract class SleekDBRepository extends Repository
 {
     protected readonly Store $store;

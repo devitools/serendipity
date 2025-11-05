@@ -17,6 +17,10 @@ use Serendipity\Infrastructure\Database\Managed;
 
 use function Constructo\Cast\mapify;
 
+/**
+ * @template T of object
+ * @extends Repository<T>
+ */
 abstract class MongoRepository extends Repository
 {
     protected readonly Collection $collection;
