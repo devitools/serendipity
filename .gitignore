@@ -6,6 +6,7 @@
 .git/
 runtime/
 tests/.phpunit/
+coverage/
 vendor/
 .phpintel/
 .env
