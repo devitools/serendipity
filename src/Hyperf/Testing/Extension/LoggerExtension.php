@@ -8,7 +8,7 @@ use PHPUnit\Framework\Constraint\IsTrue;
 use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Memory;
 use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Record;
 
-use function Serendipity\Type\Json\encode;
+use function Constructo\Json\encode;
 
 /**
  * @phpstan-ignore trait.unused

@@ -11,7 +11,7 @@ use Serendipity\Presentation\Input;
 use Serendipity\Presentation\Input\Mapped;
 use Serendipity\Test\Testing\ExtensibleCase;
 
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 final class MappedTest extends ExtensibleCase
 {

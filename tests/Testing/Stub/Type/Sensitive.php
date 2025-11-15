@@ -11,7 +11,7 @@ use Serendipity\Domain\Contract\Testing\Faker;
 
 use function Serendipity\Crypt\decrypt;
 use function Serendipity\Crypt\encrypt;
-use function Serendipity\Type\Cast\stringify;
+use function Constructo\Cast\stringify;
 
 class Sensitive implements TypeExtended
 {

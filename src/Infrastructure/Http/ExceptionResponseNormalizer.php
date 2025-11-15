@@ -10,7 +10,7 @@ use Serendipity\Domain\Exception\ThrowableType;
 use Throwable;
 
 use function Constructo\Cast\integerify;
-use function Serendipity\Type\Json\decode;
+use function Constructo\Json\decode;
 
 class ExceptionResponseNormalizer
 {

@@ -8,8 +8,8 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Psr\Log\LogLevel;
 
+use function Constructo\Cast\stringify;
 use function Hyperf\Support\env;
-use function Serendipity\Type\Cast\stringify;
 
 $logLevel = stringify(env('STDOUT_LOG_LEVEL'));
 $formatter = match (env('APP_ENV', 'dev')) {

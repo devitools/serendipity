@@ -11,7 +11,7 @@ use function array_export;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\stringify;
 use function Hyperf\Collection\data_get;
-use function Serendipity\Type\Json\decode;
+use function Constructo\Json\decode;
 
 use const BASE_PATH;
 

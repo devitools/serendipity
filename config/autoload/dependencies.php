@@ -22,8 +22,8 @@ use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 
+use function Constructo\Cast\stringify;
 use function Hyperf\Support\env;
-use function Serendipity\Type\Cast\stringify;
 
 if (! defined('APP_ENV')) {
     define('APP_ENV', env('APP_ENV', 'dev'));

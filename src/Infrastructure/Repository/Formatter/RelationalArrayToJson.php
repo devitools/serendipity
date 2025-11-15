@@ -8,7 +8,7 @@ use Constructo\Contract\Formatter;
 
 use function is_array;
 use function is_string;
-use function Serendipity\Type\Json\encode;
+use function Constructo\Json\encode;
 
 class RelationalArrayToJson implements Formatter
 {

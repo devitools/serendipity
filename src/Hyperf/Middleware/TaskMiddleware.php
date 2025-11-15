@@ -19,7 +19,7 @@ use function array_map;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\stringify;
 use function Hyperf\Collection\data_get;
-use function Serendipity\Notation\upperify;
+use function Constructo\Notation\upperify;
 
 readonly class TaskMiddleware implements MiddlewareInterface
 {
