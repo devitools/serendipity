@@ -9,15 +9,11 @@ use Serendipity\Domain\Exception\Parser\ThrownFactory;
 
 use function Constructo\Cast\arrayify;
 
-class HyperfThrownFactory
+class HyperfThrownFactory extends ThrownFactory
 {
     public function __construct(private readonly ConfigInterface $config)
     {
-    }
-
-    public function make(): ThrownFactory
-    {
         $classification = $this->config->get('exceptions.classification', []);
-        return new ThrownFactory(arrayify($classification));
+        parent::__construct(arrayify($classification));
     }
 }
