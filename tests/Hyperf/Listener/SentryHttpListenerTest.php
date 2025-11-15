@@ -11,7 +11,7 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Serendipity\Domain\Exception\Parser\ThrownFactory;
+use Serendipity\Domain\Exception\Parser\DefaultThrownFactory;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
 use Serendipity\Hyperf\Listener\SentryHttpListener;
@@ -31,7 +31,7 @@ class SentryHttpListenerTest extends TestCase
         parent::setUp();
         $this->config = $this->createMock(ConfigInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->factory = new RequestAdditionalFactory(new ThrownFactory());
+        $this->factory = new RequestAdditionalFactory(new DefaultThrownFactory());
     }
 
     public function testListenWithoutDsn(): void

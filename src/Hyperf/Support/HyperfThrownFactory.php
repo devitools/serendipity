@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Support;
 
 use Hyperf\Contract\ConfigInterface;
-use Serendipity\Domain\Exception\Parser\ThrownFactory;
+use Serendipity\Domain\Exception\Parser\DefaultThrownFactory;
 
 use function Constructo\Cast\arrayify;
 
-class HyperfThrownFactory extends ThrownFactory
+class HyperfThrownFactory extends DefaultThrownFactory
 {
     public function __construct(private readonly ConfigInterface $config)
     {

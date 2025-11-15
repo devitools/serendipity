@@ -9,7 +9,7 @@ use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Domain\Exception\Parser\Additional;
-use Serendipity\Domain\Exception\Parser\ThrownFactory;
+use Serendipity\Domain\Exception\Parser\DefaultThrownFactory;
 use Throwable;
 
 use function array_map;
@@ -20,7 +20,7 @@ use function is_array;
 
 class RequestAdditionalFactory
 {
-    public function __construct(private readonly ThrownFactory $factory)
+    public function __construct(private readonly DefaultThrownFactory $factory)
     {
     }
 

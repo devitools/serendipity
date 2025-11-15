@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Domain\Exception\Parser\ThrownFactory;
+use Serendipity\Domain\Exception\Parser\DefaultThrownFactory;
 use Serendipity\Hyperf\Exception\ValidationExceptionHandler;
 use Serendipity\Infrastructure\Http\ExceptionResponseNormalizer;
 use Serendipity\Infrastructure\Http\JsonFormatter;
@@ -20,7 +20,7 @@ use Serendipity\Infrastructure\Http\RequestAdditionalFactory;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
 
-use function Serendipity\Type\Json\decode;
+use function Constructo\Json\decode;
 
 final class ValidationExceptionHandlerTest extends TestCase
 {
@@ -67,7 +67,7 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();
-        $thrownFactory = new ThrownFactory();
+        $thrownFactory = new DefaultThrownFactory();
         $additionalFactory = new RequestAdditionalFactory($thrownFactory);
         $normalizer = new ExceptionResponseNormalizer();
 
@@ -138,7 +138,7 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();
-        $thrownFactory = new ThrownFactory();
+        $thrownFactory = new DefaultThrownFactory();
         $additionalFactory = new RequestAdditionalFactory($thrownFactory);
         $normalizer = new ExceptionResponseNormalizer();
 
@@ -181,7 +181,7 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();
-        $thrownFactory = new ThrownFactory();
+        $thrownFactory = new DefaultThrownFactory();
         $additionalFactory = new RequestAdditionalFactory($thrownFactory);
         $normalizer = new ExceptionResponseNormalizer();
 
@@ -208,7 +208,7 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();
-        $thrownFactory = new ThrownFactory();
+        $thrownFactory = new DefaultThrownFactory();
         $additionalFactory = new RequestAdditionalFactory($thrownFactory);
         $normalizer = new ExceptionResponseNormalizer();
 
@@ -233,7 +233,7 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         // Use real implementations for these classes
         $formatter = new JsonFormatter();
-        $thrownFactory = new ThrownFactory();
+        $thrownFactory = new DefaultThrownFactory();
         $additionalFactory = new RequestAdditionalFactory($thrownFactory);
         $normalizer = new ExceptionResponseNormalizer();
 

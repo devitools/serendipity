@@ -21,9 +21,8 @@ class HyperfThrownFactoryTest extends TestCase
             ->willReturn($classification);
 
         $factory = new HyperfThrownFactory($configMock);
-        $thrownFactory = $factory->make();
 
-        $thrown = $thrownFactory->make(new Exception());
+        $thrown = $factory->make(new Exception());
         $this->assertEquals(ThrowableType::INVALID_INPUT, $thrown->type);
     }
 }

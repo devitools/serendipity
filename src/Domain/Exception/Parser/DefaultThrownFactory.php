@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Exception\Parser;
 
 use DateTimeImmutable;
+use Serendipity\Domain\Contract\Support\ThrownFactory;
 use Serendipity\Domain\Exception\ThrowableType;
 use Throwable;
 
-class ThrownFactory
+class DefaultThrownFactory implements ThrownFactory
 {
     public function __construct(private readonly array $classification = [])
     {
