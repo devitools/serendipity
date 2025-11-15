@@ -21,6 +21,11 @@ deptrac:
             ^Constructo\\Type\\.*|\
             ^Constructo\\Factory\\.*
 
+    - name: Hyperf
+      collectors:
+        - type: classLike
+          value: ^Serendipity\\Hyperf\\.*
+
     - name: Infrastructure
       collectors:
         - type: classLike
@@ -31,16 +36,21 @@ deptrac:
         - type: classLike
           value: ^Serendipity\\Presentation\\.*
 
-    # Define the supported global layers
+    - name: Testing
+      collectors:
+        - type: classLike
+          value: ^Serendipity\\Testing\\.*
+
     - name: Contract
       collectors:
         - type: classLike
           value:
+            ^Psr\\.*|\
+            ^Constructo\\Contract\\.*|\
             ^Hyperf\\Contract\\.*|\
-            ^Psr\\Container\\ContainerExceptionInterface$|\
-            ^Psr\\Container\\NotFoundExceptionInterface$|\
-            ^Psr\\EventDispatcher\\EventDispatcherInterface$|\
-            ^Constructo\\Contract\\.*
+            ^Hyperf\\HttpServer\\Contract\\.*|\
+            ^Hyperf\\Validation\\.*|\
+            ^Hyperf\\Context\\Context$
 
     - name: Native
       collectors:
@@ -49,43 +59,19 @@ deptrac:
 
     - name: Vendor
       collectors:
-        - type: bool
-          must:
-            - type: classLike
-              value:
-                ^Psr\\(Http|Log|Container)\\.*|\
-                ^Hyperf\\(Command|Context|Coordinator|DB|Event|ExceptionHandler|Guzzle|HttpMessage|HttpServer)\\.*|\
-                ^Google\\.*|\
-                ^GuzzleHttp\\.*|\
-                ^SleekDB\\.*|\
-                ^Visus\\Cuid2\\.*|\
-                ^Sentry\\.*|\
-                ^Swow\\.*|\
-                ^MongoDB\\.*|\
-                ^Symfony\\.*
-          must_not:
-            - type: classLike
-              value:
-                ^Hyperf\\Contract\\.*|\
-                ^Psr\\Container\\ContainerInterface$|\
-                ^Psr\\Container\\ContainerExceptionInterface$|\
-                ^Psr\\Container\\NotFoundExceptionInterface$|\
-                ^Psr\\Http\\Message\\ServerRequestInterface$|\
-                ^Psr\\EventDispatcher\\EventDispatcherInterface$|\
-                ^Hyperf\\Context\\Context$|\
-                ^Hyperf\\Validation\\ValidationException$|\
-                ^Hyperf\\Validation\\Request\\FormRequest$
-
-    - name: Validation
-      collectors:
         - type: classLike
           value:
-            ^Serendipity\\Hyperf\\Request\\HyperfFormRequest$|\
-            ^Psr\\Container\\ContainerInterface$|\
-            ^Psr\\Http\\Message\\ServerRequestInterface$|\
-            ^Hyperf\\Context\\Context$|\
-            ^Hyperf\\Validation\\ValidationException$|\
-            ^Hyperf\\Validation\\Request\\FormRequest$
+            ^Google\\.*|\
+            ^GuzzleHttp\\.*|\
+            ^SleekDB\\.*|\
+            ^Visus\\Cuid2\\.*|\
+            ^Sentry\\.*|\
+            ^Swow\\.*|\
+            ^MongoDB\\.*|\
+            ^Symfony\\.*|\
+            ^Hyperf\\(?!Contract|Validation|Context\\Context).*|\
+            ^FastRoute\\.*|\
+            ^PHPUnit\\.*
 
   ruleset:
     Application:
@@ -95,20 +81,30 @@ deptrac:
     Domain:
       - Contract
       - Native
+    Hyperf:
+      - Domain
+      - Contract
+      - Native
+      - Infrastructure
+      - Testing
+      - Presentation
+      - Vendor
     Infrastructure:
       - Domain
       - Contract
       - Native
+      - Hyperf
       - Vendor
-      - Validation
     Presentation:
       - Domain
       - Contract
       - Native
-      - Application
       - Infrastructure
-      - Validation
-    Validation:
+      - Hyperf
+    Testing:
       - Domain
-      - Native
       - Contract
+      - Native
+      - Presentation
+      - Hyperf
+      - Vendor

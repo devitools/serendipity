@@ -15,7 +15,7 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
-      - name: Cache Docker images.
+      - name: Cache Docker images
         uses: ScribeMD/docker-cache@0.5.0
         with:
           key: docker-${{ runner.os }}-${{ hashFiles('compose.yaml') }}
@@ -31,9 +31,6 @@ jobs:
       - name: Put everything up
         run: docker compose --profile postgres up -d
 
-      - name: Setup the application environment
-        run: docker compose exec app composer install
-
       - name: Wait until 1 minute for postgres be ready to GO
         uses: nick-fields/retry@v3
         with:
@@ -42,6 +39,9 @@ jobs:
           max_attempts: 12
           warning_on_retry: false
           command: docker compose exec postgres pg_isready
+
+      - name: Setup the application environment
+        run: docker compose exec app composer install
 
       - name: Configure database environment
         run: docker compose exec app php bin/hyperf.php migrate --database=postgres

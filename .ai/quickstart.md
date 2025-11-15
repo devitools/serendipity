@@ -156,9 +156,9 @@ docker-compose exec app composer test -- --filter=ExampleTest
 make lint
 
 # Check specific tools
-make lint-phpstan    # Static analysis
-make lint-phpcs      # Code style
-make lint-psalm      # Additional static analysis
+make lint.phpstan    # Static analysis
+make lint.phpcs      # Code style
+make lint.psalm      # Additional static analysis
 ```
 
 ## Development Environment

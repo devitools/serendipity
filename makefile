@@ -45,22 +45,22 @@ dump: ## Run the composer dump
 lint: ## Perform code style lint
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint
 
-lint-phpcs: ## Perform code style list using phpcs
+lint.phpcs: ## Perform code style list using phpcs
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint:phpcs
 
-lint-phpstan: ## Perform code style list using phpstan
+lint.phpstan: ## Perform code style list using phpstan
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint:phpstan
 
-lint-deptrac: ## Perform code style list using deptrac
+lint.deptrac: ## Perform code style list using deptrac
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint:deptrac
 
-lint-phpmd: ## Perform code style list using phpmd
+lint.phpmd: ## Perform code style list using phpmd
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint:phpmd
 
-lint-rector: ## Perform code style list using rector
+lint.rector: ## Perform code style list using rector
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint:rector
 
-lint-psalm: ## Perform code style list using psalm
+lint.psalm: ## Perform code style list using psalm
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app lint:psalm
 
 fix: ## Perform code style fix

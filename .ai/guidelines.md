@@ -18,7 +18,7 @@ The project uses PHP-CS-Fixer with a combination of PSR2, Symfony, DoctrineAnnot
 
 ```bash
 # Check code style
-make lint-phpcs
+make lint.phpcs
 
 # Fix code style issues
 make fix
@@ -30,19 +30,19 @@ The project uses multiple static analysis tools to maintain code quality:
 
 ```bash
 # Run PHPStan
-make lint-phpstan
+make lint.phpstan
 
 # Run Psalm
-make lint-psalm
+make lint.psalm
 
 # Run Deptrac (dependency analysis)
-make lint-deptrac
+make lint.deptrac
 
 # Run PHP Mess Detector
-make lint-phpmd
+make lint.phpmd
 
 # Run Rector (with dry-run)
-make lint-rector
+make lint.rector
 
 # Run all linting tools
 make lint
