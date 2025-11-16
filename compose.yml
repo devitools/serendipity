@@ -23,7 +23,6 @@ services:
     depends_on:
       - postgres
       - mongo
-      - mongo-bootstrap
 
   postgres:
     container_name: serendipity-postgres
