@@ -9,6 +9,12 @@ services:
       - STDOUT_LOG_LEVEL=alert,critical,emergency,error,warning,notice,info,debug
       - SONAR_TOKEN=${SONAR_TOKEN:-undefined}
     entrypoint: [ 'tail', '-f', '/dev/null' ]
+    healthcheck:
+      test: [ "CMD-SHELL", "php -v || exit 1" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
     networks:
       - serendipity-network
     restart: on-failure
