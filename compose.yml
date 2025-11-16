@@ -1,7 +1,7 @@
 services:
   app:
     container_name: serendipity-app
-    image: devitools/hyperf:8.3
+    image: devitools/hyperf:8.3-dev
     volumes:
       - ./:/opt/www
     environment:
@@ -20,6 +20,10 @@ services:
     restart: on-failure
     ports:
       - "9600:9501"
+    depends_on:
+      - postgres
+      - mongo
+      - mongo-bootstrap
 
   postgres:
     container_name: serendipity-postgres
