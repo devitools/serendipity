@@ -1,7 +1,7 @@
 services:
   app:
     container_name: serendipity-app
-    image: devitools/hyperf:8.3-arm-dev
+    image: devitools/hyperf:8.3
     volumes:
       - ./:/opt/www
     environment:
