@@ -29,25 +29,10 @@ jobs:
         run: git config --global --add safe.directory /__w/serendipity/serendipity
 
       - name: Put everything up
-        run: docker compose --profile postgres up -d
-
-      - name: Wait until 1 minute for postgres be ready to GO
-        uses: nick-fields/retry@v3
-        with:
-          timeout_seconds: 60
-          retry_wait_seconds: 5
-          max_attempts: 12
-          warning_on_retry: false
-          command: docker compose exec postgres pg_isready
-
-      - name: Setup the application environment
-        run: docker compose exec app composer install
-
-      - name: Configure database environment
-        run: docker compose exec app php bin/hyperf.php migrate --database=postgres
+        run: make setup
 
       - name: Run tests and generate coverage
-        run: docker compose exec app composer test
+        run: make ci
 
       - name: Run SonarCloud analysis
-        run: docker compose exec app sonar-scanner -Dsonar.host.url=https://sonarcloud.io -X
+        run: make sonar
