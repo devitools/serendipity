@@ -228,13 +228,11 @@ class HttpRepositoryTest extends TestCase
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($event) {
-                return $event instanceof RequestExecutedEvent
-                    && $event->method === 'POST'
-                    && $event->uri === '/api'
-                    && isset($event->options['json'])
-                    && $event->message !== null;
-            }));
+            ->with($this->callback(fn($event) => $event instanceof RequestExecutedEvent
+                && $event->method === 'POST'
+                && $event->uri === '/api'
+                && isset($event->options['json'])
+                && $event->message !== null));
 
         $repository = new HttpRepositoryTestMock($clientFactory, $dispatcher);
         $repository->exposeRequest('POST', '/api', ['json' => ['key' => 'value']]);
@@ -261,12 +259,10 @@ class HttpRepositoryTest extends TestCase
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($event) {
-                return $event instanceof RequestExecutedEvent
-                    && $event->method === 'POST'
-                    && $event->uri === '/api'
-                    && $event->message !== null;
-            }));
+            ->with($this->callback(fn($event) => $event instanceof RequestExecutedEvent
+                && $event->method === 'POST'
+                && $event->uri === '/api'
+                && $event->message !== null));
 
         $thrownFactory = $this->createMock(ThrownFactory::class);
         $thrownFactory->expects($this->once())
@@ -277,7 +273,7 @@ class HttpRepositoryTest extends TestCase
         try {
             $repository = new HttpRepositoryTestMock($clientFactory, $dispatcher, $thrownFactory);
             $repository->exposeRequest('POST', '/api');
-        } catch (RepositoryException $exception) {
+        } catch (RepositoryException) {
             // Expected exception
         }
     }
