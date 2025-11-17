@@ -9,9 +9,9 @@ use Constructo\Support\Reflective\Definition\TypeExtended;
 use Constructo\Support\Value;
 use Serendipity\Domain\Contract\Testing\Faker;
 
+use function Constructo\Cast\stringify;
 use function Serendipity\Crypt\decrypt;
 use function Serendipity\Crypt\encrypt;
-use function Constructo\Cast\stringify;
 
 class Sensitive implements TypeExtended
 {

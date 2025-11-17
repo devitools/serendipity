@@ -37,7 +37,7 @@ class ExceptionResponseNormalizer
         };
     }
 
-    public function normalizeBody(ResponseType $type, string $message): array|string|null
+    public function normalizeBody(ResponseType $type, string $message): null|array|string
     {
         $data = decode($message);
         return match ($type) {

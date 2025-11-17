@@ -7,9 +7,9 @@ namespace Serendipity\Test\Testing\Stub;
 use Hyperf\Validation\Rule;
 use Serendipity\Presentation\Input;
 
+use function Constructo\Cast\stringify;
 use function Hyperf\Collection\data_get;
 use function preg_replace;
-use function Constructo\Cast\stringify;
 
 /**
  * @see https://hyperf.wiki/3.1/#/en/validation?id=form-request-validation

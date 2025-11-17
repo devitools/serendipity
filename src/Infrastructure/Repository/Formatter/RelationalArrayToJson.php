@@ -6,9 +6,9 @@ namespace Serendipity\Infrastructure\Repository\Formatter;
 
 use Constructo\Contract\Formatter;
 
+use function Constructo\Json\encode;
 use function is_array;
 use function is_string;
-use function Constructo\Json\encode;
 
 class RelationalArrayToJson implements Formatter
 {

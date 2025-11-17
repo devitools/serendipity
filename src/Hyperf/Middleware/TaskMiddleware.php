@@ -18,8 +18,8 @@ use Throwable;
 use function array_map;
 use function Constructo\Cast\arrayify;
 use function Constructo\Cast\stringify;
-use function Hyperf\Collection\data_get;
 use function Constructo\Notation\upperify;
+use function Hyperf\Collection\data_get;
 
 readonly class TaskMiddleware implements MiddlewareInterface
 {

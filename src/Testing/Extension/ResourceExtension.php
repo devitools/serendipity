@@ -12,8 +12,8 @@ use Serendipity\Domain\Support\Truncate;
 
 use function array_key_first;
 use function Constructo\Cast\stringify;
-use function count;
 use function Constructo\Json\encode;
+use function count;
 use function sprintf;
 
 trait ResourceExtension

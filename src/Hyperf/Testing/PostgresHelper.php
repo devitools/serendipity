@@ -90,7 +90,7 @@ final class PostgresHelper extends AbstractHelper
         return integerify($count);
     }
 
-    private function normalize(mixed $element): float|int|string|null
+    private function normalize(mixed $element): null|float|int|string
     {
         return match (true) {
             is_bool($element) => integerify($element),
