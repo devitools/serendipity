@@ -20,9 +20,6 @@ services:
     restart: on-failure
     ports:
       - "9600:9501"
-    depends_on:
-      - postgres
-      - mongo
 
   postgres:
     container_name: serendipity-postgres

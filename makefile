@@ -35,7 +35,7 @@ watch: ## Start the project in watch mode
 ##@ Composer
 
 install: ## Composer install dependencies
-	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app install
+	@$(COMPOSE_RUNNER) --profile mongo --profile postgres run --rm --entrypoint composer app install
 
 dump: ## Run the composer dump
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app dump-autoload
