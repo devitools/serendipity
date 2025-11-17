@@ -9,7 +9,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Guzzle\ClientFactory;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Serendipity\Domain\Contract\Support\ThrownFactory;
 use Serendipity\Domain\Event\RequestExecutedEvent;
@@ -19,6 +18,7 @@ use Serendipity\Infrastructure\Http\Received;
 
 use function Constructo\Json\encode;
 use function Hyperf\Support\make;
+use function Serendipity\Runtime\dispatch;
 
 abstract class HttpRepository
 {
@@ -26,19 +26,15 @@ abstract class HttpRepository
 
     private readonly array $options;
 
-    private readonly EventDispatcherInterface $dispatcher;
-
     private readonly ThrownFactory $thrownFactory;
 
     public function __construct(
         ClientFactory $clientFactory,
-        ?EventDispatcherInterface $dispatcher = null,
         ?ThrownFactory $thrownFactory = null,
     ) {
         $this->options = $this->options();
         $this->client = $clientFactory->create($this->options);
 
-        $this->dispatcher = $dispatcher ?? make(EventDispatcherInterface::class);
         $this->thrownFactory = $thrownFactory ?? make(HyperfThrownFactory::class);
     }
 
@@ -106,6 +102,6 @@ abstract class HttpRepository
     {
         $options = array_merge($this->options, $options);
         $event = new RequestExecutedEvent($method, $uri, $options, $message);
-        $this->dispatcher->dispatch($event);
+        dispatch($event);
     }
 }

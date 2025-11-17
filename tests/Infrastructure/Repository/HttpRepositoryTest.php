@@ -10,15 +10,12 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use Hyperf\Guzzle\ClientFactory;
 use PHPUnit\Framework\TestCase;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Serendipity\Domain\Contract\Support\ThrownFactory;
-use Serendipity\Domain\Event\RequestExecutedEvent;
 use Serendipity\Domain\Exception\Parser\Thrown;
 use Serendipity\Domain\Exception\RepositoryException;
-use Serendipity\Domain\Exception\ThrowableType;
 
 class HttpRepositoryTest extends TestCase
 {
@@ -156,12 +153,8 @@ class HttpRepositoryTest extends TestCase
             ->with($exception)
             ->willReturn(Thrown::createFrom($exception));
 
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $dispatcher->expects($this->once())
-            ->method('dispatch');
-
         try {
-            $repository = new HttpRepositoryTestMock($clientFactory, $dispatcher, $thrownFactory);
+            $repository = new HttpRepositoryTestMock($clientFactory, $thrownFactory);
             $repository->exposeRequest();
             $this->fail('Expected RepositoryException to be thrown');
         } catch (RepositoryException $e) {
@@ -195,86 +188,7 @@ class HttpRepositoryTest extends TestCase
             ->with($exception)
             ->willReturn(Thrown::createFrom($exception));
 
-        $repository = new HttpRepositoryTestMock($clientFactory, null, $thrownFactory);
+        $repository = new HttpRepositoryTestMock($clientFactory, $thrownFactory);
         $repository->exposeRequest();
-    }
-
-    public function testShouldDispatchEventOnSuccess(): void
-    {
-        $stream = $this->createMock(StreamInterface::class);
-        $stream->expects($this->once())
-            ->method('getContents')
-            ->willReturn('{"message": "Success"}');
-
-        $response = $this->createMock(ResponseInterface::class);
-        $response->expects($this->once())
-            ->method('getHeaders')
-            ->willReturn([]);
-        $response->expects($this->once())
-            ->method('getBody')
-            ->willReturn($stream);
-
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('request')
-            ->with('POST', '/api', ['json' => ['key' => 'value']])
-            ->willReturn($response);
-
-        $clientFactory = $this->createMock(ClientFactory::class);
-        $clientFactory->expects($this->once())
-            ->method('create')
-            ->willReturn($client);
-
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $dispatcher->expects($this->once())
-            ->method('dispatch')
-            ->with($this->callback(fn($event) => $event instanceof RequestExecutedEvent
-                && $event->method === 'POST'
-                && $event->uri === '/api'
-                && isset($event->options['json'])
-                && $event->message !== null));
-
-        $repository = new HttpRepositoryTestMock($clientFactory, $dispatcher);
-        $repository->exposeRequest('POST', '/api', ['json' => ['key' => 'value']]);
-    }
-
-    public function testShouldDispatchEventOnFailure(): void
-    {
-        $exception = new ConnectException(
-            'Connection refused',
-            $this->createMock(RequestInterface::class)
-        );
-
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('request')
-            ->with('POST', '/api', [])
-            ->willThrowException($exception);
-
-        $clientFactory = $this->createMock(ClientFactory::class);
-        $clientFactory->expects($this->once())
-            ->method('create')
-            ->willReturn($client);
-
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $dispatcher->expects($this->once())
-            ->method('dispatch')
-            ->with($this->callback(fn($event) => $event instanceof RequestExecutedEvent
-                && $event->method === 'POST'
-                && $event->uri === '/api'
-                && $event->message !== null));
-
-        $thrownFactory = $this->createMock(ThrownFactory::class);
-        $thrownFactory->expects($this->once())
-            ->method('make')
-            ->with($exception)
-            ->willReturn(Thrown::createFrom($exception));
-
-        try {
-            $repository = new HttpRepositoryTestMock($clientFactory, $dispatcher, $thrownFactory);
-            $repository->exposeRequest('POST', '/api');
-        } catch (RepositoryException) {
-            // Expected exception
-        }
     }
 }
