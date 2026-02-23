@@ -71,7 +71,7 @@
     "hyperf/validation": "^3.1",
     "jawira/case-converter": "^3.5",
     "mongodb/mongodb": "^1.19",
-    "monolog/monolog": "^3.8",
+    "monolog/monolog": "^2.9 || ^3.8",
     "mustache/mustache": "^2.14",
     "php-ds/php-ds": "^1.5",
     "psr/container": "^2.0",
