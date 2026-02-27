@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Testing\Extension;
 
+use ArrayObject;
 use FastRoute\Dispatcher;
 use Hyperf\Context\Context;
+use Hyperf\Contract\ValidatorInterface;
 use Hyperf\HttpMessage\Server\Request;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Presentation\Input;
+
+use function array_keys;
+use function spl_object_hash;
+use function sprintf;
+use function str_contains;
+use function str_ends_with;
 
 /**
  * @phpstan-ignore trait.unused
@@ -39,6 +47,17 @@ trait InputExtension
         $this->isRequestSetUp = $isRequestSetUp;
         Context::destroy(ServerRequestInterface::class);
         Context::destroy('http.request.parsedData');
+
+        $context = Context::getContainer();
+        if ($context instanceof ArrayObject) {
+            $keys = array_keys($context->getArrayCopy());
+            foreach ($keys as $key) {
+                if (str_contains($key, ValidatorInterface::class)
+                    || str_ends_with($key, ':scene')) {
+                    Context::destroy($key);
+                }
+            }
+        }
     }
 
     /**
@@ -58,7 +77,13 @@ trait InputExtension
     ): mixed {
         if ($this->isRequestSetUp) {
             $this->setUpRequestContext($parsedBody, $queryParams, $params, $headers);
-            return $this->make($class, $args);
+            $input = $this->make($class, $args);
+
+            $hash = spl_object_hash($input);
+            Context::destroy(sprintf('%s:%s', $hash, ValidatorInterface::class));
+            Context::destroy(sprintf('%s:%s', $hash, 'scene'));
+
+            return $input;
         }
         static::fail('Request is not set up.');
     }
