@@ -26,9 +26,71 @@ final class InputExtensionTest extends TestCase
 
     protected function tearDown(): void
     {
-        Context::destroy(ServerRequestInterface::class);
-        Context::destroy('http.request.parsedData');
+        $this->mock->exposeTearDownInput();
+        Context::destroy('unrelated-context');
         parent::tearDown();
+    }
+
+    public function testReusedInputDiscardsItsCachedValidatorAndScene(): void
+    {
+        $input = $this->createPartialMock(Input::class, []);
+        $this->mock = new InputExtensionMock($input);
+        $this->mock->exposeSetUpInput();
+        $first = $this->mock->exposeInput(Input::class, ['value' => 'first']);
+        $validatorKey = sprintf('%s:%s', spl_object_hash($input), ValidatorInterface::class);
+        $validator = $this->createMock(ValidatorInterface::class);
+        Context::set($validatorKey, $validator);
+        $input->scene('previous-request');
+        Context::set('unrelated-context', 'preserved');
+        $this->assertSame($validator, Context::get($validatorKey));
+        $this->assertSame('previous-request', $input->getScene());
+
+        $second = $this->mock->exposeInput(Input::class, ['value' => 'second']);
+
+        $this->assertSame($first, $second);
+        $this->assertNull(Context::get($validatorKey));
+        $this->assertNull($input->getScene());
+        $this->assertSame(['value' => 'second'], Context::get(ServerRequestInterface::class)->getParsedBody());
+        $this->assertSame('preserved', Context::get('unrelated-context'));
+    }
+
+    public function testScalarFactoryResultRemainsSupported(): void
+    {
+        $this->mock = new InputExtensionMock(0);
+        $this->mock->exposeSetUpInput();
+
+        $result = $this->mock->exposeInput('TestClass', ['value' => 'scalar']);
+
+        $this->assertSame(0, $result);
+        $this->assertSame(['value' => 'scalar'], Context::get(ServerRequestInterface::class)->getParsedBody());
+    }
+
+    public function testRegisteredTearDownClearsAllValidationContextsAndPreservesOtherState(): void
+    {
+        $this->mock->exposeSetUpInput();
+        $first = $this->createPartialMock(Input::class, []);
+        $second = $this->createPartialMock(Input::class, []);
+        $firstKey = sprintf('%s:%s', spl_object_hash($first), ValidatorInterface::class);
+        $secondKey = sprintf('%s:%s', spl_object_hash($second), ValidatorInterface::class);
+        Context::set($firstKey, $this->createMock(ValidatorInterface::class));
+        Context::set($secondKey, $this->createMock(ValidatorInterface::class));
+        $first->scene('first');
+        $second->scene('second');
+        Context::set('unrelated-context', 'preserved');
+        Context::set(ServerRequestInterface::class, 'request');
+        Context::set('http.request.parsedData', ['stale' => true]);
+        $cleanup = $this->mock->getRegisteredTearDowns()[0];
+
+        $cleanup();
+
+        $this->assertFalse($this->mock->getIsRequestSetUp());
+        $this->assertNull(Context::get($firstKey));
+        $this->assertNull(Context::get($secondKey));
+        $this->assertNull($first->getScene());
+        $this->assertNull($second->getScene());
+        $this->assertNull(Context::get(ServerRequestInterface::class));
+        $this->assertNull(Context::get('http.request.parsedData'));
+        $this->assertSame('preserved', Context::get('unrelated-context'));
     }
 
     public function testSetUpInputShouldRegisterTearDown(): void

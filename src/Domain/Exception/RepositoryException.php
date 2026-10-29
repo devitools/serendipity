@@ -7,6 +7,8 @@ namespace Serendipity\Domain\Exception;
 use Exception;
 use Throwable;
 
+use function is_int;
+
 class RepositoryException extends Exception
 {
     public readonly ThrowableType $type;
@@ -18,9 +20,10 @@ class RepositoryException extends Exception
         ?string $message = null,
         ?int $code = null,
     ) {
+        $previousCode = $previous?->getCode();
         parent::__construct(
             $message ?? $previous?->getMessage() ?? '',
-            $code ?? $previous?->getCode() ?? 0,
+            $code ?? (is_int($previousCode) ? $previousCode : 0),
             $previous
         );
 

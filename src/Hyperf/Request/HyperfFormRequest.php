@@ -105,11 +105,16 @@ abstract class HyperfFormRequest extends FormRequest
         return data_get($data->toArray(), $key, $default);
     }
 
+    /**
+     * @param array<array<string>> $headers
+     * @return array<string>
+     */
     private function normalizeHeaders(array $headers): array
     {
-        $callback = fn (mixed $value) => is_array($value)
-            ? implode('; ', $value)
-            : $value;
-        return array_map($callback, $headers);
+        $normalized = [];
+        foreach ($headers as $name => $values) {
+            $normalized[$name] = implode('; ', $values);
+        }
+        return $normalized;
     }
 }

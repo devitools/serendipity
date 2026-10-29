@@ -15,15 +15,15 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
-      - name: Cache Docker images
-        uses: ScribeMD/docker-cache@0.5.0
-        with:
-          key: docker-${{ runner.os }}-${{ hashFiles('compose.yaml') }}
-
       - name: Checkout current code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Cache Docker images
+        uses: ScribeMD/docker-cache@0.5.0
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles('compose.yml', '.docker/ci/Dockerfile') }}
 
       - name: Configure Git permissions
         run: git config --global --add safe.directory /__w/serendipity/serendipity
