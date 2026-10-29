@@ -132,6 +132,68 @@ class DiagnosticPgSQLPoolTest extends TestCase
         $this->assertSame($pid, $this->pid($database));
     }
 
+    public function testSqlMessagesContainingTransportPatternsPreserveSavepointRecovery(): void
+    {
+        [$database, $pool] = $this->database();
+        $pid = $this->pid($database);
+        $connection = $pool->get()->getConnection();
+        try {
+            $connection->execute('CREATE TEMP TABLE recovery_preserved_writes (value integer)');
+            $connection->beginTransaction();
+            $connection->execute('INSERT INTO recovery_preserved_writes VALUES (1)');
+            foreach (['missing_onerror_review_probe', 'missing_broken pipe_review_probe'] as $table) {
+                $connection->beginTransaction();
+                try {
+                    $connection->query('SELECT * FROM "' . $table . '"');
+                    $this->fail('Expected a missing relation error');
+                } catch (QueryException $exception) {
+                    $this->assertStringContainsString($table, $exception->getMessage());
+                    $this->assertTrue($connection->check());
+                    $this->assertSame(2, $connection->transactionLevel());
+                }
+                $connection->rollBack();
+                $this->assertSame(1, $connection->transactionLevel());
+                $this->assertSame($pid, (int) $connection->query('SELECT pg_backend_pid() AS pid')[0]['pid']);
+            }
+            $connection->execute('INSERT INTO recovery_preserved_writes VALUES (2)');
+            $connection->commit();
+        } finally {
+            $connection->release();
+        }
+        $this->assertSame([['value' => 1], ['value' => 2]], $database->query('SELECT value FROM recovery_preserved_writes ORDER BY value'));
+        $this->assertSame($pid, $this->pid($database));
+        $this->assertSame(1, $pool->getCurrentConnections());
+        $this->assertSame(1, $pool->getConnectionsInChannel());
+    }
+
+    public function testNativeTimeoutOverridesStaleSqlDiagnosticsWithoutReplayingCallback(): void
+    {
+        [$database, $pool] = $this->database();
+        $pid = $this->pid($database);
+        $attempts = 0;
+        $diagnostics = [];
+
+        $callback = function ($driver) use (&$attempts, &$diagnostics): void {
+            ++$attempts;
+            $driver->resultDiag = ['sqlstate' => '42P01', 'message_primary' => 'old SQL error'];
+            if ($driver->query('SELECT pg_sleep(0.15)') === false) {
+                $diagnostics = [
+                    'sqlstate' => $driver->resultDiag['sqlstate'],
+                    'code' => $driver->errCode,
+                    'error' => $driver->error,
+                ];
+                throw new QueryException('Native callback timed out');
+            }
+        };
+        $this->expectTimeout(fn () => $database->run($callback));
+
+        $this->assertSame(1, $attempts);
+        $this->assertSame(['sqlstate' => '42P01', 'code' => 0, 'error' => 'Coroutine timedout'], $diagnostics);
+        $this->assertNotSame($pid, $this->pid($database));
+        $this->assertSame(1, $pool->getCurrentConnections());
+        $this->assertSame(1, $pool->getConnectionsInChannel());
+    }
+
     public function testHealthyTransactionCanRollbackAfterSqlError(): void
     {
         [$database, $pool] = $this->database();
