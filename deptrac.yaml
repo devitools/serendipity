@@ -67,6 +67,7 @@ deptrac:
             ^Visus\\Cuid2\\.*|\
             ^Sentry\\.*|\
             ^Swow\\.*|\
+            ^Swoole\\.*|\
             ^MongoDB\\.*|\
             ^Symfony\\.*|\
             ^Hyperf\\(?!Contract|Validation|Context\\Context).*|\
