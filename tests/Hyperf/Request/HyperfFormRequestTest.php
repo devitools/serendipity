@@ -8,6 +8,7 @@ use Constructo\Support\Set;
 use Hyperf\Context\RequestContext;
 use Hyperf\Context\ResponseContext;
 use Hyperf\Contract\ValidatorInterface;
+use Hyperf\HttpMessage\Server\Request;
 use Hyperf\Support\MessageBag;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use Hyperf\Validation\ValidationException;
@@ -88,5 +89,26 @@ class HyperfFormRequestTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $formRequest->validateResolved();
+    }
+
+    public function testPropertiesNormalizePsrHeaderValuesAndPreserveBaseProperties(): void
+    {
+        $this->container->method('get')
+            ->with(EventDispatcherInterface::class)
+            ->willReturn($this->eventDispatcher);
+        $request = (new Request('GET', '/'))
+            ->withHeader('X-Regions', ['north', 'south'])
+            ->withHeader('X-Single', ['one'])
+            ->withHeader('X-Empty', []);
+        RequestContext::set($request);
+        $formRequest = new class ($this->container, Set::createFrom(['source' => 'base'])) extends HyperfFormRequest {
+        };
+
+        $properties = $formRequest->properties()->toArray();
+
+        $this->assertSame('north; south', $properties['X-Regions']);
+        $this->assertSame('one', $properties['X-Single']);
+        $this->assertSame('', $properties['X-Empty']);
+        $this->assertSame('base', $properties['source']);
     }
 }

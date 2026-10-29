@@ -1,7 +1,8 @@
 services:
   app:
     container_name: serendipity-app
-    image: devitools/hyperf:8.3-dev
+    build:
+      context: .docker/ci
     volumes:
       - ./:/opt/www
     environment:
@@ -53,7 +54,7 @@ services:
     volumes:
       - serendipity-mongo-data:/data/db
     healthcheck:
-      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u user -p password --quiet) -eq 1
+      test: [ "CMD", "mongosh", "--quiet", "--eval", "quit(db.hello().isWritablePrimary ? 0 : 1)" ]
       interval: 10s
       start_period: 30s
     networks:

@@ -177,7 +177,10 @@ class SentryHttpListenerTest extends TestCase
     {
         // Arrange
         $options = [
-            'dsn' => 'https://example.com/sentry',
+            'dsn' => null,
+            'integrations' => static function (array $integrations): array {
+                throw new Exception('SDK initialization failure');
+            },
         ];
 
         $this->config->expects($this->exactly(2))

@@ -16,6 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Presentation\Input;
 
 use function array_keys;
+use function is_object;
 use function spl_object_hash;
 use function sprintf;
 use function str_contains;
@@ -52,8 +53,7 @@ trait InputExtension
         if ($context instanceof ArrayObject) {
             $keys = array_keys($context->getArrayCopy());
             foreach ($keys as $key) {
-                if (str_contains($key, ValidatorInterface::class)
-                    || str_ends_with($key, ':scene')) {
+                if ($this->isValidationContextKey($key)) {
                     Context::destroy($key);
                 }
             }
@@ -61,6 +61,7 @@ trait InputExtension
     }
 
     /**
+     * @SuppressWarnings(StaticAccess)
      * @template T of mixed
      * @param class-string<T> $class
      * @param array<string, array<string>|string> $headers
@@ -79,9 +80,11 @@ trait InputExtension
             $this->setUpRequestContext($parsedBody, $queryParams, $params, $headers);
             $input = $this->make($class, $args);
 
-            $hash = spl_object_hash($input);
-            Context::destroy(sprintf('%s:%s', $hash, ValidatorInterface::class));
-            Context::destroy(sprintf('%s:%s', $hash, 'scene'));
+            if (is_object($input)) {
+                $hash = spl_object_hash($input);
+                Context::destroy(sprintf('%s:%s', $hash, ValidatorInterface::class));
+                Context::destroy(sprintf('%s:%s', $hash, 'scene'));
+            }
 
             return $input;
         }
@@ -111,6 +114,11 @@ trait InputExtension
             ->withAttribute(Dispatched::class, new Dispatched($array))
             ->withHeaders($headers);
         Context::set(ServerRequestInterface::class, $value);
+    }
+
+    private function isValidationContextKey(string $key): bool
+    {
+        return str_contains($key, ValidatorInterface::class) || str_ends_with($key, ':scene');
     }
 
     protected function invoke(callable $action, Input $input, array $values = [], int $columns = 80): mixed
