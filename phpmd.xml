@@ -16,7 +16,7 @@
     </rule>
     <rule ref="rulesets/cleancode.xml/StaticAccess">
         <properties>
-            <property name="ignorepattern" value="/(^createFrom|Raised|from|tryFrom|stack)/i"/>
+            <property name="ignorepattern" value="/(^createFrom|Raised|from|tryFrom|stack|^inCoroutine$|^getHookFlags$)/i"/>
         </properties>
     </rule>
     <rule ref="rulesets/controversial.xml"/>
