@@ -10,42 +10,54 @@ use Hyperf\Database\PgSQL\PostgreSqlConnection;
 use InvalidArgumentException;
 use PDO;
 use PDOException;
-use RuntimeException;
 use Throwable;
 
 class SingleAttemptPostgreSQLConnection extends PostgreSqlConnection
 {
-    private ?Throwable $failure = null;
+    private readonly PdoSessionState $session;
 
     public function __construct(
         PDO|Closure $pdo,
         string $database = '',
         string $prefix = '',
         array $config = [],
-        private readonly PdoFailureClassifier $classifier = new PdoFailureClassifier(),
+        PdoFailureClassifier $classifier = new PdoFailureClassifier(),
     ) {
+        $this->session = new PdoSessionState($classifier);
         parent::__construct($pdo, $database, $prefix, $config);
     }
 
     public function isInvalid(): bool
     {
-        return $this->failure !== null;
+        return $this->session->isInvalid();
+    }
+
+    public function requiresDiscard(): bool
+    {
+        return $this->isInvalid() || ($this->pdo instanceof PDO && $this->pdo->inTransaction());
     }
 
     public function withPdo(Closure $callback): void
     {
-        $this->guard();
+        $this->session->guard();
         try {
             $callback($this->getPdo());
         } catch (PDOException $exception) {
-            $this->recordFailure($exception);
+            $this->session->recordFailure($exception);
             throw $exception;
         }
     }
 
     public function commit(): void
     {
-        $this->withPdo(fn () => parent::commit());
+        try {
+            $this->withPdo(fn () => parent::commit());
+        } catch (PDOException $exception) {
+            if (! $this->requiresDiscard()) {
+                $this->transactions = 0;
+            }
+            throw $exception;
+        }
     }
 
     public function rollBack($toLevel = null): void
@@ -84,44 +96,31 @@ class SingleAttemptPostgreSQLConnection extends PostgreSqlConnection
         array $bindings,
         Closure $callback
     ): never {
-        $this->recordFailure($exception->getPrevious() ?? $exception);
+        $this->session->recordFailure($exception->getPrevious() ?? $exception);
         throw $exception;
     }
 
     protected function handleBeginTransactionException($exception): never
     {
-        $this->recordFailure($exception);
+        $this->session->recordFailure($exception);
         throw $exception;
+    }
+
+    protected function createSavepoint(): void
+    {
+        $this->withPdo(fn () => parent::createSavepoint());
     }
 
     protected function handleRollBackException($exception): never
     {
-        $this->failure ??= $exception;
+        $this->session->invalidate($exception);
         $this->transactions = 0;
         throw $exception;
     }
 
     protected function reconnectIfMissingConnection(): void
     {
-        $this->guard();
+        $this->session->guard();
         parent::reconnectIfMissingConnection();
-    }
-
-    private function guard(): void
-    {
-        if ($this->failure !== null) {
-            throw new RuntimeException(
-                'PostgreSQL session is invalid; operation was not executed. Release it before acquiring again.',
-                0,
-                $this->failure
-            );
-        }
-    }
-
-    private function recordFailure(Throwable $exception): void
-    {
-        if ($this->classifier->isConnectionFailure($exception)) {
-            $this->failure ??= $exception;
-        }
     }
 }

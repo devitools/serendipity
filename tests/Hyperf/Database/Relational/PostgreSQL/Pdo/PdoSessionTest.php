@@ -118,6 +118,64 @@ class PdoSessionTest extends TestCase
         });
     }
 
+    public function testNativeTransactionIsDiscardedWhenCallbackThrows(): void
+    {
+        $failure = new RuntimeException('application failure after native BEGIN');
+        $native = null;
+        $pid = $this->borrow(function () use ($failure, &$native): int {
+            $pid = $this->pid();
+            try {
+                $this->database->run(static function (PDO $pdo) use ($failure, &$native): void {
+                    $native = $pdo;
+                    $pdo->beginTransaction();
+                    $pdo->exec('CREATE TEMP TABLE pdo_native_uncommitted (id integer)');
+                    throw $failure;
+                });
+                $this->fail('Expected callback failure');
+            } catch (RuntimeException $exception) {
+                $this->assertSame($failure, $exception);
+            }
+            return $pid;
+        });
+
+        $this->assertInstanceOf(PDO::class, $native);
+        $this->assertFalse($native->inTransaction());
+        $this->borrow(function () use ($pid): void {
+            $this->assertNotSame($pid, $this->pid());
+            $this->database->run(function (PDO $pdo): void {
+                $this->assertFalse($pdo->inTransaction());
+            });
+            $this->assertNull($this->database->fetch("SELECT to_regclass('pg_temp.pdo_native_uncommitted') AS value")->get('value'));
+            $this->database->beginTransaction();
+            $this->database->query('SELECT 1');
+            $this->database->commit();
+        });
+        $this->assertSame(1, $this->pool->getCurrentConnections());
+        $this->assertSame(1, $this->pool->getConnectionsInChannel());
+    }
+
+    public function testDeferredConstraintCommitFailureAllowsAnotherTransaction(): void
+    {
+        $pid = $this->borrow(function (): int {
+            $pid = $this->pid();
+            $this->database->execute('CREATE TEMP TABLE pdo_deferred (id integer UNIQUE DEFERRABLE INITIALLY DEFERRED)');
+            $this->database->beginTransaction();
+            $this->database->execute('INSERT INTO pdo_deferred VALUES (1), (1)');
+            try {
+                $this->database->commit();
+                $this->fail('Expected deferred constraint failure');
+            } catch (\PDOException $exception) {
+                $this->assertSame('23505', $exception->errorInfo[0]);
+            }
+            $this->database->beginTransaction();
+            $this->database->execute('INSERT INTO pdo_deferred VALUES (2)');
+            $this->database->commit();
+            $this->assertSame([['id' => 2]], $this->database->query('SELECT id FROM pdo_deferred'));
+            return $pid;
+        });
+        $this->assertSame($pid, $this->borrow(fn () => $this->pid()));
+    }
+
     public function testOptInDoesNotChangeMysqlPoolSessions(): void
     {
         $this->container->get(ConfigInterface::class)->set('databases.mysql', [
@@ -131,6 +189,28 @@ class PdoSessionTest extends TestCase
             $connection->release();
             $pool->flushOne(true);
         }
+    }
+
+    public function testReleaseDoesNotResolveUntouchedPdoOrRepeatFailedInitialization(): void
+    {
+        $settings = $this->container->get(ConfigInterface::class)->get('databases.pdo_test');
+        $settings['schema'] = 'invalid"schema';
+        $this->container->get(ConfigInterface::class)->set('databases.lazy_pdo', $settings);
+        $pool = $this->container->get(PoolFactory::class)->getPool('lazy_pdo');
+        $connection = $pool->get();
+        $connection->release();
+        $this->assertSame(1, $pool->getConnectionsInChannel());
+        $connection = $pool->get();
+        try {
+            $connection->select('SELECT 1');
+            $this->fail('Expected initialization syntax error');
+        } catch (\PDOException $exception) {
+            $this->assertSame('42601', $exception->errorInfo[0]);
+        } finally {
+            $connection->release();
+        }
+        $this->assertSame(1, $pool->getConnectionsInChannel());
+        $pool->flushOne(true);
     }
 
     public function testSqlErrorAndServerTimeoutPreserveSessionAfterNormalRollback(): void

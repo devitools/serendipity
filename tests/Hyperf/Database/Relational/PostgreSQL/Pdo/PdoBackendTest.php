@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Test\Hyperf\Database\Relational\PostgreSQL\Pdo;
 
 use Hyperf\Config\Config;
+use Hyperf\Contract\PoolOptionInterface;
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Database\ConnectionResolverInterface;
 use Hyperf\Database\MySqlConnection;
 use Hyperf\DbConnection\Pool\DbPool;
@@ -23,6 +25,7 @@ use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\SingleAttemptConnectio
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\SingleAttemptConnector;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\SingleAttemptPool;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\SingleAttemptPooledConnection;
+use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\SingleAttemptPostgreSQLConnection;
 use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 use Swoole\Runtime;
 
@@ -114,5 +117,35 @@ class PdoBackendTest extends TestCase
 
         $this->expectExceptionObject($failure);
         $connection->getConnection();
+    }
+
+    public function testReleaseReturnsManagedConnectionEvenWhenNativeCleanupFails(): void
+    {
+        foreach (['inTransaction', 'rollBack'] as $operation) {
+            $pdo = $this->createMock(PDO::class);
+            $pdo->method('inTransaction')->willReturn(true);
+            $pdo->expects($this->once())->method($operation)->willThrowException(new PDOException('cleanup failure'));
+            $database = new SingleAttemptPostgreSQLConnection($pdo);
+            $factory = $this->createMock(SingleAttemptConnectionFactory::class);
+            $factory->method('make')->willReturn($database);
+            $logger = $this->createMock(StdoutLoggerInterface::class);
+            $logger->expects($this->once())->method('error');
+            $container = $this->createMock(ContainerInterface::class);
+            $container->method('get')->willReturnMap([
+                [\Hyperf\Database\Connectors\ConnectionFactory::class, $factory],
+                [StdoutLoggerInterface::class, $logger],
+            ]);
+            $pool = $this->createMock(DbPool::class);
+            $option = $this->createMock(PoolOptionInterface::class);
+            $option->method('getEvents')->willReturn([]);
+            $pool->method('getOption')->willReturn($option);
+            $connection = new SingleAttemptPooledConnection($container, $pool, []);
+            $pool->expects($this->once())->method('release')->with($connection);
+
+            $connection->release();
+
+            $this->assertNull($database->getPdo());
+            $this->assertSame(0.0, $connection->getLastUseTime());
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo;
 
 use Hyperf\DbConnection\Connection;
 use Hyperf\Database\ConnectionInterface;
+use Throwable;
 
 class SingleAttemptPooledConnection extends Connection
 {
@@ -16,12 +17,31 @@ class SingleAttemptPooledConnection extends Connection
 
     public function release(): void
     {
-        if ($this->connection instanceof SingleAttemptPostgreSQLConnection && $this->connection->isInvalid()) {
+        try {
+            if (
+                $this->connection instanceof SingleAttemptPostgreSQLConnection
+                && $this->connection->requiresDiscard()
+            ) {
+                $this->lastUseTime = 0.0;
+                $this->discardConnection($this->connection);
+            }
+        } catch (Throwable $exception) {
             $this->lastUseTime = 0.0;
-            $this->connection->rollBack(0);
             $this->connection->disconnect();
+            $this->logger->error('PostgreSQL session cleanup failed: ' . $exception->getMessage());
+        } finally {
+            parent::release();
         }
+    }
 
-        parent::release();
+    private function discardConnection(SingleAttemptPostgreSQLConnection $connection): void
+    {
+        try {
+            if (! $connection->isInvalid()) {
+                $connection->getPdo()->rollBack();
+            }
+        } finally {
+            $connection->disconnect();
+        }
     }
 }
