@@ -17,7 +17,9 @@ use PDOException;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Serendipity\ConfigProvider;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionChecker;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoConnection;
+use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoConnectionChecker;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoConnectionFactory;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoFailureClassifier;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PostgreSQLPdoBackend;
@@ -36,9 +38,15 @@ class PdoBackendTest extends TestCase
         $defaults = (new ConfigProvider())()['dependencies'];
         $this->assertArrayNotHasKey(ConnectionFactory::class, $defaults);
         $this->assertArrayNotHasKey(DbPool::class, $defaults);
+        $this->assertArrayNotHasKey(HyperfConnectionChecker::class, $defaults);
         $dependencies = PostgreSQLPdoBackend::dependencies();
         $this->assertSame(PdoConnectionFactory::class, $dependencies[ConnectionFactory::class]);
         $this->assertSame(SingleAttemptPool::class, $dependencies[DbPool::class]);
+        $this->assertSame(PdoConnectionChecker::class, $dependencies[HyperfConnectionChecker::class]);
+        $this->assertSame(
+            PdoConnectionChecker::class,
+            $dependencies[\Serendipity\Infrastructure\Database\Relational\ConnectionChecker::class]
+        );
     }
 
     public function testFactoryValidatesNamesWithoutOpeningOrRetainingAConnection(): void

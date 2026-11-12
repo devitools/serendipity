@@ -6,6 +6,7 @@ namespace Serendipity\Test\Hyperf\Database\Relational\PostgreSQL\Pdo;
 
 use Hyperf\Config\Config;
 use Hyperf\Context\ApplicationContext;
+use Hyperf\Context\Context;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Database\Exception\QueryException;
@@ -17,11 +18,18 @@ use Hyperf\Di\Definition\DefinitionSource;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
+use Serendipity\Hyperf\Database\Relational\HyperfConnection;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionChecker;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoConnection;
+use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoConnectionChecker;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PdoConnectionFactory;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\PostgreSQLPdoBackend;
 use Serendipity\Hyperf\Database\Relational\PostgreSQL\Pdo\SingleAttemptPool;
+use Serendipity\Hyperf\Middleware\ConnectionCheckerMiddleware;
 use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
 use Throwable;
@@ -188,6 +196,119 @@ class PdoSessionTest extends TestCase
         } finally {
             $connection->release();
             $pool->flushOne(true);
+        }
+    }
+
+    public function testDistinctNamedDatabasesKeepIndependentPoolsAndSessions(): void
+    {
+        $suffix = bin2hex(random_bytes(5));
+        $names = ['pdo_named_' . $suffix . '_first', 'pdo_named_' . $suffix . '_second'];
+        $admin = $this->admin();
+        $pools = [];
+        $connections = [];
+        try {
+            foreach ($names as $name) {
+                $admin->exec('CREATE DATABASE ' . $name);
+                $settings = $this->container->get(ConfigInterface::class)->get('databases.pdo_test');
+                $settings['database'] = $name;
+                $settings['host'] = [$settings['host']];
+                $this->container->get(ConfigInterface::class)->set('databases.' . $name, $settings);
+                $pools[$name] = $this->container->get(PoolFactory::class)->getPool($name);
+                $connections[$name] = $this->container->get(PdoConnectionFactory::class)->make($name);
+            }
+
+            $this->borrow(function () use ($connections, $pools, $names): void {
+                $pids = [];
+                foreach ($connections as $name => $connection) {
+                    $row = $connection->fetch('SELECT current_database() AS name, pg_backend_pid() AS pid');
+                    $this->assertSame($name, $row->get('name'));
+                    $pids[] = $row->get('pid');
+                    $this->assertSame(1, $pools[$name]->getCurrentConnections());
+                    $this->assertSame(0, $pools[$name]->getConnectionsInChannel());
+                }
+                $this->assertNotSame($pids[0], $pids[1]);
+                $this->assertNotSame($pools[$names[0]], $pools[$names[1]]);
+            });
+
+            foreach ($pools as $pool) {
+                $this->assertSame(1, $pool->getConnectionsInChannel());
+            }
+        } finally {
+            foreach ($pools as $pool) {
+                while ($pool->getConnectionsInChannel() > 0) {
+                    $pool->flushOne(true);
+                }
+            }
+            foreach ($names as $name) {
+                $admin->exec('DROP DATABASE IF EXISTS ' . $name);
+            }
+        }
+    }
+
+    public function testMiddlewareUsesPdoAndReleasesProbeLeaseBeforeCallingHandler(): void
+    {
+        $settings = $this->container->get(ConfigInterface::class)->get('databases.pdo_test');
+        $this->container->get(ConfigInterface::class)->set('databases.default', $settings);
+        $pool = $this->container->get(PoolFactory::class)->getPool('default');
+        $native = $this->createMock(HyperfConnection::class);
+        $native->expects($this->never())->method('run');
+        $this->container->set(HyperfConnection::class, $native);
+        $this->assertInstanceOf(PdoConnectionChecker::class, $this->container->get(HyperfConnectionChecker::class));
+        $this->assertInstanceOf(
+            PdoConnectionChecker::class,
+            $this->container->get(\Serendipity\Infrastructure\Database\Relational\ConnectionChecker::class)
+        );
+        $middleware = new ConnectionCheckerMiddleware($this->container);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())->method('handle')->with($request)
+            ->willReturnCallback(function () use ($pool, $response): ResponseInterface {
+                $this->assertSame(1, $pool->getCurrentConnections());
+                $this->assertSame(1, $pool->getConnectionsInChannel());
+                Coroutine::sleep(0.01);
+                $this->assertSame(1, $pool->getConnectionsInChannel());
+                return $response;
+            });
+
+        try {
+            $this->borrow(function () use ($middleware, $request, $handler, $response): void {
+                Context::set('database.connection.default', $this->createMock(\Hyperf\Database\ConnectionInterface::class));
+                $this->assertSame($response, $middleware->process($request, $handler));
+            });
+            $this->assertSame(1, $pool->getConnectionsInChannel());
+        } finally {
+            while ($pool->getConnectionsInChannel() > 0) {
+                $pool->flushOne(true);
+            }
+        }
+    }
+
+    public function testFailedMiddlewareProbeReturnsLeaseAndStillCallsHandler(): void
+    {
+        $settings = $this->container->get(ConfigInterface::class)->get('databases.pdo_test');
+        $settings['schema'] = 'invalid"schema';
+        $this->container->get(ConfigInterface::class)->set('databases.default', $settings);
+        $pool = $this->container->get(PoolFactory::class)->getPool('default');
+        $middleware = new ConnectionCheckerMiddleware($this->container);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())->method('handle')->with($request)
+            ->willReturnCallback(function () use ($pool, $response): ResponseInterface {
+                $this->assertSame(1, $pool->getCurrentConnections());
+                $this->assertSame(1, $pool->getConnectionsInChannel());
+                return $response;
+            });
+
+        try {
+            $this->borrow(function () use ($middleware, $request, $handler, $response): void {
+                $this->assertSame($response, $middleware->process($request, $handler));
+            });
+        } finally {
+            while ($pool->getConnectionsInChannel() > 0) {
+                $pool->flushOne(true);
+            }
         }
     }
 

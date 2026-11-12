@@ -34,6 +34,13 @@ baseline; applications not using it can retain their own default bindings instea
 Named connections must be `pgsql` entries under **`databases`**, as expected by
 `hyperf/db-connection`. Existing `db` entries alone are insufficient. `make('auto')`
 selects `databases.auto`; it does not silently fall back to another connection.
+All existing named database entries keep their own pools. Each PostgreSQL
+connection role must specify at most one host: host arrays with multiple entries,
+libpq comma-separated host strings, and multiple read/write configuration
+alternatives are rejected before resolving a connector. One-element host arrays
+and single-host read/write configuration remain supported. This restriction
+prevents inherited host failover from repeating a failed connection or session
+initialization; it does not restrict other drivers or the number of named databases.
 The adapter resolves the connection in the current coroutine on every call and
 does not retain a pooled connection in a singleton repository.
 
@@ -75,6 +82,16 @@ holds each borrowed named connection until the coroutine exits. Awaiting a slow
 provider after a database operation can therefore keep a pool slot occupied.
 The same configured pool size can experience more waiting; the later A/B test
 must measure this effect rather than assuming equal capacity or increasing limits.
+
+The optional bindings also select a PDO subtype for `HyperfConnectionChecker`
+and the `ConnectionChecker` interface, so the existing connection-check middleware
+uses the selected PDO backend. Each health check executes one `SELECT 1` against
+the named `default` connection in its own coroutine. That coroutine's normal
+resolver cleanup returns the probe lease before the request handler runs; no
+manual pool release is added. The checker retains the existing boolean availability
+and attempt-count API, and the middleware still continues after a failed probe.
+Legacy retry-count and delay settings do not cause PDO probe retries or sleeps.
+The default/native checker and its constructor remain unchanged.
 
 ## No replay and transaction failures
 
