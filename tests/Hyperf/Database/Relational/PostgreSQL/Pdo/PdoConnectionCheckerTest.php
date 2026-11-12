@@ -24,6 +24,17 @@ class PdoConnectionCheckerTest extends TestCase
         $this->assertSame(1, $checker->check());
     }
 
+    public function testSuccessfulProbeReportsAvailable(): void
+    {
+        $database = $this->createMock(Connection::class);
+        $database->expects($this->once())->method('query')->with('SELECT 1')->willReturn([['value' => 1]]);
+        $factory = $this->createMock(ConnectionFactory::class);
+        $factory->expects($this->once())->method('make')->with('default')->willReturn($database);
+        $checker = new PdoConnectionChecker($factory);
+
+        $this->assertTrue($checker->isAvailable());
+    }
+
     public function testFailedProbeDoesNotRetryOrDelayDespiteLegacySettings(): void
     {
         $database = $this->createMock(Connection::class);
