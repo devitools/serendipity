@@ -59,12 +59,13 @@ final class AdmissionMiddlewareTest extends TestCase
         $middleware->process($this->request(), $handler);
     }
 
-    public function testRateRefusalReturnsRetryAfterWithoutCallingTheBusinessHandler(): void
+    public function testRateRefusalLogsNoticeAndReturnsRetryAfterWithoutCallingTheBusinessHandler(): void
     {
         $budget = $this->createMock(SharedBudget::class);
         $budget->expects($this->exactly(2))->method('consume')->willReturnOnConsecutiveCalls(false, true);
         $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())->method('warning')->with('Request refused by admission', [
+        $logger->expects($this->never())->method('warning');
+        $logger->expects($this->once())->method('notice')->with('Request refused by admission', [
             'component' => 'admission',
             'http_status' => 429,
             'reason' => 'rate',
@@ -81,7 +82,7 @@ final class AdmissionMiddlewareTest extends TestCase
         $this->assertSame(204, $accepted->getStatusCode());
     }
 
-    public function testLimitsConcurrentHandlersAndReleasesAllFourSlots(): void
+    public function testConcurrencyRefusalLogsNoticeAndReleasesAllFourSlots(): void
     {
         $started = new Channel(4);
         $release = new Channel(4);
@@ -89,7 +90,8 @@ final class AdmissionMiddlewareTest extends TestCase
         $budget = $this->createMock(SharedBudget::class);
         $budget->expects($this->exactly(5))->method('consume')->willReturn(true);
         $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())->method('warning')->with('Request refused by admission', [
+        $logger->expects($this->never())->method('warning');
+        $logger->expects($this->once())->method('notice')->with('Request refused by admission', [
             'component' => 'admission',
             'http_status' => 429,
             'reason' => 'concurrency',

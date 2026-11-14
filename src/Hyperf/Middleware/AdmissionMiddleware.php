@@ -77,7 +77,7 @@ class AdmissionMiddleware implements MiddlewareInterface
 
     private function refuse(string $reason): ResponseInterface
     {
-        $this->logger->warning('Request refused by admission', [
+        $this->logger->notice('Request refused by admission', [
             'component' => 'admission',
             'http_status' => 429,
             'reason' => $reason,

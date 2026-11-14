@@ -90,6 +90,7 @@ final class SharedBudgetTest extends TestCase
             $limiter = $this->createMock(RateLimitHandler::class);
             $limiter->expects($this->once())->method('build')->willThrowException($failure);
             $logger = $this->createMock(LoggerInterface::class);
+            $logger->expects($this->never())->method('notice');
             $logger->expects($this->once())->method('warning')->with(
                 'Shared admission budget unavailable; using local concurrency protection',
                 [
