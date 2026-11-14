@@ -22,7 +22,9 @@ class SharedBudget
 {
     private float $degradedUntil = 0.0;
 
-    private bool $probing = false;
+    private ?int $probeGeneration = null;
+
+    private int $generation = 0;
 
     private readonly string $key;
 
@@ -47,17 +49,16 @@ class SharedBudget
         if ($this->skipProbe()) {
             return true;
         }
-        $recovering = $this->isDegraded();
-        $this->probing = $recovering;
+        $probe = $this->startProbe();
         try {
             $allowed = $this->limiter->build($this->key, $this->rate, $this->burst, 1)->consume(1);
-            $this->recover();
+            $this->recover($probe);
             return $allowed;
         } catch (StorageException | ConnectionException | RedisException | SocketPopException $exception) {
-            return $this->handleFailure($exception);
+            return $this->handleFailure($exception, $probe);
         } finally {
-            if ($recovering) {
-                $this->probing = false;
+            if ($this->probeGeneration === $probe) {
+                $this->probeGeneration = null;
             }
         }
     }
@@ -76,13 +77,18 @@ class SharedBudget
 
     private function skipProbe(): bool
     {
-        return $this->isDegraded() && ($this->probing || $this->clock->now() < $this->degradedUntil);
+        return $this->isDegraded() && ($this->probeGeneration !== null || $this->clock->now() < $this->degradedUntil);
     }
 
-    private function handleFailure(Throwable $exception): bool
+    private function startProbe(): ?int
+    {
+        return $this->probeGeneration = $this->isDegraded() ? $this->generation : null;
+    }
+
+    private function handleFailure(Throwable $exception, ?int $probe): bool
     {
         if ($exception instanceof StorageException && $exception->getPrevious() instanceof TimeoutException) {
-            $this->recover();
+            $this->recover($probe);
             return false;
         }
         return $this->degrade($exception);
@@ -91,6 +97,7 @@ class SharedBudget
     private function degrade(Throwable $exception): bool
     {
         $firstFailure = ! $this->isDegraded();
+        ++$this->generation;
         $this->degradedUntil = $this->clock->now() + 5;
         if ($firstFailure) {
             $this->logger->warning('Shared admission budget unavailable; using local concurrency protection', [
@@ -103,9 +110,9 @@ class SharedBudget
         return true;
     }
 
-    private function recover(): void
+    private function recover(?int $probe): void
     {
-        if ($this->isDegraded()) {
+        if ($probe === $this->generation && $probe === $this->probeGeneration) {
             $this->degradedUntil = 0.0;
             $this->logger->info('Shared admission budget recovered', ['component' => 'admission']);
         }

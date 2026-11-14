@@ -206,6 +206,136 @@ final class SharedBudgetTest extends TestCase
         $this->assertFalse($budget->isDegraded());
     }
 
+    public function testOlderSuccessfulAdmissionCannotClearANewerCooldown(): void
+    {
+        $this->assertOlderAdmissionKeepsCooldown(null);
+    }
+
+    public function testOlderMutexTimeoutCannotClearANewerCooldown(): void
+    {
+        $this->assertOlderAdmissionKeepsCooldown(new StorageException('Busy', 0, new TimeoutException('Busy')));
+    }
+
+    public function testOlderAdmissionCannotCompleteOrReleaseTheCurrentProbe(): void
+    {
+        $olderStarted = new Channel(1);
+        $olderRelease = new Channel(1);
+        $olderFinished = new Channel(1);
+        $probeStarted = new Channel(1);
+        $probeRelease = new Channel(1);
+        $probeFinished = new Channel(1);
+        $calls = 0;
+        $bucket = $this->bucket(4);
+        $limiter = $this->createMock(RateLimitHandler::class);
+        $limiter->expects($this->exactly(3))->method('build')->willReturnCallback(
+            static function () use (&$calls, $olderStarted, $olderRelease, $probeStarted, $probeRelease, $bucket): TokenBucket {
+                $attempt = ++$calls;
+                if ($attempt === 1) {
+                    $olderStarted->push(true);
+                    $olderRelease->pop(1);
+                    return $bucket;
+                }
+                if ($attempt === 2) {
+                    throw new RedisException('Offline');
+                }
+                $probeStarted->push(true);
+                $probeRelease->pop(1);
+                return $bucket;
+            },
+        );
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning');
+        $logger->expects($this->once())->method('info');
+        $budget = $this->budget($limiter, $logger);
+        Coroutine::create(static function () use ($budget, $olderFinished): void {
+            $olderFinished->push($budget->consume());
+        });
+        $this->assertTrue($olderStarted->pop(1));
+        $this->assertTrue($budget->consume());
+        $this->time = 1005.0;
+        Coroutine::create(static function () use ($budget, $probeFinished): void {
+            $probeFinished->push($budget->consume());
+        });
+        $this->assertTrue($probeStarted->pop(1));
+
+        try {
+            $olderRelease->push(true);
+            $this->assertTrue($olderFinished->pop(1));
+            $this->assertTrue($budget->isDegraded());
+            $this->assertTrue($budget->consume());
+            $this->assertSame(3, $calls);
+        } finally {
+            $probeRelease->push(true);
+            $this->assertTrue($probeFinished->pop(1));
+        }
+
+        $this->assertFalse($budget->isDegraded());
+    }
+
+    public function testProbeCannotClearACooldownFromALaterFailure(): void
+    {
+        foreach ([null, new StorageException('Busy', 0, new TimeoutException('Busy'))] as $probeFailure) {
+            $olderStarted = new Channel(1);
+            $olderRelease = new Channel(1);
+            $olderFinished = new Channel(1);
+            $probeStarted = new Channel(1);
+            $probeRelease = new Channel(1);
+            $probeFinished = new Channel(1);
+            $calls = 0;
+            $bucket = $this->bucket(4);
+            $limiter = $this->createMock(RateLimitHandler::class);
+            $limiter->expects($this->exactly(4))->method('build')->willReturnCallback(
+                static function () use (&$calls, $olderStarted, $olderRelease, $probeStarted, $probeRelease, $bucket, $probeFailure): TokenBucket {
+                    $attempt = ++$calls;
+                    if ($attempt === 1) {
+                        $olderStarted->push(true);
+                        $olderRelease->pop(1);
+                        throw new RedisException('Later failure');
+                    }
+                    if ($attempt === 2) {
+                        throw new RedisException('First failure');
+                    }
+                    if ($attempt === 3) {
+                        $probeStarted->push(true);
+                        $probeRelease->pop(1);
+                        if ($probeFailure !== null) {
+                            throw $probeFailure;
+                        }
+                    }
+                    return $bucket;
+                },
+            );
+            $logger = $this->createMock(LoggerInterface::class);
+            $logger->expects($this->once())->method('warning');
+            $logger->expects($this->once())->method('info');
+            $budget = $this->budget($limiter, $logger);
+            $this->time = 1000.0;
+            Coroutine::create(static function () use ($budget, $olderFinished): void {
+                $olderFinished->push($budget->consume());
+            });
+            $this->assertTrue($olderStarted->pop(1));
+            $this->assertTrue($budget->consume());
+            $this->time = 1005.0;
+            Coroutine::create(static function () use ($budget, $probeFinished): void {
+                $probeFinished->push($budget->consume());
+            });
+            $this->assertTrue($probeStarted->pop(1));
+
+            $olderRelease->push(true);
+            $this->assertTrue($olderFinished->pop(1));
+            $probeRelease->push(true);
+            $this->assertSame($probeFailure === null, $probeFinished->pop(1));
+
+            $this->assertTrue($budget->isDegraded());
+            $this->time = 1009.0;
+            $this->assertTrue($budget->consume());
+            $this->assertSame(3, $calls);
+            $this->time = 1010.0;
+            $this->assertTrue($budget->consume());
+            $this->assertFalse($budget->isDegraded());
+        }
+    }
+
     public function testUnexpectedErrorsPropagateWithoutOpeningTheCircuit(): void
     {
         $failure = new RuntimeException('Implementation error');
@@ -222,6 +352,53 @@ final class SharedBudgetTest extends TestCase
             $this->assertSame($failure, $actual);
             $this->assertFalse($budget->isDegraded());
         }
+    }
+
+    private function assertOlderAdmissionKeepsCooldown(?StorageException $olderFailure): void
+    {
+        $started = new Channel(1);
+        $release = new Channel(1);
+        $finished = new Channel(1);
+        $calls = 0;
+        $bucket = $this->bucket(4);
+        $limiter = $this->createMock(RateLimitHandler::class);
+        $limiter->expects($this->exactly(3))->method('build')->willReturnCallback(
+            static function () use (&$calls, $started, $release, $bucket, $olderFailure): TokenBucket {
+                $attempt = ++$calls;
+                if ($attempt === 1) {
+                    $started->push(true);
+                    $release->pop(1);
+                    if ($olderFailure !== null) {
+                        throw $olderFailure;
+                    }
+                }
+                if ($attempt === 2) {
+                    throw new RedisException('Offline');
+                }
+                return $bucket;
+            },
+        );
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning');
+        $logger->expects($this->once())->method('info');
+        $budget = $this->budget($limiter, $logger);
+        Coroutine::create(static function () use ($budget, $finished): void {
+            $finished->push($budget->consume());
+        });
+        $this->assertTrue($started->pop(1));
+        $this->assertTrue($budget->consume());
+        $this->assertTrue($budget->isDegraded());
+
+        $release->push(true);
+        $this->assertSame($olderFailure === null, $finished->pop(1));
+
+        $this->assertTrue($budget->isDegraded());
+        $this->time = 1004.0;
+        $this->assertTrue($budget->consume());
+        $this->assertSame(2, $calls);
+        $this->time = 1005.0;
+        $this->assertTrue($budget->consume());
+        $this->assertFalse($budget->isDegraded());
     }
 
     private function budget(RateLimitHandler $limiter, LoggerInterface $logger): SharedBudget
