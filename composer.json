@@ -62,6 +62,8 @@
     "hyperf/memory": "~3.1.0",
     "hyperf/model-cache": "~3.1.0",
     "hyperf/process": "~3.1.0",
+    "hyperf/rate-limit": "~3.1.0",
+    "hyperf/redis": "~3.1.0",
     "hyperf/rpc": "~3.1.0",
     "hyperf/rpc-client": "~3.1.0",
     "hyperf/rpc-server": "~3.1.0",
