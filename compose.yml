@@ -22,6 +22,17 @@ services:
     ports:
       - "9600:9501"
 
+  valkey:
+    image: valkey/valkey:8.0-alpine@sha256:19f0b3d350f5e6de618086d79ecdc9c474ab159bebb16ed95a92e4211562fee5
+    command: ['valkey-server', '--save', '', '--appendonly', 'no']
+    healthcheck:
+      test: ['CMD', 'valkey-cli', 'ping']
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    networks:
+      - serendipity-network
+
   postgres:
     container_name: serendipity-postgres
     profiles:

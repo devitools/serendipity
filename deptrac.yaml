@@ -72,6 +72,8 @@ deptrac:
             ^Symfony\\.*|\
             ^Hyperf\\(?!Contract|Validation|Context\\Context).*|\
             ^FastRoute\\.*|\
+            ^bandwidthThrottle\\.*|\
+            ^malkusch\\.*|\
             ^PHPUnit\\.*
 
   ruleset:

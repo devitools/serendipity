@@ -939,6 +939,10 @@ return [
 ];
 ```
 
+### Request admission
+
+See [request admission](docs/request-admission.md) for the opt-in shared rate budget, local concurrency protection and failure behavior.
+
 ### Middlewares Personalizados
 
 ```php
