@@ -31,6 +31,9 @@ jobs:
       - name: Put everything up
         run: make setup
 
+      - name: Tag pinned Valkey image for Docker cache
+        run: docker image tag "$(docker compose images -q valkey)" valkey/valkey:8.0-alpine
+
       - name: Run tests and generate coverage
         run: make ci
 
